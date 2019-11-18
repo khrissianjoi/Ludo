@@ -1,1 +1,3 @@
 # Ludo
+
+Ludo OO implementation
