@@ -1,8 +1,9 @@
 import pygame
-from board import Board
+import board
+
 pygame.init()
 
-ludo = Board()
+ludo = board.Board()
 ludo.generate_tiles()
 
 gameExit = False
