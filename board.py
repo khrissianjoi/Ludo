@@ -20,16 +20,6 @@ class Board:
         self.gameDisplay.fill(YELLOW)
 
         boardLength = 15
-        vertical = 0
-        horizontal = 0
-        # for i in range(1,boardLength+1):
-        #     for z in range(1,boardLength+1):
-        #         if (i in range(0,6) or i in range(9,16)) and (z in range(0,6) or z in range(9,16)):
-        #             pygame.draw.rect(self.gameDisplay, BLACK,[self.size*z,self.size*i,self.size,self.size])
-        #         if i in range(0,6) or i in range(9,16):
-        #             pygame.draw.rect(self.gameDisplay, WHITE,[self.size*z,self.size*i,self.size,self.size])
-        #         else:
-        #             pygame.draw.rect(self.gameDisplay, BLUE, [self.size*z,self.size*i,self.size,self.size])
         for i in range(1,boardLength+1):
             if i in range(7,10):
                 for z in range(1,boardLength+1):
