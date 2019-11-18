@@ -1,39 +1,32 @@
 import pygame
 
-pygame.init()
 
-gameDisplay = pygame.display.set_mode((1000,1000))
-pygame.display.set_caption("Board")
-white = 200,200,200
-black = 0,0,0
-#Size of squares
-size = 100
+WHITE = 200,200,200
+BLACK = 0,0,0
 
-#board length, must be even
-boardLength = 8
-gameDisplay.fill(white)
+class Board:
+    def __init__(self):
+        self.size = 100
+        self.x = 1000
+        self.y = 1000
+        self.gameDisplay = pygame.display.set_mode((self.x,self.y))
 
-cnt = 0
-for i in range(1,boardLength+1):
-    for z in range(1,boardLength+1):
-        #check if current loop value is even
-        if cnt % 2 == 0:
-            pygame.draw.rect(gameDisplay, white,[size*z,size*i,size,size])
-        else:
-            pygame.draw.rect(gameDisplay, black, [size*z,size*i,size,size])
-        cnt +=1
-    #since theres an even number of squares go back one value
-    cnt-=1
-#Add a nice boarder
-pygame.draw.rect(gameDisplay,black,[size,size,boardLength*size,boardLength*size],1)
+    def generate_tiles(self):
+        pygame.display.set_caption("Board")
 
-pygame.display.update()
+        self.gameDisplay.fill(WHITE)
 
-gameExit = False
-while not gameExit:
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			gameExit = True
+        boardLength = 8
+        cnt = 0
+        for i in range(1,boardLength+1):
+            for z in range(1,boardLength+1):
+                if cnt % 2 == 0:
+                    pygame.draw.rect(self.gameDisplay, WHITE,[self.size*z,self.size*i,self.size,self.size])
+                else:
+                    pygame.draw.rect(self.gameDisplay, BLACK, [self.size*z,self.size*i,self.size,self.size])
+                cnt +=1
+            cnt-=1
 
-pygame.quit()
-quit()
+        pygame.draw.rect(self.gameDisplay,BLACK,[self.size,self.size,boardLength*self.size,boardLength*self.size],1)
+
+        pygame.display.update()
