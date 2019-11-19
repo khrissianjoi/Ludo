@@ -3,17 +3,13 @@ import tile
 
 WHITE = 255,255,255
 BLACK = 0,0,0
-RED = 255, 0, 0, 0.8
-YELLOW = 236, 183, 24, 1
-GREEN = 102, 236, 24, 1
 
 # interface colours
 BLUE_BACKGROUND = 209, 230, 238
 
 # team colours
-
-TEAM_BLUE1 = 209,230,238
-TEAM_BLUE2 = 65, 179, 226
+TEAM_BLUE1 = 209,230,238 #dark
+TEAM_BLUE2 = 65, 179, 226 #light
 
 TEAM_YELLOW1 = 200,189,161
 TEAM_YELLOW2 = 251, 217, 132
@@ -35,11 +31,9 @@ class Board:
 
     def create_board(self):
         pygame.display.set_caption("Ludo")
-
         self.gameDisplay.fill(BLUE_BACKGROUND)
 
     def generate_tiles(self):
-
         for yCoord in range(1, self.boardLength+1):
             if yCoord in range(7,10):
                 for xCoord in range(1, self.boardLength+1):
@@ -52,15 +46,13 @@ class Board:
                         # add tiles to dictionary {tile: (range x coordinate, range y coordinate)}
                         currentTile = tile.Tile(range(self.size*xCoord,(self.size*xCoord)+61),range(self.size*yCoord,(self.size*yCoord)+61),tileType)
                         self.tiles[currentTile] = (range(self.size*xCoord,(self.size*xCoord)+61),range(self.size*yCoord,(self.size*yCoord)+61))
-
-                    # pygame.draw.rect(self.gameDisplay, BLACK, [self.size*xCoord, self.size*yCoord, self.boardLength*self.size, self.boardLength*self.size], 3)
+                pygame.draw.rect(self.gameDisplay, BLACK, [self.size, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
             else:
                 for xCoord in range(1,self.boardLength+1):
                     # rect (left(x),top(y))
                     if (xCoord in range(0, 7) or xCoord in range(10, 16)):
                         # home base
                         tileType = "base"
-                        
                         if yCoord in range(0, 7) and xCoord in range(0, 7):
                             # red base
                             pygame.draw.rect(self.gameDisplay, TEAM_RED1,[self.size*xCoord, self.size*yCoord, self.size, self.size])
@@ -82,7 +74,7 @@ class Board:
                     # add tiles to dictionary {tile: (range x coordinate, range y coordinate)}
                     currentTile = tile.Tile(range(self.size*xCoord,(self.size*xCoord)+61),range((self.size*yCoord),(self.size*yCoord)+61),tileType)
                     self.tiles[currentTile] = (range(self.size*xCoord,(self.size*xCoord)+61),range((self.size*yCoord),(self.size*yCoord)+61))
-
+                    # pygame.draw.rect(self.gameDisplay, BLACK, [self.size*xCoord, self.size*yCoord, self.boardLength*self.size, self.boardLength*self.size], 3)
         # create triangle home
         pygame.draw.polygon(self.gameDisplay, TEAM_RED2, [[420, 420], [510, 510], [420, 600]])
         pygame.draw.polygon(self.gameDisplay, TEAM_GREEN2, [[600, 600], [510, 510], [600, 420]])
@@ -90,25 +82,25 @@ class Board:
         pygame.draw.polygon(self.gameDisplay, TEAM_YELLOW2, [[600, 600], [510, 510], [420, 600]])
 
         # base circles
-        pygame.draw.circle(self.gameDisplay, TEAM_RED2, (150,150),35) #top left, top right, bottom left, bottom right
-        pygame.draw.circle(self.gameDisplay, TEAM_RED2, (330,150),35)
-        pygame.draw.circle(self.gameDisplay, TEAM_RED2, (330,330),35)
-        pygame.draw.circle(self.gameDisplay, TEAM_RED2, (150,330),35)
+        pygame.draw.circle(self.gameDisplay, TEAM_RED2, (240,120),45) #top left, top right, bottom left, bottom right
+        pygame.draw.circle(self.gameDisplay, TEAM_RED2, (120,240),45)
+        pygame.draw.circle(self.gameDisplay, TEAM_RED2, (360,240),45)
+        pygame.draw.circle(self.gameDisplay, TEAM_RED2, (240,360),45)
 
-        pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (690,690),35)
-        pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (870,690),35)
-        pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (870,870),35)
-        pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (690,870),35)
+        pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (780,660),45)
+        pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (660,780),45)
+        pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (900,780),45)
+        pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (780,890),45)
 
-        pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (150,690),35)
-        pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (320,690),35)  
-        pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (150,870),35)
-        pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (320,870),35)
+        pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (240,660),45)
+        pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (120,780),45)  
+        pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (360,780),45)
+        pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (240,900),45)
 
-        pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (870,325),35)
-        pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (870,150),35)
-        pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (690,325),35)
-        pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (690,150),35)
+        pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (780,120),45)
+        pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (670,240),45)
+        pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (900,240),45)
+        pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (780,360),45)
 
 
         pygame.draw.rect(self.gameDisplay, BLACK, [self.size, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)

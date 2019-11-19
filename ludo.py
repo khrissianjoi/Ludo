@@ -16,7 +16,7 @@ class Game:
         pygame.init()
 
         ludo = board.Board()
-
+        
         ludo.create_board()
         ludo.generate_tiles()
 
