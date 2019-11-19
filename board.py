@@ -16,7 +16,7 @@ TEAM_YELLOW2 = 251, 217, 132
 
 TEAM_RED1 = 245,221,219
 TEAM_RED2 = 241, 120, 107
-RED_PAWN = 189,9,9
+RED_token = 189,9,9
 
 TEAM_GREEN1 = 190,235,224
 TEAM_GREEN2 = 90, 200, 174
@@ -29,7 +29,7 @@ yellow_counter = {2,5,8,11,13,14}
 # star points
 star_path = [[24.615, 0.000], [30.315, 17.806], [48.758, 17.806], [33.837, 28.811], [39.536, 46.617], [24.615, 35.612], [9.695, 46.617], [15.394, 28.811], [0.473, 17.806], [18.916, 17.806], [24.615, 0.000]]
 
-pawn_path = [[55.0, 61.0], [54.0, 61.0], [54.0, 53.0], [47.0, 29.0], [47.0, 29.0], [49.0, 27.0], [49.0, 26.0], [47.0, 24.0], [47.0, 24.0], [51.0, 14.0], [37.0, 0.0], [22.0, 14.0], [27.0, 24.0], [26.0, 24.0], [24.0, 26.0], [24.0, 27.0], [26.0, 29.0], [27.0, 29.0], [20.0, 53.0], [20.0, 61.0], [18.0, 61.0], [16.0, 63.0], [16.0, 68.0], [18.0, 70.0], [18.0, 70.0], [18.0, 74.0], [55.0, 74.0], [55.0, 70.0], [57.0, 68.0], [57.0, 63.0], [55.0, 61.0]]
+token_path = [[55.0, 61.0], [54.0, 61.0], [54.0, 53.0], [47.0, 29.0], [47.0, 29.0], [49.0, 27.0], [49.0, 26.0], [47.0, 24.0], [47.0, 24.0], [51.0, 14.0], [37.0, 0.0], [22.0, 14.0], [27.0, 24.0], [26.0, 24.0], [24.0, 26.0], [24.0, 27.0], [26.0, 29.0], [27.0, 29.0], [20.0, 53.0], [20.0, 61.0], [18.0, 61.0], [16.0, 63.0], [16.0, 68.0], [18.0, 70.0], [18.0, 70.0], [18.0, 74.0], [55.0, 74.0], [55.0, 70.0], [57.0, 68.0], [57.0, 63.0], [55.0, 61.0]]
 
 
 class Board:
@@ -158,12 +158,9 @@ class Board:
         
         self.createTriangleHome()
         self.createBaseCircles()
-        self.createPawns()
-
-        
+        self.createtokens()        
 
         pygame.draw.rect(self.gameDisplay, BLACK, [self.size+self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
-
         pygame.display.update()
 
 
@@ -182,22 +179,22 @@ class Board:
         pygame.draw.line(self.gameDisplay, BLACK, (420+self.boardOverall, 600), (600+self.boardOverall,600),3)
 
 
-    def createPawns(self):
-        translated_pawn_path = [[x + 605, y +80] for [x, y] in pawn_path]
-        pygame.draw.polygon(self.gameDisplay, RED_PAWN, translated_pawn_path)
-        pygame.draw.polygon(self.gameDisplay, BLACK, translated_pawn_path,1)
+    def createtokens(self):
+        translated_token_path = [[x + 605, y +80] for [x, y] in token_path]
+        pygame.draw.polygon(self.gameDisplay, RED_token, translated_token_path)
+        pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
 
-        translated_pawn_path = [[x + 485, y +200] for [x, y] in pawn_path]
-        pygame.draw.polygon(self.gameDisplay, RED_PAWN, translated_pawn_path)
-        pygame.draw.polygon(self.gameDisplay, BLACK, translated_pawn_path,1)
+        translated_token_path = [[x + 485, y +200] for [x, y] in token_path]
+        pygame.draw.polygon(self.gameDisplay, RED_token, translated_token_path)
+        pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
 
-        translated_pawn_path = [[x + 725, y +200] for [x, y] in pawn_path]
-        pygame.draw.polygon(self.gameDisplay, RED_PAWN, translated_pawn_path)
-        pygame.draw.polygon(self.gameDisplay, BLACK, translated_pawn_path,1)
+        translated_token_path = [[x + 725, y +200] for [x, y] in token_path]
+        pygame.draw.polygon(self.gameDisplay, RED_token, translated_token_path)
+        pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
 
-        translated_pawn_path = [[x + 605, y +320] for [x, y] in pawn_path]
-        pygame.draw.polygon(self.gameDisplay, RED_PAWN, translated_pawn_path)
-        pygame.draw.polygon(self.gameDisplay, BLACK, translated_pawn_path,1)
+        translated_token_path = [[x + 605, y +320] for [x, y] in token_path]
+        pygame.draw.polygon(self.gameDisplay, RED_token, translated_token_path)
+        pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
 
     def createBaseCircles(self):
         # base circles
