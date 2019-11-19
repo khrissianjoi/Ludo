@@ -25,6 +25,11 @@ green_counter = {7,8,9,10,11,17}
 blue_counter = {5,6,8,11,14,17}
 yellow_counter = {2,5,8,11,13,14}
 
+# star points
+star_path = [[24.615, 0.000], [30.315, 17.806], [48.758, 17.806], [33.837, 28.811], [39.536, 46.617], [24.615, 35.612], [9.695, 46.617], [15.394, 28.811], [0.473, 17.806], [18.916, 17.806], [24.615, 0.000]]
+
+pawn_path = [[44.0, 54.0], [44.0, 54.0], [45.0, 51.0], [43.0, 44.0], [40.0, 33.0], [41.0, 23.0], [43.0, 20.0], [40.0, 17.0], [38.0, 17.0], [42.0, 9.0], [32.0, 0.0], [22.0, 9.0], [26.0, 17.0], [25.0, 17.0], [21.0, 20.0], [25.0, 24.0], [36.0, 24.0], [37.0, 22.0], [36.0, 21.0], [25.0, 21.0], [24.0, 20.0], [25.0, 19.0], [40.0, 19.0], [41.0, 20.0], [40.0, 21.0], [40.0, 21.0], [40.0, 21.0], [40.0, 21.0], [39.0, 22.0], [39.0, 22.0], [39.0, 22.0], [39.0, 22.0], [39.0, 22.0], [38.0, 33.0], [41.0, 45.0], [43.0, 51.0], [40.0, 54.0], [29.0, 54.0], [28.0, 55.0], [29.0, 56.0], [44.0, 56.0], [48.0, 60.0], [48.0, 63.0], [17.0, 63.0], [17.0, 60.0], [20.0, 56.0], [25.0, 56.0], [26.0, 55.0], [25.0, 54.0], [21.0, 51.0], [23.0, 45.0], [27.0, 33.0], [26.0, 27.0], [25.0, 26.0], [24.0, 27.0], [25.0, 33.0], [21.0, 44.0], [19.0, 51.0], [20.0, 54.0], [20.0, 54.0], [15.0, 60.0], [15.0, 64.0], [16.0, 65.0], [49.0, 65.0], [50.0, 64.0], [50.0, 60.0], [44.0, 54.0]]
+
 class Board:
     def __init__(self):
         self.tiles = {}
@@ -41,16 +46,23 @@ class Board:
     def create_board(self):
         pygame.display.set_caption("Ludo")
         self.gameDisplay.fill(BLUE_BACKGROUND)
+        self.generate_tiles()
+
     def createWhitePath(self,xCoord,yCoord):
         pygame.draw.rect(self.gameDisplay, WHITE,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size])
         pygame.draw.rect(self.gameDisplay, BLACK,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size], 1)
-    def generate_tiles(self):
-        redLayer= 0
-        greenLayer =0
-        blueLayer=0
-        yellowLayer = 0
 
-        star_path = [[24.615, 0.000], [30.315, 17.806], [48.758, 17.806], [33.837, 28.811], [39.536, 46.617], [24.615, 35.612], [9.695, 46.617], [15.394, 28.811], [0.473, 17.806], [18.916, 17.806], [24.615, 0.000]]
+    def createSafeTile(self, x_add, y_add, colour):
+        tileType = 'safe'
+        translated_star_path = [[x + x_add, y + y_add] for [x, y] in star_path]
+        pygame.draw.polygon(self.gameDisplay, colour, translated_star_path)
+
+    def generate_tiles(self):
+        redLayer = 0
+        greenLayer = 0
+        blueLayer = 0
+        yellowLayer = 0
+        
         for yCoord in range(1, self.boardLength+1):
             if yCoord in range(self.boardLength//2,10):
                 for xCoord in range(1, self.boardLength+1):
@@ -59,39 +71,34 @@ class Board:
                         tileType="path"
                         # path - horizontal spaces
                         if xCoord*self.size in range(60,420):
-                            if redLayer:
-                                translated_star_path = [[x + 525, y + 425] for [x, y] in star_path]
-                                pygame.draw.polygon(self.gameDisplay, TEAM_RED2, translated_star_path)
-                            #     pygame.draw.polygon(self.gameDisplay, TEAM_RED2, [[120+self.boardOverall, 445], [180+self.boardOverall, 445], [130+self.boardOverall, 480],[165+self.boardOverall,480], [150+self.boardOverall,480], [150+self.boardOverall,420]])
-                                pass
                             redLayer += 1
                             if redLayer in red_counter:
                                 self.createWhitePath(xCoord, yCoord)
                             else:
                                 pygame.draw.rect(self.gameDisplay, TEAM_RED2,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size])
                                 pygame.draw.rect(self.gameDisplay, BLACK,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size], 1)
+                            if redLayer==2:
+                                tileType = "safe"
+                                self.createSafeTile(525,425, TEAM_RED2)
                             if redLayer == 15:
-                                translated_star_path = [[x + 585, y + 545] for [x, y] in star_path]
-                                pygame.draw.polygon(self.gameDisplay, WHITE, translated_star_path)
+                                tileType = "safe"
+                                self.createSafeTile(585,545, WHITE)
                         else:
-                            if greenLayer:
-                                translated_star_path = [[x + 1245, y + 545] for [x, y] in star_path]
-                                pygame.draw.polygon(self.gameDisplay, TEAM_GREEN2, translated_star_path)
-                            #     pygame.draw.polygon(self.gameDisplay, TEAM_RED2, [[120+self.boardOverall, 445], [180+self.boardOverall, 445], [130+self.boardOverall, 480],[165+self.boardOverall,480], [150+self.boardOverall,480], [150+self.boardOverall,420]])
-                                pass
                             greenLayer += 1
                             if greenLayer in green_counter:
                                 self.createWhitePath(xCoord, yCoord)
                             else:
                                 pygame.draw.rect(self.gameDisplay, TEAM_GREEN2,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size])
                                 pygame.draw.rect(self.gameDisplay, BLACK,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size], 1)
+                            if greenLayer == 17:
+                                tileType = "safe"
+                                self.createSafeTile(1245,545, TEAM_GREEN2)
                             if greenLayer == 4:
-                                translated_star_path = [[x + 1185, y + 425] for [x, y] in star_path]
-                                pygame.draw.polygon(self.gameDisplay, WHITE, translated_star_path)
+                                tileType = "safe"
+                                self.createSafeTile(1185,425, WHITE)
                         # add tiles to dictionary {tile: (range x coordinate, range y coordinate)}
-                        currentTile = tile.Tile(range(self.size*xCoord,(self.size*xCoord+self.boardOverall)+61),range(self.size*yCoord,(self.size*yCoord)+61),tileType)
-                        self.tiles[currentTile] = (range(self.size*xCoord,(self.size*xCoord)+61),range(self.size*yCoord,(self.size*yCoord)+61))
-                # pygame.draw.rect(self.gameDisplay, BLACK, [self.size, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
+                    currentTile = tile.Tile(range(self.size*xCoord+self.boardOverall,self.size*xCoord+self.boardOverall+(self.size+1)),range(self.size*yCoord,self.size*yCoord+(self.size+1)),tileType)
+                    self.tiles[currentTile] = (range(self.size*xCoord+self.boardOverall,self.size*xCoord+self.boardOverall+(self.size+1)),range(self.size*yCoord,self.size*yCoord+(self.size+1)))
             else:
                 for xCoord in range(1,self.boardLength+1):
                     if xCoord in range(0, self.boardLength//2) or xCoord in range(self.boardLength//2+3, self.boardLength+1):
@@ -113,26 +120,19 @@ class Board:
                         # path - vertical white spaces
                         tileType = "path"
                         if yCoord*self.size in range (60,421):
-                            if blueLayer:
-                                translated_star_path = [[x + 945, y + 125] for [x, y] in star_path]
-                                pygame.draw.polygon(self.gameDisplay, TEAM_BLUE2, translated_star_path)
-                            #     pygame.draw.polygon(self.gameDisplay, TEAM_RED2, [[120+self.boardOverall, 445], [180+self.boardOverall, 445], [130+self.boardOverall, 480],[165+self.boardOverall,480], [150+self.boardOverall,480], [150+self.boardOverall,420]])
-                                pass
                             blueLayer += 1
                             if blueLayer in blue_counter:
                                 self.createWhitePath(xCoord, yCoord)
                             else:
                                 pygame.draw.rect(self.gameDisplay, TEAM_BLUE2,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size])
                                 pygame.draw.rect(self.gameDisplay, BLACK,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size], 1)
-                            if blueLayer == 12:
-                                translated_star_path = [[x + 825, y + 185] for [x, y] in star_path]
-                                pygame.draw.polygon(self.gameDisplay, WHITE, translated_star_path)
+                            if blueLayer == 7:
+                                tileType = "safe"
+                                self.createSafeTile(825,185, WHITE)
+                            if blueLayer == 6:
+                                tileType = "safe"
+                                self.createSafeTile(945,125, TEAM_BLUE2)
                         else:
-                            if yellowLayer:
-                                translated_star_path = [[x + 825, y + 845] for [x, y] in star_path]
-                                pygame.draw.polygon(self.gameDisplay, TEAM_YELLOW2, translated_star_path)
-                            #     pygame.draw.polygon(self.gameDisplay, TEAM_RED2, [[120+self.boardOverall, 445], [180+self.boardOverall, 445], [130+self.boardOverall, 480],[165+self.boardOverall,480], [150+self.boardOverall,480], [150+self.boardOverall,420]])
-                                pass
                             yellowLayer += 1
                             if yellowLayer in yellow_counter:
                                 self.createWhitePath(xCoord, yCoord)
@@ -140,13 +140,31 @@ class Board:
                                 pygame.draw.rect(self.gameDisplay, TEAM_YELLOW2,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size])
                                 pygame.draw.rect(self.gameDisplay, BLACK,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size], 1)
 
+                            if yellowLayer== 13:
+                                tileType = "safe"
+                                translated_star_path = [[x + 825, y + 845] for [x, y] in star_path]
+                                pygame.draw.polygon(self.gameDisplay, TEAM_YELLOW2, translated_star_path)
                             if yellowLayer == 12:
+                                tileType = "safe"
                                 translated_star_path = [[x + 945, y + 785] for [x, y] in star_path]
                                 pygame.draw.polygon(self.gameDisplay, WHITE, translated_star_path)
+                    
                     # add tiles to dictionary {tile: (range x coordinate, range y coordinate)}
-                    currentTile = tile.Tile(range(self.size*xCoord,(self.size*xCoord)+61),range((self.size*yCoord),(self.size*yCoord)+61),tileType)
-                    self.tiles[currentTile] = (range(self.size*xCoord,(self.size*xCoord)+61),range((self.size*yCoord),(self.size*yCoord)+61))
-                    # pygame.draw.rect(self.gameDisplay, BLACK, [self.size*xCoord, self.size*yCoord, self.boardLength*self.size, self.boardLength*self.size], 3)
+                    #plus 61 because size of tile
+                    currentTile = tile.Tile(range(self.size*xCoord+self.boardOverall,self.size*xCoord+self.boardOverall+(self.size+1)),range(self.size*yCoord,self.size*yCoord+(self.size+1)),tileType)
+                    self.tiles[currentTile] = (range(self.size*xCoord+self.boardOverall,self.size*xCoord+self.boardOverall+(self.size+1)),range((self.size*yCoord),self.size*yCoord+(self.size+1)))
+        
+        self.createTriangleHome()
+        self.createBaseCircles()
+
+        translated_pawn_path = [[x + 610, y +85] for [x, y] in pawn_path]
+        pygame.draw.polygon(self.gameDisplay, BLACK, translated_pawn_path)
+
+        pygame.draw.rect(self.gameDisplay, BLACK, [self.size+self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
+
+        pygame.display.update()
+
+    def createTriangleHome(self):
         # create triangle home
         pygame.draw.polygon(self.gameDisplay, TEAM_RED2, [[420+self.boardOverall, 420], [510+self.boardOverall, 510], [420+self.boardOverall, 600]])
         pygame.draw.line(self.gameDisplay, BLACK, (420+self.boardOverall, 600), (420+self.boardOverall,420),3)
@@ -160,6 +178,8 @@ class Board:
         pygame.draw.polygon(self.gameDisplay, TEAM_YELLOW2, [[600+self.boardOverall, 600], [510+self.boardOverall, 510], [420+self.boardOverall, 600]])
         pygame.draw.line(self.gameDisplay, BLACK, (420+self.boardOverall, 600), (600+self.boardOverall,600),3)
 
+
+    def createBaseCircles(self):
         # base circles
         pygame.draw.circle(self.gameDisplay, TEAM_RED2, (240+self.boardOverall,120),45) #top left, top right, bottom left, bottom right
         pygame.draw.circle(self.gameDisplay, TEAM_RED2, (120+self.boardOverall,240),45)
@@ -180,8 +200,3 @@ class Board:
         pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (670+self.boardOverall,240),45)
         pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (900+self.boardOverall,240),45)
         pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (780+self.boardOverall,360),45)
-
-
-        pygame.draw.rect(self.gameDisplay, BLACK, [self.size+self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
-
-        pygame.display.update()

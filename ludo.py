@@ -18,7 +18,6 @@ class Game:
         ludo = board.Board()
         
         ludo.create_board()
-        ludo.generate_tiles()
 
         while not self.gameExit:
             for event in pygame.event.get():
