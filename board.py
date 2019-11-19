@@ -83,34 +83,30 @@ class Board:
                     currentTile = tile.Tile(range(self.size*xCoord,(self.size*xCoord)+61),range((self.size*yCoord),(self.size*yCoord)+61),tileType)
                     self.tiles[currentTile] = (range(self.size*xCoord,(self.size*xCoord)+61),range((self.size*yCoord),(self.size*yCoord)+61))
 
-        # create triangle base
+        # create triangle home
         pygame.draw.polygon(self.gameDisplay, TEAM_RED2, [[420, 420], [510, 510], [420, 600]])
         pygame.draw.polygon(self.gameDisplay, TEAM_GREEN2, [[600, 600], [510, 510], [600, 420]])
         pygame.draw.polygon(self.gameDisplay, TEAM_BLUE2, [[420, 420], [510, 510], [600, 420]])
         pygame.draw.polygon(self.gameDisplay, TEAM_YELLOW2, [[600, 600], [510, 510], [420, 600]])
 
+        # base circles
         pygame.draw.circle(self.gameDisplay, TEAM_RED2, (150,150),35) #top left, top right, bottom left, bottom right
         pygame.draw.circle(self.gameDisplay, TEAM_RED2, (330,150),35)
-
         pygame.draw.circle(self.gameDisplay, TEAM_RED2, (330,330),35)
         pygame.draw.circle(self.gameDisplay, TEAM_RED2, (150,330),35)
 
         pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (690,690),35)
         pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (870,690),35)
-
         pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (870,870),35)
         pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (690,870),35)
 
-        
         pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (150,690),35)
         pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (320,690),35)  
-
         pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (150,870),35)
         pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (320,870),35)
 
         pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (870,325),35)
         pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (870,150),35)
-
         pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (690,325),35)
         pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (690,150),35)
 
