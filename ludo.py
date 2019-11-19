@@ -14,6 +14,8 @@ class Game:
         pygame.init()
 
         ludo = board.Board()
+
+        ludo.create_board()
         ludo.generate_tiles()
 
         gameExit = False
@@ -23,10 +25,12 @@ class Game:
                     gameExit = True
                 if event.type == pygame.MOUSEBUTTONUP:
                     x,y = pygame.mouse.get_pos()
+                    print(x,y)
                     for tile in ludo.tiles:
                         if x in ludo.tiles[tile][0] and y in ludo.tiles[tile][1]:
                             print(tile.tileType)
                             break
+                        
         pygame.quit()
         quit()
 
