@@ -6,9 +6,11 @@ class Game:
     def __init__(self):
         self.startTime = datetime.datetime.now()
         self.endTime = None
+        self.gameExit = False
 
     def endGame(self):
         self.endTime = datetime.datetime.now()
+        self.gameExit = True
 
     def main(self):
         pygame.init()
@@ -18,11 +20,10 @@ class Game:
         ludo.create_board()
         ludo.generate_tiles()
 
-        gameExit = False
-        while not gameExit:
+        while not self.gameExit:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    gameExit = True
+                    self.endGame()
                 if event.type == pygame.MOUSEBUTTONUP:
                     x,y = pygame.mouse.get_pos()
                     print(x,y)
