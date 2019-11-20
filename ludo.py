@@ -17,7 +17,7 @@ class Game:
 
         ludo = board.Board()
         
-        ludo.create_board()
+        ludo.createBoard()
 
         while not self.gameExit:
             for event in pygame.event.get():
