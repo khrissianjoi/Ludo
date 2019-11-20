@@ -66,13 +66,13 @@ class Board:
         yellowLayer = 0
         
         for yCoord in range(1, self.boardLength+1):
-            if yCoord in range(self.boardLength//2,10):
+            if yCoord in range(self.boardLength//2, 10):
                 for xCoord in range(1, self.boardLength+1):
                     # avoiding the base
-                    if xCoord*self.size not in range(420,580):
+                    if xCoord*self.size not in range(420, 580):
                         tileType="path"
                         # path - horizontal spaces
-                        if xCoord*self.size in range(60,420):
+                        if xCoord*self.size in range(60, 420):
                             redLayer += 1
                             if redLayer in red_counter:
                                 self.createWhitePath(xCoord, yCoord)
