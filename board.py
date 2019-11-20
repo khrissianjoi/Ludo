@@ -16,7 +16,7 @@ TEAM_YELLOW2 = 251, 217, 132
 
 TEAM_RED1 = 245,221,219
 TEAM_RED2 = 241, 120, 107
-RED_token = 189,9,9
+RED_TOKEN = 189,9,9
 
 TEAM_GREEN1 = 190,235,224
 TEAM_GREEN2 = 90, 200, 174
@@ -45,26 +45,33 @@ class Board:
         self.gameDisplay = pygame.display.set_mode((self.display_size_x, self.display_size_y))
         self.boardLength = 15 #15*15 board
 
+
     def createBoard(self):
         pygame.display.set_caption("Ludo")
         self.gameDisplay.fill(BLUE_BACKGROUND)
         self.generateTiles()
+        self.createTriangleHome()
+        self.createBaseCircles()
+        self.createTokens() 
+        # border around board
+        pygame.draw.rect(self.gameDisplay, BLACK, [self.size+self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
+        pygame.display.update()
 
-    def createWhitePath(self,xCoord,yCoord):
+
+    def createWhiteTile(self,xCoord,yCoord):
+        # create white path
         pygame.draw.rect(self.gameDisplay, WHITE,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size])
         pygame.draw.rect(self.gameDisplay, BLACK,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size], 1)
+
 
     def createSafeTile(self, x_add, y_add, colour):
         tileType = 'safe'
         translated_star_path = [[x + x_add, y + y_add] for [x, y] in star_path]
         pygame.draw.polygon(self.gameDisplay, colour, translated_star_path)
 
+
     def generateTiles(self):
-        redLayer = 0
-        greenLayer = 0
-        blueLayer = 0
-        yellowLayer = 0
-        
+        redLayer = greenLayer = blueLayer = yellowLayer = 0
         for yCoord in range(1, self.boardLength+1):
             if yCoord in range(self.boardLength//2, 10):
                 for xCoord in range(1, self.boardLength+1):
@@ -75,11 +82,11 @@ class Board:
                         if xCoord*self.size in range(self.size, self.size*7):
                             redLayer += 1
                             if redLayer in red_counter:
-                                self.createWhitePath(xCoord, yCoord)
+                                self.createWhiteTile(xCoord, yCoord)
                             else:
                                 pygame.draw.rect(self.gameDisplay, TEAM_RED2,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size])
                                 pygame.draw.rect(self.gameDisplay, BLACK,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size], 1)
-                            if redLayer==2:
+                            if redLayer == 2:
                                 tileType = "safe"
                                 self.createSafeTile(525,425, TEAM_RED2)
                             if redLayer == 15:
@@ -88,7 +95,7 @@ class Board:
                         else:
                             greenLayer += 1
                             if greenLayer in green_counter:
-                                self.createWhitePath(xCoord, yCoord)
+                                self.createWhiteTile(xCoord, yCoord)
                             else:
                                 pygame.draw.rect(self.gameDisplay, TEAM_GREEN2,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size])
                                 pygame.draw.rect(self.gameDisplay, BLACK,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size], 1)
@@ -98,6 +105,7 @@ class Board:
                             if greenLayer == 4:
                                 tileType = "safe"
                                 self.createSafeTile(1185,425, WHITE)
+                                
                     self.addTile(self.size*xCoord+self.boardOverall,self.size*xCoord+self.boardOverall+(self.size+1),self.size*yCoord,self.size*yCoord+(self.size+1), tileType)
 
             else:
@@ -123,7 +131,7 @@ class Board:
                         if yCoord*self.size in range (self.size,self.size*7):
                             blueLayer += 1
                             if blueLayer in blue_counter:
-                                self.createWhitePath(xCoord, yCoord)
+                                self.createWhiteTile(xCoord, yCoord)
                             else:
                                 pygame.draw.rect(self.gameDisplay, TEAM_BLUE2,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size])
                                 pygame.draw.rect(self.gameDisplay, BLACK,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size], 1)
@@ -136,7 +144,7 @@ class Board:
                         else:
                             yellowLayer += 1
                             if yellowLayer in yellow_counter:
-                                self.createWhitePath(xCoord, yCoord)
+                                self.createWhiteTile(xCoord, yCoord)
                             else:
                                 pygame.draw.rect(self.gameDisplay, TEAM_YELLOW2,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size])
                                 pygame.draw.rect(self.gameDisplay, BLACK,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size], 1)
@@ -152,17 +160,12 @@ class Board:
                     #plus 61 because size of tile
                     self.addTile(self.size*xCoord+self.boardOverall,self.size*xCoord+self.boardOverall+(self.size+1),self.size*yCoord,self.size*yCoord+(self.size+1), tileType)
 
-        self.createTriangleHome()
-        self.createBaseCircles()
-        self.createTokens()        
-
-        pygame.draw.rect(self.gameDisplay, BLACK, [self.size+self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
-        pygame.display.update()
 
     def addTile(self,xStartCoord, xEndCoord, yStartCoord, yEndCoord, tileType):
         '''add tiles to dictionary {tile: (range x coordinate, range y coordinate)}'''
         currentTile = tile.Tile(range(xStartCoord,xEndCoord),range(yStartCoord,yEndCoord),tileType)
         self.tiles[currentTile] = (range(xStartCoord,xEndCoord),range(yStartCoord,yEndCoord))
+
 
     def createTriangleHome(self):
         '''create triangle home'''
@@ -182,20 +185,21 @@ class Board:
     def createTokens(self):
         '''create Tokens'''
         translated_token_path = [[x + 605, y +80] for [x, y] in token_path]
-        pygame.draw.polygon(self.gameDisplay, RED_token, translated_token_path)
+        pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
 
         translated_token_path = [[x + 485, y +200] for [x, y] in token_path]
-        pygame.draw.polygon(self.gameDisplay, RED_token, translated_token_path)
+        pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
 
         translated_token_path = [[x + 725, y +200] for [x, y] in token_path]
-        pygame.draw.polygon(self.gameDisplay, RED_token, translated_token_path)
+        pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
 
         translated_token_path = [[x + 605, y +320] for [x, y] in token_path]
-        pygame.draw.polygon(self.gameDisplay, RED_token, translated_token_path)
+        pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
+
 
     def createBaseCircles(self):
         # base circles

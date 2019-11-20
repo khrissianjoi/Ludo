@@ -25,10 +25,9 @@ class Game:
                     self.endGame()
                 if event.type == pygame.MOUSEBUTTONUP:
                     x,y = pygame.mouse.get_pos()
-                    print(x,y)
                     for tile in ludo.tiles:
                         if x in ludo.tiles[tile][0] and y in ludo.tiles[tile][1]:
-                            print(tile.tileType)
+                            print("x : {}, y : {}, type: {}".format(x,y,tile.tileType))
                             break
                         
         pygame.quit()
