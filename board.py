@@ -45,6 +45,7 @@ class Board:
 
 
     def createBoard(self):
+        '''create Ludo board'''
         pygame.display.set_caption("Ludo")
         self.gameDisplay.fill(BLUE_BACKGROUND)
         self.generateTiles()
