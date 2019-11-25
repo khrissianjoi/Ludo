@@ -1,7 +1,7 @@
 from dice import Dice
 
 class Player:
-    def __init__(self,playerName,colour,tokensOnBase,tokenOnTrack):
+    def __init__(self,playerName,colour,tokensOnHome, tokensOnBase,tokenOnTrack):
         self.playerName = playerName
         self.colour = colour
         self.tokensOnHome = tokensOnHome
@@ -10,7 +10,7 @@ class Player:
 
         self.myDice = Dice()
 
-    def rollDIce(self):
+    def rollDice(self):
         return self.myDice.rollDice()
 
     def chooseToken(self):
@@ -32,4 +32,4 @@ class Player:
         self.tokensOnBase.append(token)
 
     def addTokensToTrack(self, token):
-        self.tokens.OnTrack(token);
+        self.tokens.OnTrack(token)

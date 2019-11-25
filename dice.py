@@ -6,11 +6,11 @@ class Dice:
 
     def rollDice(self):
         value = random.randint(1,7)
-        self.setdiceValue()
+        # self.setdiceValue()
         return value
 
     def getdiceValue(self):
         return self.diceValue
 
-    def setdiceValue(self):
-        self.diceValue += 1
+    # def setdiceValue(self):
+    #     self.diceValue += 1
