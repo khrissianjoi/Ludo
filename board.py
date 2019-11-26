@@ -52,10 +52,10 @@ class Board:
         self.gameDisplay = pygame.display.set_mode((self.display_size_x, self.display_size_y))
         self.boardLength = 15 #15*15 board
         
-        self.redTokens = set()
-        self.greenTokens = set()
-        self.blueTokens = set()
-        self.yellowTokens = set()
+        self.redTokens = []
+        self.greenTokens = []
+        self.blueTokens = []
+        self.yellowTokens = []
 
         self.yellowPath = []
         self.redPath = []
@@ -69,6 +69,8 @@ class Board:
         self.generateTiles()
         self.createTriangleHome()
         self.createBaseCircles()
+        pygame.draw.rect(self.gameDisplay, BLACK, [self.size+self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
+        
 
     def createBoard(self):
         '''create Ludo board'''
@@ -83,7 +85,7 @@ class Board:
         pygame.draw.rect(self.gameDisplay, BLACK, [self.size+self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
         pygame.display.update()
 
-        self.r4.moveToken(self,13)
+        # self.r4.moveToken(self,13)
 
     def createWhiteTile(self, xCoord, yCoord):
         # create white path
@@ -251,8 +253,8 @@ class Board:
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
         R4 = TokenCreate(4,RED_TOKEN,None,(None,None),(605,320),trueRedPath,self.gameDisplay)
         
-        self.redTokens = {R1,R2,R3,R4}
-
+        self.redTokens = [R1,R2,R3,R4]
+        print(self)
         self.r4 = R4
 
         #YELLOW
@@ -276,6 +278,8 @@ class Board:
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
         Y4 = TokenCreate(4,YELLOW_TOKEN, None,(None,None),(605,860),trueYellowPath)
 
+        self.yellowTokens = [Y1,Y2,Y3,Y4]
+        
         translated_token_path = [[x + 1145, y + 80] for [x, y] in token_path]
         pygame.draw.polygon(self.gameDisplay, BLUE_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
@@ -296,7 +300,7 @@ class Board:
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)  
         B4 = TokenCreate(4,BLUE_TOKEN,None,(None,None),(1145,320),trueBluePath)
 
-        self.blueTokens = {B1,B2,B3,B4}
+        self.blueTokens = [B1,B2,B3,B4]
 
         #GREEN
         translated_token_path = [[x + 1145, y + 620] for [x, y] in token_path]
@@ -319,7 +323,7 @@ class Board:
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
         G4 = TokenCreate(4, GREEN_TOKEN, None, (None,None),(1145,850),trueGreenPath)
 
-        self.greenTokens = {G1,G2,G3,G4}
+        self.greenTokens = [G1,G2,G3,G4]
 
     def createBaseCircles(self):
         '''create base circles'''

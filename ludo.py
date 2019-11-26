@@ -40,8 +40,9 @@ class Game:
         playerYellow = Player("John",(125,125,125),[],ludo.yellowTokens,[])
         playerBlue = Player("Alex",(125,125,125),[],ludo.blueTokens,[])
         playerGreen = Player("Joi",(125,125,125),[],ludo.greenTokens,[])
-        
-        playerRed.rollDice()
+        players = [playerRed,playerYellow,playerBlue,playerGreen]
+
+        testPlayer = players[0]
 
         while not self.gameExit:
             for event in pygame.event.get():
@@ -54,6 +55,12 @@ class Game:
                             print("x : {}, y : {}, type: {}".format(x,y,tile.tileType))
                             break
                         
+                    currentRoll = testPlayer.rollDice()
+                    currentToken = ludo.redTokens[0]
+                    currentToken.moveToken(ludo,13)
+                    # pygame.display.update()
+                    # ludo.regenerateBoard()
+
         pygame.quit()
         quit()
 

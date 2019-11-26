@@ -13,16 +13,18 @@ class TokenCreate:
         self.tokenTilePath = tokenTilesPath
         self.currentTilePathPosition = 0
 
-    def moveToken(self,refresh,tileNumber):
+    def moveToken(self,refresh,moveBy):
+        # refresh = refresh.gameDisplay
         # tileNumber is the tile position in the list of the token path
-        for i in range(self.currentTilePathPosition,tileNumber+1):
+        for i in range(self.currentTilePathPosition,self.currentTilePathPosition+moveBy+1):
             print(self.tokenTilePath[i][0])
             test = self.tokenTilePath[i][0].endCoordinates
             translated_token_path = [[x + test[0], test[1] + y] for [x, y] in self.tokenPoly]
-            pygame.draw.polygon(self.display,(189,9,9),translated_token_path)
+            pygame.draw.polygon(refresh.gameDisplay,(189,9,9),translated_token_path)
             pygame.display.update()
             pygame.time.delay(400)
             refresh.regenerateBoard()
+        self.currentTilePathPosition += moveBy
 
     def getLocation(self):
         return self.tokenLocation
