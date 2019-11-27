@@ -1,7 +1,7 @@
 from dice import Dice
 import pygame
 
-
+BLACK = 0,0,0
 tokenPoly = [[55.0, 61.0], [54.0, 61.0], [54.0, 53.0], [47.0, 29.0], [47.0, 29.0], [49.0, 27.0], [49.0, 26.0], [47.0, 24.0], [47.0, 24.0], [51.0, 14.0], [37.0, 0.0], [22.0, 14.0], [27.0, 24.0], [26.0, 24.0], [24.0, 26.0], [24.0, 27.0], [26.0, 29.0], [27.0, 29.0], [20.0, 53.0], [20.0, 61.0], [18.0, 61.0], [16.0, 63.0], [16.0, 68.0], [18.0, 70.0], [18.0, 70.0], [18.0, 74.0], [55.0, 74.0], [55.0, 70.0], [57.0, 68.0], [57.0, 63.0], [55.0, 61.0]]
 class Player:
     def __init__(self,playerName,colour,tokensOnHome, tokensOnBase,tokenOnTrack, allTokens=None):
@@ -45,7 +45,7 @@ class Player:
             if token.tokenID != otherThan.tokenID:
                 new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord +y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,self.colour,new_translated_token_path)
-
+                pygame.draw.polygon(refresh.gameDisplay, BLACK, new_translated_token_path,1)
         # for token in self.tokensOnHome:
         #     if token != otherThan:
         #         new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord +y] for [x, y] in translated_token_path]
@@ -54,3 +54,4 @@ class Player:
             if token.tokenID != otherThan.tokenID:
                 new_translated_token_path = [[x + token.tokenLocation[0][0], token.tokenLocation[1][0] +y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,self.colour,new_translated_token_path)
+                pygame.draw.polygon(refresh.gameDisplay, BLACK, new_translated_token_path,1)
