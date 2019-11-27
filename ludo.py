@@ -40,7 +40,7 @@ class Game:
         self.gameExit = True
 
     def isPlayerChoosingOwnToken(self, currentPlayer,x,y):
-        for token in currentPlayer.allTokens: 
+        for token in currentPlayer.allTokens:
             if x in token.tokenLocation[0] and y in token.tokenLocation[1]:
                 return token
 
@@ -90,42 +90,40 @@ class Game:
                         currentToken = self.isPlayerChoosingOwnToken(currentPlayer,x,y)
                         
                         if currentToken:
-                            tempPlayers = copy.copy(self.players)
-                            tempPlayers.remove(currentPlayer)
                             newTokenTilePosition = currentToken.tokenNewTile(currentRoll)
 
                             if newTokenTilePosition.tileType == 'path' or newTokenTilePosition.tileType == 'safe':
                             #     # TODO: change tokenOnTrack to tokenOnPath for consistency
                                 if currentToken not in currentPlayer.tokensOnTrack:
                                     currentPlayer.tokensOnTrack.append(currentToken)
-                                if currentToken in currentPlayer.tokensOnBase:
-                                    print(len(currentPlayer.tokensOnBase))
-                                    currentPlayer.tokensOnBase.remove(currentToken)
-                                    print(len(currentPlayer.tokensOnBase))
-                                if currentToken in currentPlayer.tokensOnHome:
-                                    currentPlayer.tokensOnHome.remove(currentToken)    
-                                    # TODO: remove token if its in the home or base player list
+                                    if currentToken in currentPlayer.tokensOnBase:
+                                        currentPlayer.tokensOnBase.remove(currentToken)
+                                    elif currentToken in currentPlayer.tokensOnHome:
+                                        currentPlayer.tokensOnHome.remove(currentToken)
                             elif newTokenTilePosition.tileType == 'base':
                                 if currentToken not in currentPlayer.tokensOnBase:
                                     currentPlayer.tokensOnBase.append(currentToken)
-                                if currentToken in currentPlayer.tokensOnHome:
-                                    currentPlayer.tokensOnHome.remove(currentToken)
-                                if currentToken in currentPlayer.tokensOnTrack:
-                                    currentPlayer.tokensOnTrack.remove(currentToken)
+                                    if currentToken in currentPlayer.tokensOnHome:
+                                        currentPlayer.tokensOnHome.remove(currentToken)
+                                    elif currentToken in currentPlayer.tokensOnTrack:
+                                        currentPlayer.tokensOnTrack.remove(currentToken)
 
                             elif newTokenTilePosition.tileType == 'home':
                                 if currentToken not in currentPlayer.tokensOnHome:
                                     currentPlayer.tokensOnHome.append(currentToken)
-                                if currentToken in currentPlayer.tokensOnTrack:
-                                    currentPlayer.tokensOnTrack.remove(currentToken)
-                                if currentToken in currentPlayer.tokensOnBase:
-                                    currentPlayer.tokensOnBase.remove(currentToken)            
+                                    if currentToken in currentPlayer.tokensOnTrack:
+                                        currentPlayer.tokensOnTrack.remove(currentToken)
+                                    elif currentToken in currentPlayer.tokensOnBase:
+                                        currentPlayer.tokensOnBase.remove(currentToken)
+
+                            tempPlayers = copy.copy(self.players)
+                            tempPlayers.remove(currentPlayer)        
                             currentToken.moveToken(ludo,currentRoll,tempPlayers)
                             currentToken.setTokenLocation(newTokenTilePosition.rangeCoordinates)
 
+                            # currentPlayer.allTokens.append(currentToken)
+                            currentPlayer.setAllTokens(currentPlayer.tokensOnBase+currentPlayer.tokensOnTrack+currentPlayer.tokensOnHome)
 
-                            
-                            currentPlayer.allTokens.append(currentToken)
                             counter += 1
                             print("Next: {}".format(self.players[counter%4].colour))
                         else:

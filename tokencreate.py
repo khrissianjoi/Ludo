@@ -15,7 +15,11 @@ class TokenCreate:
 
     def drawOtherPlayersTokens(self,otherPlayers,refresh):
         for player in otherPlayers:
+            if player.colour == (189, 9, 9):
+                print(len(player.tokensOnBase))
+            # print("player.tokensOnBase {}: {}".format(player.colour,len(player.tokensOnBase)))
             for token in player.tokensOnTrack:
+                
                 new_translated_token_path = [[x + token.tokenLocation[0][0], token.tokenLocation[1][0] +y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,player.colour,new_translated_token_path)
             # when other player is doing their turn all of the other player's tokens don't move
@@ -33,9 +37,9 @@ class TokenCreate:
     def moveToken(self,refresh,moveBy,otherPlayers):
         # tileNumber is the tile position in the list of the token path
         for i in range(self.currentTilePathPosition,self.currentTilePathPosition+moveBy+1):
-            test = self.tokenTilesPath[i][0].endCoordinates
+            tokenStepCoordinate = self.tokenTilesPath[i][0].endCoordinates
             # -5 is just for Dale to stop getting OCD centered token
-            translated_token_path = [[x + test[0], test[1] + y] for [x, y] in tokenPoly]
+            translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x, y] in tokenPoly]
             pygame.draw.polygon(refresh.gameDisplay,self.tokenID[1],translated_token_path)
             self.playerOwner.drawTokens(refresh,self,tokenPoly)
             self.drawOtherPlayersTokens(otherPlayers,refresh)

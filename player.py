@@ -40,14 +40,12 @@ class Player:
     def addTokensToTrack(self, token):
         self.tokens.OnTrack(token)
 
-    # def drawBaseToken(self):
-
-    # def drawPathTokens(self):
     def drawTokens(self,refresh,otherThan,tokenPoly):
         for token in self.tokensOnBase:
             if token.tokenID != otherThan.tokenID:
                 new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord +y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,self.colour,new_translated_token_path)
+
         # for token in self.tokensOnHome:
         #     if token != otherThan:
         #         new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord +y] for [x, y] in translated_token_path]
