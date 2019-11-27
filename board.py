@@ -69,6 +69,7 @@ class Board:
         self.generateTiles()
         self.createTriangleHome()
         self.createBaseCircles()
+        self.generatePerson()
         pygame.draw.rect(self.gameDisplay, BLACK, [self.size+self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
         
 
@@ -80,6 +81,7 @@ class Board:
         self.createTriangleHome()
         self.createBaseCircles()
         self.createTokens() 
+        self.generatePerson()
         
         # border around board
         pygame.draw.rect(self.gameDisplay, BLACK, [self.size+self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
@@ -98,6 +100,12 @@ class Board:
         translated_star_path = [[x + x_add, y + y_add] for [x, y] in star_path]
         pygame.draw.polygon(self.gameDisplay, colour, translated_star_path)
 
+
+    def generatePerson(self):
+        pygame.draw.circle(self.gameDisplay, TEAM_RED2, (160,220), 150) #top
+        pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (160,220), 150) #top
+        pygame.draw.circle(self.gameDisplay, TEAM_RED2, (160,220), 150) #top
+        pygame.draw.circle(self.gameDisplay, TEAM_RED2, (160,220), 150) #top
 
     def generateTiles(self):
         redLayer = greenLayer = blueLayer = yellowLayer = 0
@@ -237,21 +245,21 @@ class Board:
         pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
         R1 = TokenCreate(1,RED_TOKEN,None,(range(240+self.boardOverall,240+self.boardOverall+61),range(120,120+61)),(605,80),trueRedPath)
-
+        # print((range(240+self.boardOverall,240+self.boardOverall+61)))
         translated_token_path = [[x + 485, y +200] for [x, y] in token_path]
         pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
-        R2 = TokenCreate(2,RED_TOKEN,None,(None,None),(485,200),trueRedPath)
+        R2 = TokenCreate(2,RED_TOKEN,None,(range(520,520+61),range(200,200+61)),(485,200),trueRedPath)
 
         translated_token_path = [[x + 725, y +200] for [x, y] in token_path]
         pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
-        R3 = TokenCreate(3,RED_TOKEN, None,(None,None),(725,200),trueRedPath)
+        R3 = TokenCreate(3,RED_TOKEN, None,(range(760,760+61),range(200,200+61)),(725,200),trueRedPath)
 
         translated_token_path = [[x + 605, y +320] for [x, y] in token_path]
         pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
-        R4 = TokenCreate(4,RED_TOKEN,None,(None,None),(605,320),trueRedPath,self.gameDisplay)
+        R4 = TokenCreate(4,RED_TOKEN,None,(range(640,640+61),range(320,+320+61)),(605,320),trueRedPath,self.gameDisplay)
         
         self.redTokens = [R1,R2,R3,R4]
         print(self)

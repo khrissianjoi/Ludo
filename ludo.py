@@ -36,10 +36,13 @@ class Game:
 
         ludo = Board()
         ludo.createBoard()
-        playerRed = Player("Dale",(125,125,125),[],ludo.redTokens,[])
-        playerYellow = Player("John",(125,125,125),[],ludo.yellowTokens,[])
-        playerBlue = Player("Alex",(125,125,125),[],ludo.blueTokens,[])
-        playerGreen = Player("Joi",(125,125,125),[],ludo.greenTokens,[])
+
+        playerRed = Player("Dale",RED_TOKEN,[],ludo.redTokens,[])
+        for token in ludo.redTokens:
+            token.setPlayerOwner(playerRed)
+        playerYellow = Player("John",YELLOW_TOKEN,[],ludo.yellowTokens,[])
+        playerBlue = Player("Alex",BLUE_TOKEN,[],ludo.blueTokens,[])
+        playerGreen = Player("Joi",GREEN_TOKEN,[],ludo.greenTokens,[])
         players = [playerRed,playerYellow,playerBlue,playerGreen]
 
         testPlayer = players[0]
@@ -57,25 +60,31 @@ class Game:
                     #         break
                         
                     currentRoll = testPlayer.rollDice()
-                    currentToken = ludo.redTokens[0]
+                    currentToken = ludo.redTokens[0] #selectedToken
+                    for token in ludo.redTokens:
+                        if x in token.tokenLocation[0] and y in token.tokenLocation[1]:
+                            currentToken = token
+                            break
+
                     if x in currentToken.tokenLocation[0] and y in currentToken.tokenLocation[1]:
                         # TODO: get rid of tuple and keep only index [0] (below)
                         # -> index[1] is a counter I previously needed
                         newTokenTilePosition = currentToken.moveToken(ludo,currentRoll)[0]
-                        print(newTokenTilePosition.rangeCoordinates)
+                        # set new location of token
                         currentToken.setTokenLocation(newTokenTilePosition.rangeCoordinates)
-                        
-                        # TODO: need to do this for all tile types
-                        # if newTokenTilePosition.tileType == 'path':
-                        #     # TODO: change tokenOnTrack to tokenOnPath for consistency
-                        #     if newTokenTilePosition not in testPlayer.tokensOnTrack:
-                        #         testPlayer.tokensOnTrack.append(currentToken)
-                        #         if currentToken in testPlayer.tokensOnBase:
-                        #             testPlayer.tokensOnBase.remove(currentToken)
-                        #         else:
-                        #             testPlayer.tokensOnHome.remove(currentToken)
 
-                        # print(testPlayer.tokensOnTrack)
+                        # TODO: need to do this for all tile types
+                        if newTokenTilePosition.tileType == 'path':
+                        #     # TODO: change tokenOnTrack to tokenOnPath for consistency
+                            if newTokenTilePosition not in testPlayer.tokensOnTrack:
+                                testPlayer.tokensOnTrack.append(currentToken)
+                                # TODO: remove token if its in the home or base player list
+                        elif newTokenTilePosition.tileType == 'base':
+                            if newTokenTilePosition not in testPlayer.tokensOnBase:
+                                testPlayer.tokensOnBase.append(currentToken)
+                        elif newTokenTilePosition.tileType == 'home':
+                            if newTokenTilePosition not in testPlayer.tokensOnHome:
+                                testPlayer.tokensOnHome.append(currentToken)
 
         pygame.quit()
         quit()
