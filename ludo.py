@@ -57,9 +57,11 @@ class Game:
                         
                     currentRoll = testPlayer.rollDice()
                     currentToken = ludo.redTokens[0]
-                    currentToken.moveToken(ludo,13)
-                    # pygame.display.update()
-                    # ludo.regenerateBoard()
+                    if x in currentToken.tokenLocation[0] and y in currentToken.tokenLocation[1]:
+                        # TODO: get rid of tuple and keep only index [0] (below)
+                        # -> index[1] is a counter I previously needed
+                        newTokenTilePosition = currentToken.moveToken(ludo,currentRoll)[0]
+                        currentToken.setTokenLocation(newTokenTilePosition.rangeCoordinates)
 
         pygame.quit()
         quit()
