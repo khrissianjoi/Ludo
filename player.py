@@ -6,7 +6,7 @@ class Player:
         self.colour = colour
         self.tokensOnHome = tokensOnHome
         self.tokensOnBase = tokensOnBase
-        self.tokenOnTrack = tokenOnTrack
+        self.tokensOnTrack = tokenOnTrack
 
         self.myDice = Dice()
 
@@ -17,10 +17,10 @@ class Player:
         pass
     
     def getTokensOnTrack(self):
-        return self.tokenOnTrack
+        return self.tokensOnTrack
 
     def getTokensOnBase(self):
-        return self.tokenOnBase
+        return self.tokensOnBase
 
     def getTokensOnHome(self):
         return self.tokensOnHome

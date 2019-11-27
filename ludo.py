@@ -50,10 +50,11 @@ class Game:
                     self.endGame()
                 if event.type == pygame.MOUSEBUTTONUP:
                     x,y = pygame.mouse.get_pos()
-                    for tile in ludo.tiles:
-                        if x in ludo.tiles[tile][0] and y in ludo.tiles[tile][1]:
-                            print("x : {}, y : {}, type: {}".format(x,y,tile.tileType))
-                            break
+                    print(x,y)
+                    # for tile in ludo.tiles:
+                    #     if x in ludo.tiles[tile][0] and y in ludo.tiles[tile][1]:
+                    #         print("x : {}, y : {}, type: {}".format(x,y,tile.tileType))
+                    #         break
                         
                     currentRoll = testPlayer.rollDice()
                     currentToken = ludo.redTokens[0]
@@ -61,7 +62,20 @@ class Game:
                         # TODO: get rid of tuple and keep only index [0] (below)
                         # -> index[1] is a counter I previously needed
                         newTokenTilePosition = currentToken.moveToken(ludo,currentRoll)[0]
+                        print(newTokenTilePosition.rangeCoordinates)
                         currentToken.setTokenLocation(newTokenTilePosition.rangeCoordinates)
+                        
+                        # TODO: need to do this for all tile types
+                        # if newTokenTilePosition.tileType == 'path':
+                        #     # TODO: change tokenOnTrack to tokenOnPath for consistency
+                        #     if newTokenTilePosition not in testPlayer.tokensOnTrack:
+                        #         testPlayer.tokensOnTrack.append(currentToken)
+                        #         if currentToken in testPlayer.tokensOnBase:
+                        #             testPlayer.tokensOnBase.remove(currentToken)
+                        #         else:
+                        #             testPlayer.tokensOnHome.remove(currentToken)
+
+                        # print(testPlayer.tokensOnTrack)
 
         pygame.quit()
         quit()
