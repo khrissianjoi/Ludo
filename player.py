@@ -15,7 +15,7 @@ class Player:
 
     def setAllTokens(self,allTokens):
         self.allTokens = allTokens
-        
+
     def rollDice(self):
         return self.myDice.rollDice()
 
@@ -45,7 +45,7 @@ class Player:
     # def drawPathTokens(self):
     def drawTokens(self,refresh,otherThan,tokenPoly):
         for token in self.tokensOnBase:
-            if token != otherThan:
+            if token.tokenID != otherThan.tokenID:
                 new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord +y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,self.colour,new_translated_token_path)
         # for token in self.tokensOnHome:
@@ -53,8 +53,6 @@ class Player:
         #         new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord +y] for [x, y] in translated_token_path]
         #         pygame.draw.polygon(refresh.gameDisplay,self.colour,new_translated_token_path)
         for token in self.tokensOnTrack:
-            if token != otherThan:
+            if token.tokenID != otherThan.tokenID:
                 new_translated_token_path = [[x + token.tokenLocation[0][0], token.tokenLocation[1][0] +y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,self.colour,new_translated_token_path)
-
-    # def drawAllToken(self,refresh):

@@ -20,12 +20,16 @@ class TokenCreate:
                 pygame.draw.polygon(refresh.gameDisplay,player.colour,new_translated_token_path)
             # when other player is doing their turn all of the other player's tokens don't move
             for token in player.tokensOnBase:
+                # print("player: {}, {}".format(player.colour,len(player.tokensOnBase)))
                 new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord+y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,player.colour,new_translated_token_path)
             for token in player.tokensOnHome:
                 new_translated_token_path = [[x + token.tokenLocation[0][0], token.tokenLocation[1][0] +y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,player.colour,new_translated_token_path)
             
+    def tokenNewTile(self,moveBy):
+        return self.tokenTilesPath[self.currentTilePathPosition+moveBy][0]
+
     def moveToken(self,refresh,moveBy,otherPlayers):
         # tileNumber is the tile position in the list of the token path
         for i in range(self.currentTilePathPosition,self.currentTilePathPosition+moveBy+1):
@@ -39,7 +43,7 @@ class TokenCreate:
             pygame.time.delay(300)
             refresh.regenerateBoard()
         self.currentTilePathPosition += moveBy
-        return self.tokenTilesPath[self.currentTilePathPosition]
+        
 
     def setPlayerOwner(self,player):
         self.playerOwner = player
