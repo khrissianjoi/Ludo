@@ -8,10 +8,8 @@ class TokenCreate:
         self.tokenID = (tokenNum, tokenColour)
         self.playerOwner = playerOwner
         self.tokenLocation = tokenLocation
-        print(self.tokenLocation)
         # new
         self.xBaseCoord, self.yBaseCoord = baseCoord
-        # self.tokenPoly =  [[55.0, 61.0], [54.0, 61.0], [54.0, 53.0], [47.0, 29.0], [47.0, 29.0], [49.0, 27.0], [49.0, 26.0], [47.0, 24.0], [47.0, 24.0], [51.0, 14.0], [37.0, 0.0], [22.0, 14.0], [27.0, 24.0], [26.0, 24.0], [24.0, 26.0], [24.0, 27.0], [26.0, 29.0], [27.0, 29.0], [20.0, 53.0], [20.0, 61.0], [18.0, 61.0], [16.0, 63.0], [16.0, 68.0], [18.0, 70.0], [18.0, 70.0], [18.0, 74.0], [55.0, 74.0], [55.0, 70.0], [57.0, 68.0], [57.0, 63.0], [55.0, 61.0]]
         self.tokenTilesPath = tokenTilesPath
         self.currentTilePathPosition = 0
 
@@ -23,17 +21,16 @@ class TokenCreate:
             # when other player is doing their turn all of the other player's tokens don't move
 
     def moveToken(self,refresh,moveBy,otherPlayers):
-        # refresh = refresh.gameDisplay
         # tileNumber is the tile position in the list of the token path
         for i in range(self.currentTilePathPosition,self.currentTilePathPosition+moveBy+1):
             test = self.tokenTilesPath[i][0].endCoordinates
             # -5 is just for Dale to stop getting OCD centered token
-            translated_token_path = [[x + test[0]-5, test[1] + y-5] for [x, y] in tokenPoly]
+            translated_token_path = [[x + test[0], test[1] + y] for [x, y] in tokenPoly]
             pygame.draw.polygon(refresh.gameDisplay,self.tokenID[1],translated_token_path)
             self.playerOwner.drawTokens(refresh,self,tokenPoly)
             self.drawOtherPlayersTokens(otherPlayers,refresh)
             pygame.display.update()
-            pygame.time.delay(400)
+            pygame.time.delay(300)
             refresh.regenerateBoard()
         self.currentTilePathPosition += moveBy
         return self.tokenTilesPath[self.currentTilePathPosition]

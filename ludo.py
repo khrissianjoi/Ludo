@@ -28,11 +28,16 @@ class Game:
         self.endTime = None
         self.gameExit = False
 
+        self.players = None
+
     def endGame(self):
         self.endTime = datetime.datetime.now()
         self.gameExit = True
 
-
+    def isPlayerChoosingOwnToken(self, currentPlayer,x,y):
+        for token in currentPlayer.allTokens: 
+            if x in token.tokenLocation[0] and y in token.tokenLocation[1]:
+                return token
 
     def main(self):
         pygame.init()
@@ -60,10 +65,8 @@ class Game:
         for token in ludo.greenTokens:
             token.setPlayerOwner(playerGreen)
 
-        players = [playerRed,playerYellow,playerBlue,playerGreen]
+        self.players = [playerRed,playerYellow,playerBlue,playerGreen]
 
-
-        # testPlayer = players
         counter = 0
         while not self.gameExit:
                 for event in pygame.event.get():
@@ -71,56 +74,49 @@ class Game:
                         self.endGame()
                     if event.type == pygame.MOUSEBUTTONUP:
                         # so it doesn't index out of range
-                        currentPlayer = players[counter % 4]
+                        currentPlayer = self.players[counter % 4]
                         print("Turn: {}".format(currentPlayer.colour))
                         x,y = pygame.mouse.get_pos()
                         print(x,y)
 
                         currentRoll = currentPlayer.rollDice()
-                        currentToken = None
-                        for token in currentPlayer.allTokens: 
-                            if x in token.tokenLocation[0] and y in token.tokenLocation[1]:
-                                currentToken = token
-                                break
+                        currentToken = self.isPlayerChoosingOwnToken(currentPlayer,x,y)
 
                         if currentToken:
-                            if x in currentToken.tokenLocation[0] and y in currentToken.tokenLocation[1]:
-                                tempPlayers = copy.copy(players)
-                                tempPlayers.remove(currentPlayer)                                
-                                # TODO: get rid of tuple and keep only index [0] (below)
-                                # -> index[1] is a counter I previously needed
-                                newTokenTilePosition = currentToken.moveToken(ludo,currentRoll,tempPlayers)[0]
-                                currentToken.setTokenLocation(newTokenTilePosition.rangeCoordinates)
-
-                                # TODO: need to do this for all tile types
-                                if newTokenTilePosition.tileType == 'path':
-                                #     # TODO: change tokenOnTrack to tokenOnPath for consistency
-                                    if newTokenTilePosition not in currentPlayer.tokensOnTrack:
-                                        currentPlayer.tokensOnTrack.append(currentToken)
-                                    if currentToken in currentPlayer.tokensOnBase:
-                                        currentPlayer.tokensOnBase.remove(currentToken)
-                                    if currentToken in currentPlayer.tokensOnHome:
-                                        currentPlayer.tokensOnHome.remove(currentToken)    
-                                        # TODO: remove token if its in the home or base player list
-                                elif newTokenTilePosition.tileType == 'base':
-                                    if newTokenTilePosition not in currentPlayer.tokensOnBase:
-                                        currentPlayer.tokensOnBase.append(currentToken)
-                                    if currentToken in currentPlayer.tokensOnHome:
-                                        currentPlayer.tokensOnHome.remove(currentToken)
-                                    if currentToken in currentPlayer.tokensOnTrack:
-                                        currentPlayer.tokensOnTrack.remove(currentToken)
-                                elif newTokenTilePosition.tileType == 'home':
-                                    if newTokenTilePosition not in currentPlayer.tokensOnHome:
-                                        currentPlayer.tokensOnHome.append(currentToken)
-                                    if currentToken in currentPlayer.tokensOnTrack:
-                                        currentPlayer.tokensOnTrack.remove(currentToken)
-                                    if currentToken in currentPlayer.tokensOnBase:
-                                        currentPlayer.tokensOnBase.remove(currentToken)
-                                counter += 1
-                                print(counter)
-                                print("Next: {}".format(players[counter%4].colour))
-                        else:
-                            print("Player did not pick their own token")
+                            tempPlayers = copy.copy(self.players)
+                            tempPlayers.remove(currentPlayer)                                
+                            # TODO: get rid of tuple and keep only index [0] (below)
+                            # -> index[1] is a counter I previously needed
+                            newTokenTilePosition = currentToken.moveToken(ludo,currentRoll,tempPlayers)[0]
+                            currentToken.setTokenLocation(newTokenTilePosition.rangeCoordinates)
+                            # TODO: need to do this for all tile types
+                            if newTokenTilePosition.tileType == 'path':
+                            #     # TODO: change tokenOnTrack to tokenOnPath for consistency
+                                if newTokenTilePosition not in currentPlayer.tokensOnTrack:
+                                    currentPlayer.tokensOnTrack.append(currentToken)
+                                if currentToken in currentPlayer.tokensOnBase:
+                                    currentPlayer.tokensOnBase.remove(currentToken)
+                                if currentToken in currentPlayer.tokensOnHome:
+                                    currentPlayer.tokensOnHome.remove(currentToken)    
+                                    # TODO: remove token if its in the home or base player list
+                            elif newTokenTilePosition.tileType == 'base':
+                                if newTokenTilePosition not in currentPlayer.tokensOnBase:
+                                    currentPlayer.tokensOnBase.append(currentToken)
+                                if currentToken in currentPlayer.tokensOnHome:
+                                    currentPlayer.tokensOnHome.remove(currentToken)
+                                if currentToken in currentPlayer.tokensOnTrack:
+                                    currentPlayer.tokensOnTrack.remove(currentToken)
+                            elif newTokenTilePosition.tileType == 'home':
+                                if newTokenTilePosition not in currentPlayer.tokensOnHome:
+                                    currentPlayer.tokensOnHome.append(currentToken)
+                                if currentToken in currentPlayer.tokensOnTrack:
+                                    currentPlayer.tokensOnTrack.remove(currentToken)
+                                if currentToken in currentPlayer.tokensOnBase:
+                                    currentPlayer.tokensOnBase.remove(currentToken)
+                            counter += 1
+                            print("Next: {}".format(self.players[counter%4].colour))
+                    else:
+                        print("Player did not pick their own token")
 
         pygame.quit()
         quit()
