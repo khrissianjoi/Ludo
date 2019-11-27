@@ -30,6 +30,11 @@ class Game:
 
         self.players = None
 
+        self.playerRed = None
+        self.playerBlue = None
+        self.playerGreen = None
+        self.playerYellow = None
+
     def endGame(self):
         self.endTime = datetime.datetime.now()
         self.gameExit = True
@@ -39,33 +44,36 @@ class Game:
             if x in token.tokenLocation[0] and y in token.tokenLocation[1]:
                 return token
 
+    def createPlayers(self,ludo):
+        self.playerRed = Player("Dale",RED_TOKEN,[],ludo.redTokens,[], ludo.redTokens)
+
+        for token in ludo.redTokens:
+            token.setPlayerOwner(self.playerRed)
+
+        self.playerYellow = Player("John",YELLOW_TOKEN,[],ludo.yellowTokens,[], ludo.yellowTokens)
+
+        for token in ludo.yellowTokens:
+            token.setPlayerOwner(self.playerYellow)
+
+        self.playerBlue = Player("Alex",BLUE_TOKEN,[],ludo.blueTokens,[], ludo.blueTokens)
+
+        for token in ludo.blueTokens:
+            token.setPlayerOwner(self.playerBlue)
+
+        self.playerGreen = Player("Joi",GREEN_TOKEN,[],ludo.greenTokens,[], ludo.greenTokens)
+        
+        for token in ludo.greenTokens:
+            token.setPlayerOwner(self.playerGreen)
+
+        self.players = [self.playerRed,self.playerYellow,self.playerBlue,self.playerGreen]
+
     def main(self):
         pygame.init()
 
         ludo = Board()
         ludo.createBoard()
 
-        playerRed = Player("Dale",RED_TOKEN,[],ludo.redTokens,[], ludo.redTokens)
-
-        for token in ludo.redTokens:
-            token.setPlayerOwner(playerRed)
-
-        playerYellow = Player("John",YELLOW_TOKEN,[],ludo.yellowTokens,[], ludo.yellowTokens)
-
-        for token in ludo.yellowTokens:
-            token.setPlayerOwner(playerYellow)
-
-        playerBlue = Player("Alex",BLUE_TOKEN,[],ludo.blueTokens,[], ludo.blueTokens)
-
-        for token in ludo.blueTokens:
-            token.setPlayerOwner(playerBlue)
-
-        playerGreen = Player("Joi",GREEN_TOKEN,[],ludo.greenTokens,[], ludo.greenTokens)
-        
-        for token in ludo.greenTokens:
-            token.setPlayerOwner(playerGreen)
-
-        self.players = [playerRed,playerYellow,playerBlue,playerGreen]
+        self.createPlayers(ludo)
 
         counter = 0
         while not self.gameExit:
@@ -78,7 +86,6 @@ class Game:
                         print("Turn: {}".format(currentPlayer.colour))
                         x,y = pygame.mouse.get_pos()
                         print(x,y)
-
                         currentRoll = currentPlayer.rollDice()
                         currentToken = self.isPlayerChoosingOwnToken(currentPlayer,x,y)
 
@@ -113,10 +120,12 @@ class Game:
                                     currentPlayer.tokensOnTrack.remove(currentToken)
                                 if currentToken in currentPlayer.tokensOnBase:
                                     currentPlayer.tokensOnBase.remove(currentToken)
+                            # currentPlayer.allTokens()
+                            currentPlayer.allTokens.append(currentToken)
                             counter += 1
                             print("Next: {}".format(self.players[counter%4].colour))
-                    else:
-                        print("Player did not pick their own token")
+                        else:
+                            print("Player did not pick their own token")
 
         pygame.quit()
         quit()

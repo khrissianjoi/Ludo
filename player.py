@@ -13,6 +13,9 @@ class Player:
         self.allTokens = allTokens
         self.myDice = Dice()
 
+    def setAllTokens(self,allTokens):
+        self.allTokens = allTokens
+        
     def rollDice(self):
         return self.myDice.rollDice()
 
