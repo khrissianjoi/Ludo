@@ -16,17 +16,13 @@ class TokenCreate:
 
     def drawOtherPlayersTokens(self,otherPlayers,refresh):
         for player in otherPlayers:
-            if player.colour == (189, 9, 9):
-                print(len(player.tokensOnBase))
-            # print("player.tokensOnBase {}: {}".format(player.colour,len(player.tokensOnBase)))
-            for token in player.tokensOnTrack:
+            for token in player.tokensOnPath:
                 
                 new_translated_token_path = [[x + token.tokenLocation[0][0], token.tokenLocation[1][0] +y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,player.colour,new_translated_token_path)
                 pygame.draw.polygon(refresh.gameDisplay, BLACK, new_translated_token_path,1)
             # when other player is doing their turn all of the other player's tokens don't move
             for token in player.tokensOnBase:
-                # print("player: {}, {}".format(player.colour,len(player.tokensOnBase)))
                 new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord+y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,player.colour,new_translated_token_path)
                 pygame.draw.polygon(refresh.gameDisplay, BLACK, new_translated_token_path,1)
@@ -40,7 +36,8 @@ class TokenCreate:
 
     def moveToken(self,refresh,moveBy,otherPlayers):
         # tileNumber is the tile position in the list of the token path
-        for i in range(self.currentTilePathPosition,self.currentTilePathPosition+moveBy+1):
+        # since tokenTilesPath first tile index is 0, no need for +1 in range
+        for i in range(self.currentTilePathPosition,self.currentTilePathPosition+moveBy):
             tokenStepCoordinate = self.tokenTilesPath[i][0].endCoordinates
             # -5 is just for Dale to stop getting OCD centered token
             translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x, y] in tokenPoly]
@@ -68,16 +65,3 @@ class TokenCreate:
 
     def setLocation(self):
         pass
-
-    def test(self):
-        try:
-            for i in range(0,len(self.tokenTilePath)):
-                # print(self.tokenTilePath[i][0])
-                current = self.tokenTilePath[i][0]
-                pygame.draw.circle(self.display,self.tokenID[1],current.endCoordinates,10)
-                pygame.display.update()
-                pygame.time.delay(200)
-
-        except Exception as e:
-            print(e)
-            pass

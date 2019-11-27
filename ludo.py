@@ -71,7 +71,6 @@ class Game:
 
         self.players = [self.playerRed,self.playerBlue,self.playerGreen,self.playerYellow]
 
-    # def updateTokensLocation(self,currentPlayer,currentRoll,x,y):
 
     def main(self):
         pygame.init()
@@ -94,14 +93,17 @@ class Game:
                         print(x,y)
                         currentRoll = self.currentPlayer.rollDice()
                         currentToken = self.isPlayerChoosingOwnToken(x,y)
-                        
+                        print(currentRoll)
                         if currentToken:
+                            # if currentToken.currentTilePathPosition == -1 it's in base
+                            if currentToken.currentTilePathPosition > 0:
+                                # TODO: fix this tuple
+                                currentTilePosition = currentToken.tokenTilesPath[currentToken.currentTilePathPosition][0]
+                                currentTilePosition.residents.remove(currentToken)
                             newTokenTilePosition = currentToken.tokenNewTile(currentRoll)
-
                             if newTokenTilePosition.tileType == 'path' or newTokenTilePosition.tileType == 'safe':
-                            #     # TODO: change tokenOnTrack to tokenOnPath for consistency
-                                if currentToken not in self.currentPlayer.tokensOnTrack:
-                                    self.currentPlayer.tokensOnTrack.append(currentToken)
+                                if currentToken not in self.currentPlayer.tokensOnPath:
+                                    self.currentPlayer.tokensOnPath.append(currentToken)
                                     if currentToken in self.currentPlayer.tokensOnBase:
                                         self.currentPlayer.tokensOnBase.remove(currentToken)
                                     elif currentToken in self.currentPlayer.tokensOnHome:
@@ -111,17 +113,18 @@ class Game:
                                     self.currentPlayer.tokensOnBase.append(currentToken)
                                     if currentToken in self.currentPlayer.tokensOnHome:
                                         self.currentPlayer.tokensOnHome.remove(currentToken)
-                                    elif currentToken in self.currentPlayer.tokensOnTrack:
-                                        self.currentPlayer.tokensOnTrack.remove(currentToken)
+                                    elif currentToken in self.currentPlayer.tokensOnPath:
+                                        self.currentPlayer.tokensOnPath.remove(currentToken)
 
                             elif newTokenTilePosition.tileType == 'home':
                                 if currentToken not in self.currentPlayer.tokensOnHome:
                                     self.currentPlayer.tokensOnHome.append(currentToken)
-                                    if currentToken in self.currentPlayer.tokensOnTrack:
-                                        self.currentPlayer.tokensOnTrack.remove(currentToken)
+                                    if currentToken in self.currentPlayer.tokensOnPath:
+                                        self.currentPlayer.tokensOnPath.remove(currentToken)
                                     elif currentToken in self.currentPlayer.tokensOnBase:
                                         self.currentPlayer.tokensOnBase.remove(currentToken)
-                            
+                            # TODO: remove to from previous tile
+                            newTokenTilePosition.residents.append(currentToken)
                             self.updateBoardWithMovingToken(currentToken,currentRoll,newTokenTilePosition)
 
                             counter += 1
@@ -137,7 +140,7 @@ class Game:
         tempPlayers.remove(self.currentPlayer)        
         currentToken.moveToken(self.board,currentRoll,tempPlayers)
         currentToken.setTokenLocation(newTokenTilePosition.rangeCoordinates)
-        self.currentPlayer.setAllTokens(self.currentPlayer.tokensOnBase+self.currentPlayer.tokensOnTrack+self.currentPlayer.tokensOnHome)
+        self.currentPlayer.setAllTokens(self.currentPlayer.tokensOnBase+self.currentPlayer.tokensOnPath+self.currentPlayer.tokensOnHome)
 
 
 

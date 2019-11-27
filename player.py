@@ -9,7 +9,7 @@ class Player:
         self.colour = colour
         self.tokensOnHome = tokensOnHome
         self.tokensOnBase = tokensOnBase
-        self.tokensOnTrack = tokenOnTrack
+        self.tokensOnPath = tokenOnTrack
         self.allTokens = allTokens
         self.myDice = Dice()
 
@@ -22,8 +22,8 @@ class Player:
     def chooseToken(self):
         pass
     
-    def getTokensOnTrack(self):
-        return self.tokensOnTrack
+    def getTokensOnPath(self):
+        return self.tokensOnPath
 
     def getTokensOnBase(self):
         return self.tokensOnBase
@@ -50,7 +50,7 @@ class Player:
         #     if token != otherThan:
         #         new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord +y] for [x, y] in translated_token_path]
         #         pygame.draw.polygon(refresh.gameDisplay,self.colour,new_translated_token_path)
-        for token in self.tokensOnTrack:
+        for token in self.tokensOnPath:
             if token.tokenID != otherThan.tokenID:
                 new_translated_token_path = [[x + token.tokenLocation[0][0], token.tokenLocation[1][0] +y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,self.colour,new_translated_token_path)
