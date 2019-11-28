@@ -42,11 +42,8 @@ class Game:
         self.endTime = datetime.datetime.now()
         self.gameExit = True
 
-
     def isPlayerChoosingOwnToken(self,x,y):
-        for token in self.currentPlayer.allTokens:
-            if x in token.tokenLocation[0] and y in token.tokenLocation[1]:
-                return token
+        return self.currentPlayer.chooseToken(x,y)
 
     def createPlayers(self):
         self.playerRed = Player("Dale",RED_TOKEN,[],self.board.redTokens,[], self.board.redTokens)
@@ -93,7 +90,6 @@ class Game:
                         print(x,y)
                         currentRoll = self.currentPlayer.rollDice()
                         currentToken = self.isPlayerChoosingOwnToken(x,y)
-                        print(currentRoll)
                         if currentToken:
                             # if currentToken.currentTilePathPosition == -1 it's in base
                             if currentToken.currentTilePathPosition > 0:
@@ -138,11 +134,9 @@ class Game:
     def updateBoardWithMovingToken(self,currentToken,currentRoll,newTokenTilePosition):
         tempPlayers = copy.copy(self.players)
         tempPlayers.remove(self.currentPlayer)        
-        currentToken.moveToken(self.board,currentRoll,tempPlayers)
+        self.currentPlayer.moveChosenToken(self.board,currentToken,currentRoll,tempPlayers)
         currentToken.setTokenLocation(newTokenTilePosition.rangeCoordinates)
         self.currentPlayer.setAllTokens(self.currentPlayer.tokensOnBase+self.currentPlayer.tokensOnPath+self.currentPlayer.tokensOnHome)
-
-
 
 playing = Game()
 playing.main()

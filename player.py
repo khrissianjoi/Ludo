@@ -19,8 +19,11 @@ class Player:
     def rollDice(self):
         return self.myDice.rollDice()
 
-    def chooseToken(self):
-        pass
+    def chooseToken(self,x,y):
+        '''is player choosing their own token'''
+        for token in self.allTokens:
+            if x in token.tokenLocation[0] and y in token.tokenLocation[1]:
+                return token
     
     def getTokensOnPath(self):
         return self.tokensOnPath
@@ -39,6 +42,20 @@ class Player:
 
     def addTokensToTrack(self, token):
         self.tokens.OnTrack(token)
+
+    def moveChosenToken(self, refresh, token, moveBy, otherPlayers):
+        '''Moves player's chosen token, while recreating the other tokens (including oponents players)'''
+        for i in range(token.currentTilePathPosition,token.currentTilePathPosition+moveBy+1):
+            tokenStepCoordinate = token.tokenTilesPath[i][0].endCoordinates
+            # -5 is just for Dale to stop getting OCD centered token
+            translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x, y] in tokenPoly]
+            token.moveOneToken(refresh,token.tokenID[1],translated_token_path)
+            token.playerOwner.drawTokens(refresh,token,tokenPoly)
+            token.drawOtherPlayersTokens(otherPlayers,refresh)
+            pygame.display.update()
+            pygame.time.delay(300)
+            refresh.regenerateBoard()
+        token.setCurrentTilePathPosition(moveBy)
 
     def drawTokens(self,refresh,otherThan,tokenPoly):
         for token in self.tokensOnBase:

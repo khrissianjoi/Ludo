@@ -34,22 +34,12 @@ class TokenCreate:
     def tokenNewTile(self,moveBy):
         return self.tokenTilesPath[self.currentTilePathPosition+moveBy][0]
 
-    def moveToken(self,refresh,moveBy,otherPlayers):
-        # tileNumber is the tile position in the list of the token path
-        # since tokenTilesPath first tile index is 0, no need for +1 in range
-        for i in range(self.currentTilePathPosition,self.currentTilePathPosition+moveBy+1):
-            tokenStepCoordinate = self.tokenTilesPath[i][0].endCoordinates
-            # -5 is just for Dale to stop getting OCD centered token
-            translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x, y] in tokenPoly]
-            pygame.draw.polygon(refresh.gameDisplay,self.tokenID[1],translated_token_path)
-            pygame.draw.polygon(refresh.gameDisplay, BLACK, translated_token_path,1)
-            self.playerOwner.drawTokens(refresh,self,tokenPoly)
-            self.drawOtherPlayersTokens(otherPlayers,refresh)
-            pygame.display.update()
-            pygame.time.delay(300)
-            refresh.regenerateBoard()
+    def moveOneToken(self,refresh,colour,path):
+        pygame.draw.polygon(refresh.gameDisplay,colour,path)
+        pygame.draw.polygon(refresh.gameDisplay, BLACK, path,1)
+
+    def setCurrentTilePathPosition(self,moveBy):
         self.currentTilePathPosition += moveBy
-        
 
     def setPlayerOwner(self,player):
         self.playerOwner = player

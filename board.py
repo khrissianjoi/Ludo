@@ -62,8 +62,6 @@ class Board:
         self.bluePath = []
         self.greenPath = []
 
-        self.r4 = None
-
     def regenerateBoard(self):
         self.gameDisplay.fill(BLUE_BACKGROUND)
         self.generateTiles()
@@ -235,7 +233,7 @@ class Board:
         yellowPathWithoutWhite = [(tile,count) for tile,count in self.yellowPath if count not in yellow_counter1]
         greenPathWithoutWhite = [(tile,count) for tile,count in self.greenPath if count not in green_counter1]
         bluePathWithoutWhite = [(tile,count) for tile,count in self.bluePath if count not in blue_counter1]
-        # print(bluePathWithoutWhite)
+
         trueRedPath = redPathWithoutWhite + bluePathWithoutWhite + greenPathWithoutWhite + yellowPathWithoutWhite + self.redPath
         trueYellowPath = yellowPathWithoutWhite + redPathWithoutWhite + bluePathWithoutWhite + greenPathWithoutWhite + self.yellowPath
         trueGreenPath = greenPathWithoutWhite + yellowPathWithoutWhite + redPathWithoutWhite + bluePathWithoutWhite + self.greenPath
@@ -245,7 +243,7 @@ class Board:
         pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
         R1 = TokenCreate(1,RED_TOKEN,None,(range(240+self.boardOverall,240+self.boardOverall+61),range(120,120+61)),(605,80),trueRedPath)
-        # print((range(240+self.boardOverall,240+self.boardOverall+61)))
+        
         translated_token_path = [[x + 485, y +200] for [x, y] in token_path]
         pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
