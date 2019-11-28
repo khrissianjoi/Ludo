@@ -37,7 +37,7 @@ class TokenCreate:
     def moveToken(self,refresh,moveBy,otherPlayers):
         # tileNumber is the tile position in the list of the token path
         # since tokenTilesPath first tile index is 0, no need for +1 in range
-        for i in range(self.currentTilePathPosition,self.currentTilePathPosition+moveBy):
+        for i in range(self.currentTilePathPosition,self.currentTilePathPosition+moveBy+1):
             tokenStepCoordinate = self.tokenTilesPath[i][0].endCoordinates
             # -5 is just for Dale to stop getting OCD centered token
             translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x, y] in tokenPoly]
