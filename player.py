@@ -60,7 +60,7 @@ class Player:
     def drawTokens(self,refresh,otherThan,tokenPoly):
         for token in self.tokensOnBase:
             if token.tokenID != otherThan.tokenID:
-                new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord +y] for [x, y] in tokenPoly]
+                new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord+y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,self.colour,new_translated_token_path)
                 pygame.draw.polygon(refresh.gameDisplay, BLACK, new_translated_token_path,1)
         # for token in self.tokensOnHome:
