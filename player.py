@@ -20,10 +20,11 @@ class Player:
         return self.myDice.rollDice()
 
     def chooseToken(self,x,y):
-        '''is player choosing their own token'''
+        '''checks if player choosing their own token'''
         for token in self.allTokens:
             if x in token.tokenLocation[0] and y in token.tokenLocation[1]:
                 return token
+        return None
     
     def getTokensOnPath(self):
         return self.tokensOnPath
@@ -45,9 +46,9 @@ class Player:
 
     def moveChosenToken(self, refresh, token, moveBy, otherPlayers):
         '''Moves player's chosen token, while recreating the other tokens (including oponents players)'''
-        for i in range(token.currentTilePathPosition,token.currentTilePathPosition+moveBy+1):
+        for i in range(token.currentTilePathPosition+1,token.currentTilePathPosition+moveBy):
             tokenStepCoordinate = token.tokenTilesPath[i][0].endCoordinates
-            # -5 is just for Dale to stop getting OCD centered token
+
             translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x, y] in tokenPoly]
             token.moveOneToken(refresh,token.tokenID[1],translated_token_path)
             token.playerOwner.drawTokens(refresh,token,tokenPoly)

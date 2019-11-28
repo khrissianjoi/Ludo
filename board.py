@@ -1,5 +1,6 @@
 import pygame
 import tile
+import os
 from tokencreate import TokenCreate
 
 WHITE = 255,255,255
@@ -46,8 +47,7 @@ class Board:
         self.size = 40
         self.display_size_x = 1400
         self.display_size_y = 800
-        self.boardOverall = 365 # 400 for board
-        # self.playerSides = 225 # 225 each for the player sides
+        self.boardOverall = 365
         self.gameDisplay = pygame.display.set_mode((self.display_size_x, self.display_size_y))
         self.boardLength = 15 #15*15 board
         
@@ -79,6 +79,9 @@ class Board:
         self.createBaseCircles()
         self.createTokens() 
         self.generatePerson()
+
+        # image = pygame.image.load(os.path.join("dice","one.gif"))
+        # self.gameDisplay.blit(image,(0,0))
         
         # border around board
         pygame.draw.rect(self.gameDisplay, BLACK, [self.size+self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
@@ -99,11 +102,20 @@ class Board:
 
 
     def generatePerson(self):
-        pass
-        # pygame.draw.circle(self.gameDisplay, TEAM_RED2, (160,220), 150) #top
-        # pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (160,220), 150) #top
-        # pygame.draw.circle(self.gameDisplay, TEAM_RED2, (160,220), 150) #top
-        # pygame.draw.circle(self.gameDisplay, TEAM_RED2, (160,220), 150) #top
+        pygame.draw.circle(self.gameDisplay, TEAM_RED2, (120,150), 100) #top
+        pygame.draw.rect(self.gameDisplay, TEAM_RED2,[275, 105, self.size*2, self.size*2])
+        # pygame.draw.rect(self.gameDisplay, BLACK,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size], 1)
+
+        pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (1270,150), 100) #top
+        pygame.draw.rect(self.gameDisplay, TEAM_BLUE2,[1050, 105, self.size*2, self.size*2])
+
+        pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (120,515), 100) #top
+        pygame.draw.rect(self.gameDisplay, TEAM_YELLOW2,[275, 470, self.size*2, self.size*2])
+
+        pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (1270,515), 100) #top
+        pygame.draw.rect(self.gameDisplay, TEAM_GREEN2,[1050, 470, self.size*2, self.size*2])
+
+        return [(275,105),(1050,105),(275,470),(1050,470)]
 
     def generateTiles(self):
         redLayer = greenLayer = blueLayer = yellowLayer = 0
@@ -197,11 +209,6 @@ class Board:
                                 self.createSafeTile(725, 520, WHITE)
                             self.addTile(self.size*xCoord+self.boardOverall, self.size*xCoord+self.boardOverall+(self.size+1), self.size*yCoord, self.size*yCoord+(self.size+1), tileType,self.yellowPath, yellowLayer)
 
-                    # add tiles to dictionary {tile: (range x coordinate, range y coordinate)}
-                    #plus 61 because size of tile
-                    # self.addTile(self.size*xCoord+self.boardOverall, self.size*xCoord+self.boardOverall+(self.size+1), self.size*yCoord, self.size*yCoord+(self.size+1), tileType,self.yellowPath,yellowLayer)
-
-
     def addTile(self,xStartCoord, xEndCoord, yStartCoord, yEndCoord, tileType,path=[],myLayer=1):
         '''add tiles to dictionary {tile: (range x coordinate, range y coordinate)}'''
         currentTile = tile.Tile(range(xStartCoord,xEndCoord),range(yStartCoord,yEndCoord),tileType)
@@ -234,10 +241,11 @@ class Board:
         greenPathWithoutWhite = [(tile,count) for tile,count in self.greenPath if count not in green_counter1]
         bluePathWithoutWhite = [(tile,count) for tile,count in self.bluePath if count not in blue_counter1]
 
-        trueRedPath = redPathWithoutWhite + bluePathWithoutWhite + greenPathWithoutWhite + yellowPathWithoutWhite + self.redPath
-        trueYellowPath = yellowPathWithoutWhite + redPathWithoutWhite + bluePathWithoutWhite + greenPathWithoutWhite + self.yellowPath
-        trueGreenPath = greenPathWithoutWhite + yellowPathWithoutWhite + redPathWithoutWhite + bluePathWithoutWhite + self.greenPath
-        trueBluePath = bluePathWithoutWhite + greenPathWithoutWhite + yellowPathWithoutWhite + redPathWithoutWhite + self.bluePath
+        #The [0] represents the base
+        trueRedPath = [0] + redPathWithoutWhite + bluePathWithoutWhite + greenPathWithoutWhite + yellowPathWithoutWhite + self.redPath
+        trueYellowPath = [0] + yellowPathWithoutWhite + redPathWithoutWhite + bluePathWithoutWhite + greenPathWithoutWhite + self.yellowPath
+        trueGreenPath = [0] + greenPathWithoutWhite + yellowPathWithoutWhite + redPathWithoutWhite + bluePathWithoutWhite + self.greenPath
+        trueBluePath = [0] + bluePathWithoutWhite + greenPathWithoutWhite + yellowPathWithoutWhite + redPathWithoutWhite + self.bluePath
 
         translated_token_path = [[x + 515, y +60] for [x, y] in token_path]
         pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
@@ -327,7 +335,7 @@ class Board:
         translated_token_path = [[x + 860, y + 570] for [x, y] in token_path]
         pygame.draw.polygon(self.gameDisplay, GREEN_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
-        G4 = TokenCreate(4, GREEN_TOKEN, None, (range(1300,1300+61),range(850,850+61)),(860,570),trueGreenPath)
+        G4 = TokenCreate(4, GREEN_TOKEN, None, (range(860,860+61),range(570,570+61)),(860,570),trueGreenPath)
 
         self.greenTokens = [G1,G2,G3,G4]
 

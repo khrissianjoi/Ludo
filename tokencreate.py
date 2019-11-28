@@ -17,7 +17,6 @@ class TokenCreate:
     def drawOtherPlayersTokens(self,otherPlayers,refresh):
         for player in otherPlayers:
             for token in player.tokensOnPath:
-                
                 new_translated_token_path = [[x + token.tokenLocation[0][0], token.tokenLocation[1][0] +y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,player.colour,new_translated_token_path)
                 pygame.draw.polygon(refresh.gameDisplay, BLACK, new_translated_token_path,1)
@@ -39,7 +38,10 @@ class TokenCreate:
         pygame.draw.polygon(refresh.gameDisplay, BLACK, path,1)
 
     def setCurrentTilePathPosition(self,moveBy):
-        self.currentTilePathPosition += moveBy
+        if moveBy != 0:
+            self.currentTilePathPosition += moveBy
+        else:
+            self.currentTilePathPosition = moveBy
 
     def setPlayerOwner(self,player):
         self.playerOwner = player
@@ -55,3 +57,8 @@ class TokenCreate:
 
     def setLocation(self):
         pass
+
+    def drawToken(self,refresh):
+        new_translated_token_path = [[x + self.tokenLocation[0][0], self.tokenLocation[1][0] +y] for [x, y] in tokenPoly]
+        pygame.draw.polygon(refresh.gameDisplay,self.tokenID[1],new_translated_token_path)
+        pygame.draw.polygon(refresh.gameDisplay, BLACK, new_translated_token_path,1)
