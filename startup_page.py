@@ -13,7 +13,7 @@ def loadStart():
 
     size = width, height = 1400, 800
     screen = pygame.display.set_mode(size)
-    image = pygame.image.load("background.jpg").convert()
+    image = pygame.image.load("images/background.jpg").convert()
     screen.blit(image, [0, 0])
 
     # screen, colour, x, y, width, height
@@ -43,7 +43,7 @@ def loadStart():
     # pregame page
 
     screen = pygame.display.set_mode(size)
-    image = pygame.image.load("background.jpg").convert()
+    image = pygame.image.load("images/background.jpg").convert()
     screen.blit(image, [0, 0])
 
     playername = input("Please input a name\n")

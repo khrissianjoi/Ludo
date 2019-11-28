@@ -82,7 +82,7 @@ class Game:
 
     def produceDiceImage(self):
         self.board.regenerateBoard()
-        image = pygame.image.load(os.path.join("dice",self.diceDict[self.currentRoll]))
+        image = pygame.image.load(os.path.join("images","dice",self.diceDict[self.currentRoll]))
         cropped_image = pygame.transform.scale(image,(80,80))
         # image = pygame.image.load(os.path.join("dice",self.diceDict[self.currentRoll]))
         self.board.gameDisplay.blit(cropped_image,(self.currentPlayer.myDice.coOrdinates[0],self.currentPlayer.myDice.coOrdinates[1]))
@@ -94,7 +94,7 @@ class Game:
 
 
     def highlightPlayerTurn(self,first=None):
-        image = pygame.image.load(os.path.join("dice","theirTurn.jpg"))
+        image = pygame.image.load(os.path.join("images","dice","theirTurn.jpg"))
         cropped_image = pygame.transform.scale(image,(80,80))
         if self.currentPlayer != None:
             self.board.gameDisplay.blit(cropped_image,(self.currentPlayer.myDice.coOrdinates[0],self.currentPlayer.myDice.coOrdinates[1]))
