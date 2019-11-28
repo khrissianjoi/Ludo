@@ -77,57 +77,57 @@ class Game:
 
         self.createPlayers()
 
-        counter = 0
+        # counter = 0
         while not self.gameExit:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         self.endGame()
                     if event.type == pygame.MOUSEBUTTONUP:
                         # so it doesn't index out of range
-                        self.currentPlayer = self.players[counter % 4]
-                        print("Turn: {}".format(self.currentPlayer.colour))
+                        # self.currentPlayer = self.players[counter % 4]
+                        # print("Turn: {}".format(self.currentPlayer.colour))
                         x,y = pygame.mouse.get_pos()
                         print(x,y)
-                        currentRoll = self.currentPlayer.rollDice()
-                        currentToken = self.isPlayerChoosingOwnToken(x,y)
-                        if currentToken:
-                            # if currentToken.currentTilePathPosition == -1 it's in base
-                            if currentToken.currentTilePathPosition > 0:
-                                # TODO: fix this tuple
-                                currentTilePosition = currentToken.tokenTilesPath[currentToken.currentTilePathPosition][0]
-                                currentTilePosition.residents.remove(currentToken)
-                            newTokenTilePosition = currentToken.tokenNewTile(currentRoll)
-                            if newTokenTilePosition.tileType == 'path' or newTokenTilePosition.tileType == 'safe':
-                                if currentToken not in self.currentPlayer.tokensOnPath:
-                                    self.currentPlayer.tokensOnPath.append(currentToken)
-                                    if currentToken in self.currentPlayer.tokensOnBase:
-                                        self.currentPlayer.tokensOnBase.remove(currentToken)
-                                    elif currentToken in self.currentPlayer.tokensOnHome:
-                                        self.currentPlayer.tokensOnHome.remove(currentToken)
-                            elif newTokenTilePosition.tileType == 'base':
-                                if currentToken not in self.currentPlayer.tokensOnBase:
-                                    self.currentPlayer.tokensOnBase.append(currentToken)
-                                    if currentToken in self.currentPlayer.tokensOnHome:
-                                        self.currentPlayer.tokensOnHome.remove(currentToken)
-                                    elif currentToken in self.currentPlayer.tokensOnPath:
-                                        self.currentPlayer.tokensOnPath.remove(currentToken)
+        #                 currentRoll = self.currentPlayer.rollDice()
+        #                 currentToken = self.isPlayerChoosingOwnToken(x,y)
+        #                 if currentToken:
+        #                     # if currentToken.currentTilePathPosition == -1 it's in base
+        #                     if currentToken.currentTilePathPosition > 0:
+        #                         # TODO: fix this tuple
+        #                         currentTilePosition = currentToken.tokenTilesPath[currentToken.currentTilePathPosition][0]
+        #                         currentTilePosition.residents.remove(currentToken)
+        #                     newTokenTilePosition = currentToken.tokenNewTile(currentRoll)
+        #                     if newTokenTilePosition.tileType == 'path' or newTokenTilePosition.tileType == 'safe':
+        #                         if currentToken not in self.currentPlayer.tokensOnPath:
+        #                             self.currentPlayer.tokensOnPath.append(currentToken)
+        #                             if currentToken in self.currentPlayer.tokensOnBase:
+        #                                 self.currentPlayer.tokensOnBase.remove(currentToken)
+        #                             elif currentToken in self.currentPlayer.tokensOnHome:
+        #                                 self.currentPlayer.tokensOnHome.remove(currentToken)
+        #                     elif newTokenTilePosition.tileType == 'base':
+        #                         if currentToken not in self.currentPlayer.tokensOnBase:
+        #                             self.currentPlayer.tokensOnBase.append(currentToken)
+        #                             if currentToken in self.currentPlayer.tokensOnHome:
+        #                                 self.currentPlayer.tokensOnHome.remove(currentToken)
+        #                             elif currentToken in self.currentPlayer.tokensOnPath:
+        #                                 self.currentPlayer.tokensOnPath.remove(currentToken)
 
-                            elif newTokenTilePosition.tileType == 'home':
-                                if currentToken not in self.currentPlayer.tokensOnHome:
-                                    self.currentPlayer.tokensOnHome.append(currentToken)
-                                    if currentToken in self.currentPlayer.tokensOnPath:
-                                        self.currentPlayer.tokensOnPath.remove(currentToken)
-                                    elif currentToken in self.currentPlayer.tokensOnBase:
-                                        self.currentPlayer.tokensOnBase.remove(currentToken)
-                            # TODO: remove to from previous tile
-                            newTokenTilePosition.residents.append(currentToken)
-                            self.updateBoardWithMovingToken(currentToken,currentRoll,newTokenTilePosition)
+        #                     elif newTokenTilePosition.tileType == 'home':
+        #                         if currentToken not in self.currentPlayer.tokensOnHome:
+        #                             self.currentPlayer.tokensOnHome.append(currentToken)
+        #                             if currentToken in self.currentPlayer.tokensOnPath:
+        #                                 self.currentPlayer.tokensOnPath.remove(currentToken)
+        #                             elif currentToken in self.currentPlayer.tokensOnBase:
+        #                                 self.currentPlayer.tokensOnBase.remove(currentToken)
+        #                     # TODO: remove to from previous tile
+        #                     newTokenTilePosition.residents.append(currentToken)
+        #                     self.updateBoardWithMovingToken(currentToken,currentRoll,newTokenTilePosition)
 
-                            counter += 1
-                            print("Next: {}".format(self.players[counter%4].colour))
+        #                     counter += 1
+        #                     print("Next: {}".format(self.players[counter%4].colour))
 
-                        else:
-                            print("Player did not pick their own token")
+        #                 else:
+        #                     print("Player did not pick their own token")
         pygame.quit()
         quit()
 
