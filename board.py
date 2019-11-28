@@ -32,7 +32,7 @@ yellow_counter = {2,5,8,11,13,14}
 
 green_counter1 = {7,8,9,10,11}
 yellow_counter1 = {2,5,8,11,14}
-red_counter1 = {2,8,9,10,11,12}
+red_counter1 = {8,9,10,11,12}
 blue_counter1 = {5,8,11,14,17}
 
 
@@ -79,9 +79,6 @@ class Board:
         self.createBaseCircles()
         self.createTokens() 
         self.generatePerson()
-
-        # image = pygame.image.load(os.path.join("dice","one.gif"))
-        # self.gameDisplay.blit(image,(0,0))
         
         # border around board
         pygame.draw.rect(self.gameDisplay, BLACK, [self.size+self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
