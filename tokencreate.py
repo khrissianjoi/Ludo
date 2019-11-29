@@ -59,6 +59,6 @@ class TokenCreate:
         pass
 
     def drawToken(self,refresh):
-        new_translated_token_path = [[x + self.tokenLocation[0][0], self.tokenLocation[1][0] +y] for [x, y] in tokenPoly]
+        new_translated_token_path = [[x + self.tokenLocation[0][0], self.tokenLocation[1][0] + y] for [x, y] in tokenPoly]
         pygame.draw.polygon(refresh.gameDisplay,self.tokenID[1],new_translated_token_path)
         pygame.draw.polygon(refresh.gameDisplay, BLACK, new_translated_token_path,1)

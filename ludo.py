@@ -24,6 +24,7 @@ TEAM_GREEN1 = 190,235,224
 TEAM_GREEN2 = 90, 200, 174
 GREEN_TOKEN = 30, 130, 76, 1
 
+tokenPoly = [[27.5, 30.5], [27.0, 30.5], [27.0, 26.5], [23.5, 14.5], [23.5, 14.5], [24.5, 13.5], [24.5, 13.0], [23.5, 12.0], [23.5, 12.0], [25.5, 7.0], [18.5, 0.0], [11.0, 7.0], [13.5, 12.0], [13.0, 12.0], [12.0, 13.0], [12.0, 13.5], [13.0, 14.5], [13.5, 14.5], [10.0, 26.5], [10.0, 30.5], [9.0, 30.5], [8.0, 31.5], [8.0, 34.0], [9.0, 35.0], [9.0, 35.0], [9.0, 37.0], [27.5, 37.0], [27.5, 35.0], [28.5, 34.0], [28.5, 31.5], [27.5, 30.5]]
 
 class Game:
     def __init__(self):
@@ -144,6 +145,32 @@ class Game:
                         print("Not valid token")
         return currentToken
 
+    def checkIfBlocked(self, tile):
+        if tile.blockedBy != None and self.currentPlayer != tile.blockedBy:
+            #print("Choose another token, this tile is blocked by: {}".format(tile.blockedBy.playerName))
+            return True
+        return False
+
+    def checkIfCanFormBlock(self, tile):
+        if len(tile.residents) > 1:
+            if tile.checkResidents().count(self.currentPlayer) > 1 and not tile.isBlocked:
+                tile.formBlock(self.currentPlayer)
+
+    def checkIfCanEatToken(self, tile):
+        if len(tile.residents) == 2 and self.currentPlayer != tile.residents[0].playerOwner:
+            eatenToken = tile.residents[0]
+            if tile.tileType == "safe":
+                #print("{}'s token is safe".format(eatenToken.playerOwner.playerName))
+                return
+            else:
+                print("{}'s token eats {}'s token".format(self.currentPlayer.playerName, eatenToken.playerOwner.playerName))
+                tile.residents.remove(eatenToken)
+                eatenToken.playerOwner.tokensOnBase.append(eatenToken)
+                eatenToken.playerOwner.tokensOnPath.remove(eatenToken)
+                eatenToken.setCurrentTilePathPosition(0)
+                eatenToken.setTokenLocation((eatenToken.xBaseCoord, eatenToken.yBaseCoord))
+                eatenToken.drawToken(self.board)
+
     def main(self):
         pygame.init()
 
@@ -155,17 +182,28 @@ class Game:
         validDice = False
         first = True
         while not self.gameExit:
-
             
             self.currentPlayer = self.players[counter%4]
 
             first = self.highlightPlayerTurn(first)
+            # return here
             self.currentRoll, validDice = self.playerToRollDice()
-            currentToken =self.playerChoosingToken()
-            if currentToken.currentTilePathPosition > 0:
-                # TODO: fix this tuple
-                currentTilePosition = currentToken.tokenTilesPath[currentToken.currentTilePathPosition][0]
-                currentTilePosition.residents.remove(currentToken)
+
+            tokenChosen = False
+            while not tokenChosen:
+                currentToken = self.playerChoosingToken()
+
+                currentTilePosition = None
+                if currentToken.currentTilePathPosition > 0:
+                    # TODO: fix this tuple
+                    currentTilePosition = currentToken.tokenTilesPath[currentToken.currentTilePathPosition][0]
+
+                    # check if tile is blocked before moving
+                    if currentTilePosition != None and self.checkIfBlocked(currentTilePosition):
+                        continue
+
+                    currentTilePosition.residents.remove(currentToken)
+                tokenChosen = True
 
             newTokenTilePosition = currentToken.tokenNewTile(self.currentRoll)
             if newTokenTilePosition.tileType == 'path' or newTokenTilePosition.tileType == 'safe':
@@ -191,7 +229,18 @@ class Game:
                     elif currentToken in self.currentPlayer.tokensOnBase:
                         self.currentPlayer.tokensOnBase.remove(currentToken)
             newTokenTilePosition.residents.append(currentToken)
+
+            ### Alex's stuff
+
+            self.checkIfCanFormBlock(newTokenTilePosition)
+
+            if currentTilePosition != None:
+                currentTilePosition.checkIfCanDestroyBlock(self.currentPlayer)
+                self.checkIfCanEatToken(newTokenTilePosition)
+                
             self.updateBoardWithMovingToken(currentToken,newTokenTilePosition)
+
+            ###
 
             counter += 1
             print("Next: {}".format(self.players[counter%4].colour))
