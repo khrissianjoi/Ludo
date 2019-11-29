@@ -239,7 +239,9 @@ class Board:
         bluePathWithoutWhite = [(tile,count) for tile,count in self.bluePath if count not in blue_counter1]
 
         #The [0] represents the base
-        trueRedPath = [0] + redPathWithoutWhite + bluePathWithoutWhite + greenPathWithoutWhite + yellowPathWithoutWhite + self.redPath
+        #TODO: need to add yellow index 17 (11th path)
+        # print()
+        trueRedPath = [0] + redPathWithoutWhite[2:7] + bluePathWithoutWhite[::-1][1:len(bluePathWithoutWhite)-3:2] + bluePathWithoutWhite[0:3] + bluePathWithoutWhite[4::2] + greenPathWithoutWhite[:7] + greenPathWithoutWhite[7:] + yellowPathWithoutWhite[1::2][0:-1] + yellowPathWithoutWhite[::-2] + self.redPath[::-1][:13]
         trueYellowPath = [0] + yellowPathWithoutWhite + redPathWithoutWhite + bluePathWithoutWhite + greenPathWithoutWhite + self.yellowPath
         trueGreenPath = [0] + greenPathWithoutWhite + yellowPathWithoutWhite + redPathWithoutWhite + bluePathWithoutWhite + self.greenPath
         trueBluePath = [0] + bluePathWithoutWhite + greenPathWithoutWhite + yellowPathWithoutWhite + redPathWithoutWhite + self.bluePath

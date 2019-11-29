@@ -175,7 +175,7 @@ class Game:
         pygame.init()
 
         counter = 0
-        startup_page.loadStart()
+        # startup_page.loadStart()
         self.board = Board()
         self.board.createBoard()
         self.createPlayers()
