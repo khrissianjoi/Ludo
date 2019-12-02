@@ -253,7 +253,7 @@ class Board:
         pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
         R2 = TokenCreate(2,RED_TOKEN,None,(range(430,430+61),range(150,150+61)),(430,150),trueRedPath)
-
+        
         translated_token_path = [[x + 585, y +150] for [x, y] in token_path]
         pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
