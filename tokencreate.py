@@ -13,6 +13,7 @@ class TokenCreate:
         self.xBaseCoord, self.yBaseCoord = baseCoord
         self.xHomeCoord, self.yHomeCoord = homeCoord
         self.tokenTilesPath = tokenTilesPath
+        print(self.tokenTilesPath.index(self.tokenTilesPath[-1]))
         self.currentTilePathPosition = 0
 
     def drawOtherPlayersTokens(self,otherPlayers,refresh):
@@ -44,10 +45,22 @@ class TokenCreate:
         else:
             self.currentTilePathPosition = moveBy
 
-    def drawTokenOnHome(self,refresh):
-        translated_token_path = [[x*0.85 + self.xHomeCoord, y*0.85 +self.yHomeCoord] for [x, y] in token_path]
+    def drawTokenOnHome(self,refresh,currentPos,moveBy):
+        for i in range(currentPos,moveBy+currentPos):
+            tokenStepCoordinate = self.tokenTilesPath[i][0].endCoordinates
+            translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x, y] in tokenPoly]
+            self.moveOneToken(refresh,self.tokenID[1],translated_token_path)
+            self.playerOwner.drawTokens(refresh,self,tokenPoly)
+            pygame.display.update()
+            pygame.time.delay(300)
+            refresh.regenerateBoard()
+
+        translated_token_path = [[x*0.85 + self.xHomeCoord, y*0.85 +self.yHomeCoord] for [x, y] in tokenPoly]
         pygame.draw.polygon(refresh.gameDisplay, self.tokenID[1], translated_token_path)
-        pygame.draw.polygon(serefreshlf.gameDisplay, BLACK, translated_token_path,1)
+        pygame.draw.polygon(refresh.gameDisplay, BLACK, translated_token_path,1)
+        self.playerOwner.drawTokens(refresh,self,tokenPoly)
+        pygame.display.update()
+        refresh.regenerateBoard()
 
     def setPlayerOwner(self,player):
         self.playerOwner = player

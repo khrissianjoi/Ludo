@@ -54,7 +54,7 @@ class Player:
             token.playerOwner.drawTokens(refresh,token,tokenPoly)
             token.drawOtherPlayersTokens(otherPlayers,refresh)
             pygame.display.update()
-            pygame.time.delay(300)
+            pygame.time.delay(10)
             refresh.regenerateBoard()
         token.setCurrentTilePathPosition(moveBy)
 
@@ -64,10 +64,10 @@ class Player:
                 new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord+y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,self.colour,new_translated_token_path)
                 pygame.draw.polygon(refresh.gameDisplay, BLACK, new_translated_token_path,1)
-        # for token in self.tokensOnHome:
-        #     if token != otherThan:
-        #         new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord +y] for [x, y] in translated_token_path]
-        #         pygame.draw.polygon(refresh.gameDisplay,self.colour,new_translated_token_path)
+        for token in self.tokensOnHome:
+            if token != otherThan:
+                new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord +y] for [x, y] in translated_token_path]
+                pygame.draw.polygon(refresh.gameDisplay,self.colour,new_translated_token_path)
         for token in self.tokensOnPath:
             if token.tokenID != otherThan.tokenID:
                 new_translated_token_path = [[x + token.tokenLocation[0][0], token.tokenLocation[1][0] +y] for [x, y] in tokenPoly]

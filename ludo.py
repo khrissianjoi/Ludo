@@ -187,13 +187,11 @@ class Game:
                 elif currentToken in self.currentPlayer.tokensOnPath:
                     self.currentPlayer.tokensOnPath.remove(currentToken)
 
-        elif newTokenTilePosition.tileType == 'home':
+        elif self.currentTilePathPosition <= 18:
             if currentToken not in self.currentPlayer.tokensOnHome:
                 self.currentPlayer.tokensOnHome.append(currentToken)
                 if currentToken in self.currentPlayer.tokensOnPath:
                     self.currentPlayer.tokensOnPath.remove(currentToken)
-                elif currentToken in self.currentPlayer.tokensOnBase:
-                    self.currentPlayer.tokensOnBase.remove(currentToken)
 
     def moveTokenFromBase(self, token):
         self.currentRoll = 1
@@ -203,7 +201,10 @@ class Game:
 
     def updateTokenTilePos(self, currentToken, tile):
         self.adjustTokenLocations(tile, currentToken)
-        tile.residents.append(currentToken)
+        try:
+            tile.residents.append(currentToken)
+        except:
+            pass
 
     def main(self):
         pygame.init()
@@ -216,7 +217,7 @@ class Game:
         validDice = False
         first = True
         while not self.gameExit:
-            self.currentPlayer = self.players[counter%4]
+            self.currentPlayer = self.players[counter%2]
             print("Turn #{}: {}".format(counter, self.currentPlayer.playerName))
 
             first = self.highlightPlayerTurn(first)
@@ -257,17 +258,29 @@ class Game:
                         currentTilePosition.residents.remove(currentToken)
 
                     tokenChosen = True
-
                 if tokenChosen:
-                    newTokenTilePosition = currentToken.tokenNewTile(self.currentRoll)
-                    self.updateTokenTilePos(currentToken, newTokenTilePosition)
-                    self.checkIfCanFormBlock(newTokenTilePosition)
-
-                    if currentTilePosition != None:
-                        currentTilePosition.checkIfCanDestroyBlock(self.currentPlayer)
-                        self.checkIfCanEatToken(newTokenTilePosition)
-                        
-                    self.updateBoardWithMovingToken(currentToken,newTokenTilePosition)
+                    if currentToken.currentTilePathPosition + self.currentRoll < 57:
+                        newTokenTilePosition = currentToken.tokenNewTile(self.currentRoll)
+                        self.updateTokenTilePos(currentToken, newTokenTilePosition)
+                        self.checkIfCanFormBlock(newTokenTilePosition)
+                        if currentTilePosition != None:
+                            currentTilePosition.checkIfCanDestroyBlock(self.currentPlayer)
+                            self.checkIfCanEatToken(newTokenTilePosition)
+                        self.updateBoardWithMovingToken(currentToken,newTokenTilePosition)
+                    elif currentToken.currentTilePathPosition + self.currentRoll >= 57:
+                            print("teST")
+                            self.currentRoll = 2
+                            if currentToken.currentTilePathPosition + self.currentRoll == 57:
+                                currentToken.drawTokenOnHome(self.board,currentToken.currentTilePathPosition,self.currentRoll)
+                                if currentToken not in self.currentPlayer.tokensOnHome:
+                                    self.currentPlayer.tokensOnHome.append(currentToken)
+                                if currentToken in self.currentPlayer.tokensOnPath:
+                                    self.currentPlayer.tokensOnPath.remove(currentToken)
+                            # elif currentToken.currentTilePathPosition + self.currentRoll > 59:
+                            #     backTilePosition = 59 - ((currentToken.currentTilePathPosition + self.currentRoll) - 59)
+                            #     backNewTile = currenToken[backTilePosition]
+                            #     self.updateBoardWithMovingToken(currentToken,backNewTile)
+                    print(currentToken.currentTilePathPosition)
 
                 #print("Next: {}".format(self.players[counter%4].colour))
 
