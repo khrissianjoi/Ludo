@@ -237,12 +237,12 @@ class Board:
         yellowPathWithoutWhite = [(tile,count) for tile,count in self.yellowPath if count not in yellow_counter1]
         greenPathWithoutWhite = [(tile,count) for tile,count in self.greenPath if count not in green_counter1]
         bluePathWithoutWhite = [(tile,count) for tile,count in self.bluePath if count not in blue_counter1]
-
+        print(greenPathWithoutWhite[:7] + greenPathWithoutWhite[7:][::-1])
         #The [0] represents the base
-        trueRedPath = [0] + redPathWithoutWhite[1:6] + bluePathWithoutWhite[::-1][1:len(bluePathWithoutWhite)-3:2] + bluePathWithoutWhite[0:3] + bluePathWithoutWhite[4::2] + greenPathWithoutWhite[:7] + greenPathWithoutWhite[7:] + yellowPathWithoutWhite[1:-1:2][0:-1] +yellowPathWithoutWhite[12:13] + yellowPathWithoutWhite[11:12] + yellowPathWithoutWhite[::-2][1:] + self.redPath[::-1][:13]
-        trueYellowPath = [0] + yellowPathWithoutWhite[::-1][4:][::2] + redPathWithoutWhite[::-1][:6] + redPathWithoutWhite[6:7] + redPathWithoutWhite[:6] + bluePathWithoutWhite[::-1][1:len(bluePathWithoutWhite)-3:2] + bluePathWithoutWhite[0:3] + bluePathWithoutWhite[4::2] + greenPathWithoutWhite + self.yellowPath[2:][::3] + self.yellowPath[1::3][::-1] 
+        trueRedPath = [0] + redPathWithoutWhite[1:6] + bluePathWithoutWhite[::-1][1:len(bluePathWithoutWhite)-3:2] + bluePathWithoutWhite[0:3] + bluePathWithoutWhite[4::2] + greenPathWithoutWhite[:7] + greenPathWithoutWhite[7:][::-1] + yellowPathWithoutWhite[1:-1:2][0:-1] +yellowPathWithoutWhite[12:13] + yellowPathWithoutWhite[11:12] + yellowPathWithoutWhite[::-2][1:] + self.redPath[::-1][:13]
+        trueYellowPath = [0] + yellowPathWithoutWhite[::-1][4:][::2] + redPathWithoutWhite[::-1][:6] + redPathWithoutWhite[6:7] + redPathWithoutWhite[:6] + bluePathWithoutWhite[::-1][1:len(bluePathWithoutWhite)-3:2] + bluePathWithoutWhite[0:3] + bluePathWithoutWhite[4::2] + greenPathWithoutWhite[:7] + greenPathWithoutWhite[7:][::-1] + self.yellowPath[2:][::3] + self.yellowPath[1::3][::-1] 
         trueGreenPath = [0] + greenPathWithoutWhite[::-1][1:6] + yellowPathWithoutWhite[1:-1:2][0:-1] +yellowPathWithoutWhite[12:13] + yellowPathWithoutWhite[11:12] + yellowPathWithoutWhite[::-2][1:] + redPathWithoutWhite[::-1][:6] + redPathWithoutWhite[6:7] + redPathWithoutWhite[:6] + bluePathWithoutWhite + self.greenPath[:6] + self.greenPath[6:12][::-1]
-        trueBluePath = [0] + bluePathWithoutWhite[4::2] + greenPathWithoutWhite[:7] + greenPathWithoutWhite[7:] + yellowPathWithoutWhite[1:-1:2][0:-1] +yellowPathWithoutWhite[12:13] + yellowPathWithoutWhite[11:12] + yellowPathWithoutWhite[::-2][1:] + redPathWithoutWhite[::-1][:6] + redPathWithoutWhite[6:7] + redPathWithoutWhite[:6] + self.bluePath[::3][::-1] + self.bluePath[1::3]
+        trueBluePath = [0] + bluePathWithoutWhite[4::2] + greenPathWithoutWhite[:7] + greenPathWithoutWhite[7:][::-1] + yellowPathWithoutWhite[1:-1:2][0:-1] +yellowPathWithoutWhite[12:13] + yellowPathWithoutWhite[11:12] + yellowPathWithoutWhite[::-2][1:] + redPathWithoutWhite[::-1][:6] + redPathWithoutWhite[6:7] + redPathWithoutWhite[:6] + self.bluePath[::3][::-1] + self.bluePath[1::3]
 
         translated_token_path = [[x + 515, y +60] for [x, y] in token_path]
         pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
@@ -253,7 +253,7 @@ class Board:
         pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
         R2 = TokenCreate(2,RED_TOKEN,None,(range(430,430+61),range(150,150+61)),(430,150),trueRedPath)
-        
+
         translated_token_path = [[x + 585, y +150] for [x, y] in token_path]
         pygame.draw.polygon(self.gameDisplay, RED_TOKEN, translated_token_path)
         pygame.draw.polygon(self.gameDisplay, BLACK, translated_token_path,1)
