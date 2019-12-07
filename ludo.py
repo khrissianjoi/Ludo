@@ -216,7 +216,6 @@ class Game:
         validDice = False
         first = True
         while not self.gameExit:
-            
             self.currentPlayer = self.players[counter%4]
             print("Turn #{}: {}".format(counter, self.currentPlayer.playerName))
 

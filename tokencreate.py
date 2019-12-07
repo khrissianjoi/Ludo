@@ -4,13 +4,14 @@ import pygame
 BLACK = 0,0,0
 tokenPoly = [[27.5, 30.5], [27.0, 30.5], [27.0, 26.5], [23.5, 14.5], [23.5, 14.5], [24.5, 13.5], [24.5, 13.0], [23.5, 12.0], [23.5, 12.0], [25.5, 7.0], [18.5, 0.0], [11.0, 7.0], [13.5, 12.0], [13.0, 12.0], [12.0, 13.0], [12.0, 13.5], [13.0, 14.5], [13.5, 14.5], [10.0, 26.5], [10.0, 30.5], [9.0, 30.5], [8.0, 31.5], [8.0, 34.0], [9.0, 35.0], [9.0, 35.0], [9.0, 37.0], [27.5, 37.0], [27.5, 35.0], [28.5, 34.0], [28.5, 31.5], [27.5, 30.5]]
 class TokenCreate:
-    def __init__(self, tokenNum,tokenColour, playerOwner, tokenLocation, baseCoord, tokenTilesPath, display = None):
-        self.display = display
+    def __init__(self, tokenNum,tokenColour, playerOwner, tokenLocation, baseCoord, tokenTilesPath, homeCoord):
+        self.display = None
         self.tokenID = (tokenNum, tokenColour)
         self.playerOwner = playerOwner
         self.tokenLocation = tokenLocation
         # new
         self.xBaseCoord, self.yBaseCoord = baseCoord
+        self.xHomeCoord, self.yHomeCoord = homeCoord
         self.tokenTilesPath = tokenTilesPath
         self.currentTilePathPosition = 0
 
@@ -42,6 +43,11 @@ class TokenCreate:
             self.currentTilePathPosition += moveBy
         else:
             self.currentTilePathPosition = moveBy
+
+    def drawTokenOnHome(self,refresh):
+        translated_token_path = [[x*0.85 + self.xHomeCoord, y*0.85 +self.yHomeCoord] for [x, y] in token_path]
+        pygame.draw.polygon(refresh.gameDisplay, self.tokenID[1], translated_token_path)
+        pygame.draw.polygon(serefreshlf.gameDisplay, BLACK, translated_token_path,1)
 
     def setPlayerOwner(self,player):
         self.playerOwner = player
