@@ -27,7 +27,7 @@ GREEN_TOKEN = 30, 130, 76, 1
 tokenPoly = [[27.5, 30.5], [27.0, 30.5], [27.0, 26.5], [23.5, 14.5], [23.5, 14.5], [24.5, 13.5], [24.5, 13.0], [23.5, 12.0], [23.5, 12.0], [25.5, 7.0], [18.5, 0.0], [11.0, 7.0], [13.5, 12.0], [13.0, 12.0], [12.0, 13.0], [12.0, 13.5], [13.0, 14.5], [13.5, 14.5], [10.0, 26.5], [10.0, 30.5], [9.0, 30.5], [8.0, 31.5], [8.0, 34.0], [9.0, 35.0], [9.0, 35.0], [9.0, 37.0], [27.5, 37.0], [27.5, 35.0], [28.5, 34.0], [28.5, 31.5], [27.5, 30.5]]
 
 
-
+BLACK = 0,0,0
 
 class Game:
     def __init__(self):
@@ -47,6 +47,8 @@ class Game:
         self.currentRoll = None
         self.diceDict = {1:"one.png",2:"two.png",3:"three.png",4:"four.png",5:"five.png",6:"six.png"}
         self.text = None
+        self.font = pygame.font.Font('freesansbold.ttf', 40)
+
     def endGame(self):
         self.endTime = datetime.datetime.now()
         self.gameExit = True
@@ -85,6 +87,7 @@ class Game:
 
         self.players = [self.playerRed,self.playerBlue,self.playerGreen,self.playerYellow]
 
+
     def produceDiceImage(self):
         self.board.regenerateBoard(self.text)
         image = pygame.image.load(os.path.join("images","dice",self.diceDict[self.currentRoll]))
@@ -120,6 +123,7 @@ class Game:
                     self.endGame()
                 if event.type == pygame.MOUSEBUTTONUP:
                     x,y = pygame.mouse.get_pos()
+                    print(x,y)
                     if not validDice:
                         if x in range(self.currentPlayer.myDice.coOrdinates[0],self.currentPlayer.myDice.coOrdinates[0]+80+1) and y in range(self.currentPlayer.myDice.coOrdinates[1],self.currentPlayer.myDice.coOrdinates[1]+80+1):
                             self.currentRoll = self.currentPlayer.rollDice()
@@ -128,7 +132,12 @@ class Game:
                             #print("success")
                         else:
                             self.text = "Not Dice"
-
+                            print(self.text)
+                            text = self.font.render(self.text, True, BLACK) 
+                            textRect = text.get_rect()  
+                            textRect.center = (700, 750)
+                            self.board.gameDisplay.blit(text, textRect)
+                            pygame.display.update()
         return self.currentRoll, validDice
 
     def playerChoosingToken(self):
@@ -144,15 +153,22 @@ class Game:
                     currentToken = self.isPlayerChoosingOwnToken(x,y)
                     if currentToken != None:
                         validToken = True
-                        #print("success")
                     else:
                         self.text = "Not valid token"
-                        #print(currentToken.currentTilePathPosition)
+                        text = self.font.render(self.text, True, BLACK) 
+                        textRect = text.get_rect()  
+                        textRect.center = (700, 750)
+                        self.board.gameDisplay.blit(text, textRect)
+                        pygame.display.update()
         return currentToken
 
     def checkIfBlocked(self, tile):
         if tile.blockedBy != None and self.currentPlayer != tile.blockedBy:
             self.text = "Choose another token, this tile is blocked by: {}".format(tile.blockedBy.playerName)
+            text = self.font.render(self.text, True, BLACK) 
+            textRect = text.get_rect()  
+            textRect.center = (700, 750)
+            self.board.gameDisplay.blit(text, textRect)
             return True
         return False
 
@@ -222,11 +238,18 @@ class Game:
         self.createPlayers()
         validDice = False
         first = True
-
+        self.currentPlayer = self.players[counter%2]
+        self.text = "Turn #{}: {}".format(counter, self.currentPlayer.playerName)
+        text = self.font.render(self.text, True, BLACK) 
+        textRect = text.get_rect()  
+        textRect.center = (700, 700)
+        self.board.gameDisplay.blit(text, textRect)
         while not self.gameExit:
             self.currentPlayer = self.players[counter%2]
             self.text = "Turn #{}: {}".format(counter, self.currentPlayer.playerName)
-
+            text = self.font.render(self.text, True, BLACK) 
+            textRect = text.get_rect()  
+            textRect.center = (700, 700)
             first = self.highlightPlayerTurn(first)
             # return here
             self.currentRoll, validDice = self.playerToRollDice()
@@ -238,22 +261,29 @@ class Game:
             elif len(self.currentPlayer.tokensOnBase) == 4 and self.currentRoll == 6:
                 self.moveTokenFromBase(self.currentPlayer.tokensOnBase[0])
                 self.text = "{} token #{} moved from base".format(self.currentPlayer.playerName, 4 - len(self.currentPlayer.tokensOnBase))
-
+                text = self.font.render(self.text, True, BLACK) 
+                textRect = text.get_rect()  
+                textRect.center = (700, 700)
+                self.board.gameDisplay.blit(text, textRect)
             elif 0 < len(self.currentPlayer.tokensOnPath) <= 4:
-
                 tokenChosen = False
                 while not tokenChosen:
-
                     currentToken = self.playerChoosingToken()
-
                     if currentToken.currentTilePathPosition == 0:
                         if self.currentRoll != 6:
                             self.text = "Cannot move token from base."
+                            text = self.font.render(self.text, True, BLACK) 
+                            textRect = text.get_rect()  
+                            textRect.center = (700, 700)
+                            self.board.gameDisplay.blit(text, textRect)
                             continue
                         else:
                             self.moveTokenFromBase(currentToken)
-                            self.text = "{} token #{} moved from base".format(self.currentPlayer.playerName, 4 - len(self.currentPlayer.tokensOnBase))
-                            self.text = "Gets another turn"
+                            self.text = "{} token #{} moved from base".format(self.currentPlayer.playerName, 4 - len(self.currentPlayer.tokensOnBase)) + " Gets another turn"
+                            text = self.font.render(self.text, True, BLACK) 
+                            textRect = text.get_rect()  
+                            textRect.center = (700, 700)
+                            self.board.gameDisplay.blit(text, textRect)
                             counter -= 1
                             break
 
@@ -297,8 +327,12 @@ class Game:
                                 backSteps = self.currentRoll-forwardSteps
                                 self.updateBoardWithBackwardMovingToken(currentToken,forwardSteps,backSteps)
 
-                self.text = "Next: {}".format(self.players[counter%4].colour)
-
+                self.text = "Next: {}".format(self.currentPlayer.playerName)
+                 
+                text = self.font.render(self.text, True, BLACK) 
+                textRect = text.get_rect()  
+                textRect.center = (700, 700)
+                self.board.gameDisplay.blit(text, textRect)
             counter += 1
 
         pygame.quit()
@@ -316,7 +350,6 @@ class Game:
         tempPlayers.remove(self.currentPlayer)
         newTile = self.currentPlayer.moveBackwardChosenToken(self.board,currentToken,forwardSteps,backSteps,tempPlayers)
         self.currentPlayer.setAllTokens(self.currentPlayer.tokensOnBase+self.currentPlayer.tokensOnPath+self.currentPlayer.tokensOnHome)
-        # self.adjustTokenLocations(newTile,currentToken)
         if newTile.tileType == "path" or newTile.tileType == "safe":
             if currentToken not in self.currentPlayer.tokensOnPath:
                 self.currentPlayer.tokensOnPath.append(currentToken)

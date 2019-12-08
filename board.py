@@ -36,7 +36,7 @@ red_counter1 = {8,9,10,11,12}
 blue_counter1 = {5,8,11,14,17}
 
 blue = (12, 63, 186)
-green = (0, 179, 0)
+BLACK = (0, 0, 0)
 
 # star points
 star_path = [[18.46125, 0.0], [22.736250000000002, 13.354500000000002], [36.5685, 13.354500000000002], [25.377750000000002, 21.608249999999998], [29.652, 34.96275], [18.46125, 26.709000000000003], [7.27125, 34.96275], [11.5455, 21.608249999999998], [0.35475, 13.354500000000002], [14.187000000000001, 13.354500000000002], [18.46125, 0.0]]
@@ -70,11 +70,11 @@ class Board:
         self.createBaseCircles()
         self.generatePerson()
 
-        font = pygame.font.Font('freesansbold.ttf', 40) 
-        text = font.render(text, True, BLACK) 
-        textRect = text.get_rect()  
-        textRect.center = (700, 730) 
-        self.gameDisplay.blit(text, textRect)
+        # font = pygame.font.Font('freesansbold.ttf', 40) 
+        # text = font.render(text, True, BLACK) 
+        # textRect = text.get_rect()  
+        # textRect.center = (700, 730) 
+        # self.gameDisplay.blit(text, textRect)
         pygame.draw.rect(self.gameDisplay, BLACK, [self.size+self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
         
 
@@ -108,19 +108,25 @@ class Board:
 
 
     def generatePerson(self):
-        pygame.draw.circle(self.gameDisplay, TEAM_RED2, (120,150), 100) #top
-        pygame.draw.rect(self.gameDisplay, TEAM_RED2,[275, 105, self.size*2, self.size*2])
+        # pygame.draw.circle(self.gameDisplay, TEAM_RED2, (120,150), 100) #top
+        # pygame.draw.rect(self.gameDisplay, TEAM_RED2,[275, 105, self.size*2, self.size*2])
         # pygame.draw.rect(self.gameDisplay, BLACK,[self.size*xCoord+self.boardOverall, self.size*yCoord, self.size, self.size], 1)
-
-        pygame.draw.circle(self.gameDisplay, TEAM_BLUE2, (1270,150), 100) #top
-        pygame.draw.rect(self.gameDisplay, TEAM_BLUE2,[1050, 105, self.size*2, self.size*2])
-
-        pygame.draw.circle(self.gameDisplay, TEAM_YELLOW2, (120,515), 100) #top
-        pygame.draw.rect(self.gameDisplay, TEAM_YELLOW2,[275, 470, self.size*2, self.size*2])
-
-        pygame.draw.circle(self.gameDisplay, TEAM_GREEN2, (1270,515), 100) #top
-        pygame.draw.rect(self.gameDisplay, TEAM_GREEN2,[1050, 470, self.size*2, self.size*2])
-
+        image = pygame.image.load(os.path.join("images","redPlayer.png"))
+        cropped_image = pygame.transform.scale(image,(200,200))
+        self.gameDisplay.blit(cropped_image,(40,60))
+        # 140,275
+        image = pygame.image.load(os.path.join("images","yellowPlayer.png"))
+        cropped_image = pygame.transform.scale(image,(200,200))
+        self.gameDisplay.blit(cropped_image,(40,420))
+        # 140,660
+        image = pygame.image.load(os.path.join("images","bluePlayer.png"))
+        cropped_image = pygame.transform.scale(image,(200,200))
+        self.gameDisplay.blit(cropped_image,(1160,60))
+        # 1260,275
+        image = pygame.image.load(os.path.join("images","greenPlayer.png"))
+        cropped_image = pygame.transform.scale(image,(200,200))
+        self.gameDisplay.blit(cropped_image,(1160,420))
+        # 1260,660
         return [(275,105),(1050,105),(275,470),(1050,470)]
 
     def generateTiles(self):
