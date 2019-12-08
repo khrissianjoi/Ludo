@@ -23,6 +23,7 @@ class Player:
     def chooseToken(self,x,y):
         '''checks if player choosing their own token'''
         try:
+            # when they press a token on home
             for token in self.allTokens:
                 if x in token.tokenLocation[0] and y in token.tokenLocation[1]:
                     return token
