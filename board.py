@@ -64,7 +64,11 @@ class Board:
         self.greenPath = []
 
     def regenerateBoard(self,text=None):
-        self.gameDisplay.fill(BLUE_BACKGROUND)
+        pygame.display.set_caption("Ludo")
+        image = pygame.image.load(os.path.join("images","background.png"))
+        cropped_image = pygame.transform.scale(image,(1400,400))
+        self.gameDisplay.blit(cropped_image,(0,0))
+        self.gameDisplay.blit(cropped_image,(0,400))
         self.generateTiles()
         self.createTriangleHome()
         self.createBaseCircles()
@@ -81,8 +85,10 @@ class Board:
     def createBoard(self):
         '''create Ludo board'''
         pygame.display.set_caption("Ludo")
-        self.gameDisplay.fill(BLUE_BACKGROUND)
-
+        image = pygame.image.load(os.path.join("images","background.png"))
+        cropped_image = pygame.transform.scale(image,(1400,400))
+        self.gameDisplay.blit(cropped_image,(0,0))
+        self.gameDisplay.blit(cropped_image,(0,400))
         self.generateTiles()
         self.createTriangleHome()
         self.createBaseCircles()
