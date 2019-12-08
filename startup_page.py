@@ -60,9 +60,6 @@ def loadStart():
 
         pygame.display.update()
         pos = pygame.mouse.get_pos()
-
-        print(pos[0], pos[1])
-
         pygame.draw.rect(screen,(191, 191, 191),(350,200,700,400))
         heading.isOver(pos)
         player1.isOver(pos)

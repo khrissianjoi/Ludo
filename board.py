@@ -35,6 +35,8 @@ yellow_counter1 = {2,5,8,11,14}
 red_counter1 = {8,9,10,11,12}
 blue_counter1 = {5,8,11,14,17}
 
+blue = (12, 63, 186)
+green = (0, 179, 0)
 
 # star points
 star_path = [[18.46125, 0.0], [22.736250000000002, 13.354500000000002], [36.5685, 13.354500000000002], [25.377750000000002, 21.608249999999998], [29.652, 34.96275], [18.46125, 26.709000000000003], [7.27125, 34.96275], [11.5455, 21.608249999999998], [0.35475, 13.354500000000002], [14.187000000000001, 13.354500000000002], [18.46125, 0.0]]
@@ -61,12 +63,18 @@ class Board:
         self.bluePath = []
         self.greenPath = []
 
-    def regenerateBoard(self):
+    def regenerateBoard(self,text=None):
         self.gameDisplay.fill(BLUE_BACKGROUND)
         self.generateTiles()
         self.createTriangleHome()
         self.createBaseCircles()
         self.generatePerson()
+
+        font = pygame.font.Font('freesansbold.ttf', 40) 
+        text = font.render(text, True, BLACK) 
+        textRect = text.get_rect()  
+        textRect.center = (700, 730) 
+        self.gameDisplay.blit(text, textRect)
         pygame.draw.rect(self.gameDisplay, BLACK, [self.size+self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
         
 
@@ -74,6 +82,7 @@ class Board:
         '''create Ludo board'''
         pygame.display.set_caption("Ludo")
         self.gameDisplay.fill(BLUE_BACKGROUND)
+
         self.generateTiles()
         self.createTriangleHome()
         self.createBaseCircles()

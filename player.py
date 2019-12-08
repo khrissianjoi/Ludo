@@ -91,10 +91,9 @@ class Player:
             pygame.display.update()
             pygame.time.delay(300)
             refresh.regenerateBoard()
-
         token.currentTilePathPosition = (57 - backSteps)
         token.tokenLocation = token.tokenTilesPath[token.currentTilePathPosition][0].rangeCoordinates
-
+        return token.tokenTilesPath[token.currentTilePathPosition][0]
     def drawTokens(self,refresh,otherThan,tokenPoly):
         for token in self.tokensOnBase:
             if token.tokenID != otherThan.tokenID:
