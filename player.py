@@ -1,4 +1,5 @@
 from dice import Dice
+from tile import Tile
 import pygame
 
 BLACK = 0,0,0
@@ -21,10 +22,14 @@ class Player:
 
     def chooseToken(self,x,y):
         '''checks if player choosing their own token'''
-        for token in self.allTokens:
-            if x in token.tokenLocation[0] and y in token.tokenLocation[1]:
-                return token
-        return None
+        try:
+            for token in self.allTokens:
+                if x in token.tokenLocation[0] and y in token.tokenLocation[1]:
+                    return token
+            
+            return None
+        except:
+            return None
     
     def getTokensOnPath(self):
         return self.tokensOnPath
@@ -58,6 +63,37 @@ class Player:
             refresh.regenerateBoard()
         token.setCurrentTilePathPosition(moveBy)
 
+    def moveBackwardChosenToken(self, refresh, token, forwardSteps,backSteps, otherPlayers):
+        '''Moves player's chosen token, while recreating the other tokens (including oponents players)'''
+        for i in range(token.currentTilePathPosition+1,57):
+            tokenStepCoordinate = token.tokenTilesPath[i][0].endCoordinates
+            translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x, y] in tokenPoly]
+            token.moveOneToken(refresh,token.tokenID[1],translated_token_path)
+            token.playerOwner.drawTokens(refresh,token,tokenPoly)
+            token.drawOtherPlayersTokens(otherPlayers,refresh)
+            pygame.display.update()
+            pygame.time.delay(300)
+            refresh.regenerateBoard()
+
+        translated_token_path = [[x*0.85 + token.xHomeCoord, y*0.85 +token.yHomeCoord] for [x, y] in tokenPoly]
+        pygame.draw.polygon(refresh.gameDisplay, token.tokenID[1], translated_token_path)
+        pygame.draw.polygon(refresh.gameDisplay, BLACK, translated_token_path,1)
+        token.tokenLocation = Tile((None,None),(None,None),"home",None,None)
+        pygame.display.update()
+        reversePath = token.tokenTilesPath[::-1]
+        for path in range(0,backSteps+1):
+            tokenStepCoordinate = reversePath[path][0].endCoordinates
+            translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x, y] in tokenPoly]
+            token.moveOneToken(refresh,token.tokenID[1],translated_token_path)
+            token.playerOwner.drawTokens(refresh,token,tokenPoly)
+            token.drawOtherPlayersTokens(otherPlayers,refresh)
+            pygame.display.update()
+            pygame.time.delay(300)
+            refresh.regenerateBoard()
+
+        token.currentTilePathPosition = (57 - backSteps)
+        token.tokenLocation = token.tokenTilesPath[token.currentTilePathPosition][0].rangeCoordinates
+
     def drawTokens(self,refresh,otherThan,tokenPoly):
         for token in self.tokensOnBase:
             if token.tokenID != otherThan.tokenID:
@@ -66,7 +102,7 @@ class Player:
                 pygame.draw.polygon(refresh.gameDisplay, BLACK, new_translated_token_path,1)
         for token in self.tokensOnHome:
             if token != otherThan:
-                new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord +y] for [x, y] in translated_token_path]
+                new_translated_token_path = [[x*0.85 + token.xHomeCoord, token.yHomeCoord +y*0.85] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay,self.colour,new_translated_token_path)
         for token in self.tokensOnPath:
             if token.tokenID != otherThan.tokenID:

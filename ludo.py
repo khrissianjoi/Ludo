@@ -171,27 +171,29 @@ class Game:
                 eatenToken.drawToken(self.board)
 
     def adjustTokenLocations(self, newTokenTilePosition, currentToken):
-        if newTokenTilePosition.tileType == 'path' or newTokenTilePosition.tileType == 'safe':
-            if currentToken not in self.currentPlayer.tokensOnPath:
-                self.currentPlayer.tokensOnPath.append(currentToken)
-                if currentToken in self.currentPlayer.tokensOnBase:
-                    self.currentPlayer.tokensOnBase.remove(currentToken)
-                elif currentToken in self.currentPlayer.tokensOnHome:
-                    self.currentPlayer.tokensOnHome.remove(currentToken)
+        if newTokenTilePosition != "home":
+            if newTokenTilePosition.tileType == 'path' or newTokenTilePosition.tileType == 'safe':
+                if currentToken not in self.currentPlayer.tokensOnPath:
+                    self.currentPlayer.tokensOnPath.append(currentToken)
+                    if currentToken in self.currentPlayer.tokensOnBase:
+                        self.currentPlayer.tokensOnBase.remove(currentToken)
+                    elif currentToken in self.currentPlayer.tokensOnHome:
+                        self.currentPlayer.tokensOnHome.remove(currentToken)
 
-        elif newTokenTilePosition.tileType == 'base':
-            if currentToken not in self.currentPlayer.tokensOnBase:
-                self.currentPlayer.tokensOnBase.append(currentToken)
-                if currentToken in self.currentPlayer.tokensOnHome:
-                    self.currentPlayer.tokensOnHome.remove(currentToken)
-                elif currentToken in self.currentPlayer.tokensOnPath:
-                    self.currentPlayer.tokensOnPath.remove(currentToken)
+            elif newTokenTilePosition.tileType == 'base':
+                if currentToken not in self.currentPlayer.tokensOnBase:
+                    self.currentPlayer.tokensOnBase.append(currentToken)
+                    if currentToken in self.currentPlayer.tokensOnHome:
+                        self.currentPlayer.tokensOnHome.remove(currentToken)
+                    elif currentToken in self.currentPlayer.tokensOnPath:
+                        self.currentPlayer.tokensOnPath.remove(currentToken)
 
-        elif self.currentTilePathPosition <= 18:
+        else:
             if currentToken not in self.currentPlayer.tokensOnHome:
                 self.currentPlayer.tokensOnHome.append(currentToken)
                 if currentToken in self.currentPlayer.tokensOnPath:
                     self.currentPlayer.tokensOnPath.remove(currentToken)
+            print(self.currentPlayer.tokensOnHome)
 
     def moveTokenFromBase(self, token):
         self.currentRoll = 1
@@ -269,18 +271,31 @@ class Game:
                         self.updateBoardWithMovingToken(currentToken,newTokenTilePosition)
                     elif currentToken.currentTilePathPosition + self.currentRoll >= 57:
                             print("teST")
+                            tempPlayers = copy.copy(self.players)
+                            tempPlayers.remove(self.currentPlayer)
+                            print("CURRENT:",currentToken.currentTilePathPosition)
                             self.currentRoll = 2
                             if currentToken.currentTilePathPosition + self.currentRoll == 57:
-                                currentToken.drawTokenOnHome(self.board,currentToken.currentTilePathPosition,self.currentRoll)
+                                currentToken.drawTokenOnHome(self.board,currentToken.currentTilePathPosition,self.currentRoll,tempPlayers)
+                                currentToken.setTokenLocation(None)
                                 if currentToken not in self.currentPlayer.tokensOnHome:
                                     self.currentPlayer.tokensOnHome.append(currentToken)
-                                if currentToken in self.currentPlayer.tokensOnPath:
-                                    self.currentPlayer.tokensOnPath.remove(currentToken)
-                            # elif currentToken.currentTilePathPosition + self.currentRoll > 59:
-                            #     backTilePosition = 59 - ((currentToken.currentTilePathPosition + self.currentRoll) - 59)
-                            #     backNewTile = currenToken[backTilePosition]
-                            #     self.updateBoardWithMovingToken(currentToken,backNewTile)
-                    print(currentToken.currentTilePathPosition)
+                                    if currentToken in self.currentPlayer.tokensOnPath:
+                                        self.currentPlayer.tokensOnPath.remove(currentToken)
+                                self.currentPlayer.setAllTokens(self.currentPlayer.tokensOnBase+self.currentPlayer.tokensOnPath+self.currentPlayer.tokensOnHome)
+                            elif currentToken.currentTilePathPosition + self.currentRoll > 57:
+                                print("NEWTILE: ",self.currentRoll+currentToken.currentTilePathPosition)
+                                forwardSteps = 57- currentToken.currentTilePathPosition
+                                print("FORWARD STEPS:",forwardSteps)
+                                #TODO: forward steps +1 because home
+                                print("BACK STEPS:",self.currentRoll-forwardSteps)
+                                backSteps = self.currentRoll-forwardSteps
+                                # print("h")
+                                # backTilePosition = (currentToken.currentTilePathPosition + self.currentRoll) - 57
+                                # backNewTile = currentToken.tokenTilesPath[backTilePosition][0]
+                                # print(backTilePosition)
+                                self.updateBoardWithBackwardMovingToken(currentToken,forwardSteps,backSteps)
+                                # currentToken.drawTokenOnHome(self.board,currentToken.currentTilePathPosition,self.currentRoll,tempPlayers)
 
                 #print("Next: {}".format(self.players[counter%4].colour))
 
@@ -296,6 +311,16 @@ class Game:
         currentToken.setTokenLocation(newTokenTilePosition.rangeCoordinates)
         self.currentPlayer.setAllTokens(self.currentPlayer.tokensOnBase+self.currentPlayer.tokensOnPath+self.currentPlayer.tokensOnHome)
 
+    # def updateBoardWithBackwardMovingToken(self,currentToken,newTokenTilePosition,currentTilePosition,newTilePosition):
+    #     tempPlayers = copy.copy(self.players)
+    #     tempPlayers.remove(self.currentPlayer)
+    #     self.currentPlayer.moveBackwardChosenToken(self.board,currentToken,currentTilePosition,newTilePosition,tempPlayers)
+    #     currentToken.setTokenLocation(newTokenTilePosition.rangeCoordinates)
+        # self.currentPlayer.setAllTokens(self.currentPlayer.tokensOnBase+self.currentPlayer.tokensOnPath+self.currentPlayer.tokensOnHome)
+    def updateBoardWithBackwardMovingToken(self,currentToken,forwardSteps,backSteps):
+        tempPlayers = copy.copy(self.players)
+        tempPlayers.remove(self.currentPlayer)
+        self.currentPlayer.moveBackwardChosenToken(self.board,currentToken,forwardSteps,backSteps,tempPlayers)
 
 playing = Game()
 playing.main()
