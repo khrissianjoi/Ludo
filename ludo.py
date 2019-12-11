@@ -232,20 +232,20 @@ class Game:
         pygame.init()
 
         counter = 0
-        # startup_page.loadStart()
+        startup_page.loadStart()
         self.board = Board()
         self.board.createBoard()
         self.createPlayers()
         validDice = False
         first = True
-        self.currentPlayer = self.players[counter%2]
+        self.currentPlayer = self.players[counter%4]
         self.text = "Turn #{}: {}".format(counter, self.currentPlayer.playerName)
         text = self.font.render(self.text, True, BLACK) 
         textRect = text.get_rect()  
         textRect.center = (700, 700)
         self.board.gameDisplay.blit(text, textRect)
         while not self.gameExit:
-            self.currentPlayer = self.players[counter%2]
+            self.currentPlayer = self.players[counter%4]
             self.text = "Turn #{}: {}".format(counter, self.currentPlayer.playerName)
             text = self.font.render(self.text, True, BLACK) 
             textRect = text.get_rect()  
