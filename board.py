@@ -74,12 +74,6 @@ class Board:
         self.createTriangleHome()
         self.createBaseCircles()
         self.generatePerson()
-
-        # font = pygame.font.Font('freesansbold.ttf', 40)
-        # text = font.render(text, True, BLACK)
-        # textRect = text.get_rect()
-        # textRect.center = (700, 730)
-        # self.gameDisplay.blit(text, textRect)
         pygame.draw.rect(self.gameDisplay, BLACK, [self.size + self.boardOverall, self.size, self.boardLength*self.size, self.boardLength*self.size], 3)
 
     def createBoard(self):

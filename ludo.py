@@ -92,7 +92,6 @@ class Game:
         self.board.regenerateBoard(self.text)
         image = pygame.image.load(os.path.join("images", "dice", self.diceDict[self.currentRoll]))
         cropped_image = pygame.transform.scale(image, (80, 80))
-        # image = pygame.image.load(os.path.join("dice", self.diceDict[self.currentRoll]))
         self.board.gameDisplay.blit(cropped_image, (self.currentPlayer.myDice.coOrdinates[0], self.currentPlayer.myDice.coOrdinates[1]))
 
         for player in self.players:
@@ -278,7 +277,7 @@ class Game:
                             continue
                         else:
                             self.moveTokenFromBase(currentToken)
-                            self.text = "{} token #{} moved from base".format(self.currentPlayer.playerName, 4 - len(self.currentPlayer.tokensOnBase)) + " Gets another turn"
+                            self.text = "{} token #{} moved from base\nGets another turn".format(self.currentPlayer.playerName, 4 - len(self.currentPlayer.tokensOnBase))
                             text = self.font.render(self.text, True, BLACK)
                             textRect = text.get_rect()
                             textRect.center = (700, 700)
