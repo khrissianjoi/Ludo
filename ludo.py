@@ -1,12 +1,11 @@
 import pygame
 import datetime
 import copy
+import os
 
 from board import Board
 from player import Player
-import startup_page
-
-import os
+import button
 
 # team colours
 TEAM_BLUE1 = 209, 230, 238
@@ -28,7 +27,10 @@ GREEN_TOKEN = 30, 130, 76, 1
 tokenPoly = [[27.5, 30.5], [27.0, 30.5], [27.0, 26.5], [23.5, 14.5], [23.5, 14.5], [24.5, 13.5], [24.5, 13.0], [23.5, 12.0], [23.5, 12.0], [25.5, 7.0], [18.5, 0.0], [11.0, 7.0], [13.5, 12.0], [13.0, 12.0], [12.0, 13.0], [12.0, 13.5], [13.0, 14.5], [13.5, 14.5], [10.0, 26.5], [10.0, 30.5], [9.0, 30.5], [8.0, 31.5], [8.0, 34.0], [9.0, 35.0], [9.0, 35.0], [9.0, 37.0], [27.5, 37.0], [27.5, 35.0], [28.5, 34.0], [28.5, 31.5], [27.5, 30.5]]
 
 BLACK = 0, 0, 0
-
+BLUE = (12, 63, 186)
+GREEN = (0, 179, 0)
+YELLOW = (179, 179, 0)
+RED = (242, 120, 107)
 
 class Game:
     def __init__(self):
@@ -48,7 +50,7 @@ class Game:
         self.currentRoll = None
         self.diceDict = {1: "one.png", 2: "two.png", 3: "three.png", 4: "four.png", 5: "five.png", 6: "six.png"}
         self.text = None
-        self.font = pygame.font.Font('freesansbold.ttf', 40)
+        self.font = None
 
     def endGame(self):
         self.endTime = datetime.datetime.now()
@@ -226,12 +228,65 @@ class Game:
         except:
             pass
 
+    def loadStart(self):
+        pygame.init()
+        size = width, height = 1400, 800
+        screen = pygame.display.set_mode(size)
+        image = pygame.image.load("images/background.jpg").convert()
+        screen.blit(image, [0, 0])
+
+        b1 = button.Button(screen, GREEN, 200, 300, 320, 65, "Create Game")
+        b2 = button.Button(screen, YELLOW, 200, 450, 320, 65, "Join Game")
+
+        running = True
+        while running:
+            pygame.display.update()
+            pos = pygame.mouse.get_pos()
+            b1.isOver(pos)
+            b2.isOver(pos)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+                if b1.click_b(event, pos):
+                    running = False
+                if b2.click_b(event, pos):
+                    running = False
+        # pregame page
+        screen = pygame.display.set_mode(size)
+        image = pygame.image.load("images/background.jpg").convert()
+        screen.blit(image, [0, 0])
+
+        playername = input("Please input a name\n")
+
+        heading = button.Button(screen, GREEN, 535, 225, 320, 65, "Start Game")
+        player1 = button.Button(screen, RED, 370, 370, 200, 50, playername)
+        player2 = button.Button(screen, BLUE, 710, 370, 200, 50, "player2")
+        player3 = button.Button(screen, YELLOW, 370, 510, 200, 50, "player3")
+        player4 = button.Button(screen, GREEN, 710, 510, 200, 50, "player4")
+
+        running = True
+        while running:
+            pygame.display.update()
+            pos = pygame.mouse.get_pos()
+            pygame.draw.rect(screen, (191, 191, 191), (350, 200, 700, 400))
+            heading.isOver(pos)
+            player1.isOver(pos)
+            player2.isOver(pos)
+            player3.isOver(pos)
+            player4.isOver(pos)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+                if heading.click_b(event, pos):
+                    running = False
+
     def main(self):
         pygame.init()
-
         counter = 0
-        startup_page.loadStart()
+        self.loadStart()
         self.board = Board()
+        self.font = pygame.font.Font('freesansbold.ttf', 40)
         self.board.createBoard()
         self.createPlayers()
         validDice = False
