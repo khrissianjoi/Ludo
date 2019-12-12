@@ -7,27 +7,28 @@ from player import Player
 import startup_page
 
 import os
+
 # team colours
-TEAM_BLUE1 = 209,230,238 #dark
-TEAM_BLUE2 = 65, 179, 226 #light
+TEAM_BLUE1 = 209, 230, 238
+TEAM_BLUE2 = 65, 179, 226
 BLUE_TOKEN = 77, 5, 232, 1
 
-TEAM_YELLOW1 = 200,189,161
+TEAM_YELLOW1 = 200, 189, 161
 TEAM_YELLOW2 = 251, 217, 132
 YELLOW_TOKEN = 247, 202, 24, 1
 
-TEAM_RED1 = 245,221,219
+TEAM_RED1 = 245, 221, 219
 TEAM_RED2 = 241, 120, 107
-RED_TOKEN = 189,9,9
+RED_TOKEN = 189, 9, 9
 
-TEAM_GREEN1 = 190,235,224
+TEAM_GREEN1 = 190, 235, 224
 TEAM_GREEN2 = 90, 200, 174
 GREEN_TOKEN = 30, 130, 76, 1
 
 tokenPoly = [[27.5, 30.5], [27.0, 30.5], [27.0, 26.5], [23.5, 14.5], [23.5, 14.5], [24.5, 13.5], [24.5, 13.0], [23.5, 12.0], [23.5, 12.0], [25.5, 7.0], [18.5, 0.0], [11.0, 7.0], [13.5, 12.0], [13.0, 12.0], [12.0, 13.0], [12.0, 13.5], [13.0, 14.5], [13.5, 14.5], [10.0, 26.5], [10.0, 30.5], [9.0, 30.5], [8.0, 31.5], [8.0, 34.0], [9.0, 35.0], [9.0, 35.0], [9.0, 37.0], [27.5, 37.0], [27.5, 35.0], [28.5, 34.0], [28.5, 31.5], [27.5, 30.5]]
 
+BLACK = 0, 0, 0
 
-BLACK = 0,0,0
 
 class Game:
     def __init__(self):
@@ -45,7 +46,7 @@ class Game:
         self.board = None
         self.currentPlayer = None
         self.currentRoll = None
-        self.diceDict = {1:"one.png",2:"two.png",3:"three.png",4:"four.png",5:"five.png",6:"six.png"}
+        self.diceDict = {1: "one.png", 2: "two.png", 3: "three.png", 4: "four.png", 5: "five.png", 6: "six.png"}
         self.text = None
         self.font = pygame.font.Font('freesansbold.ttf', 40)
 
@@ -53,61 +54,59 @@ class Game:
         self.endTime = datetime.datetime.now()
         self.gameExit = True
 
-    def isPlayerChoosingOwnToken(self,x,y):
-        print(x,y)
-        return self.currentPlayer.chooseToken(x,y)
+    def isPlayerChoosingOwnToken(self, x, y):
+        print(x, y)
+        return self.currentPlayer.chooseToken(x, y)
 
     def createPlayers(self):
         diceValues = self.board.generatePerson()
 
-        self.playerRed = Player("Red",RED_TOKEN,[],self.board.redTokens,[], self.board.redTokens)
+        self.playerRed = Player("Red", RED_TOKEN, [], self.board.redTokens, [],  self.board.redTokens)
         for token in self.board.redTokens:
             token.setPlayerOwner(self.playerRed)
 
         self.playerRed.myDice.setCoordinates(diceValues[0])
-        
-        self.playerBlue = Player("Blue",BLUE_TOKEN,[],self.board.blueTokens,[], self.board.blueTokens)
+
+        self.playerBlue = Player("Blue", BLUE_TOKEN, [], self.board.blueTokens, [],  self.board.blueTokens)
         for token in self.board.blueTokens:
             token.setPlayerOwner(self.playerBlue)
-        
+
         self.playerBlue.myDice.setCoordinates(diceValues[1])
 
-        self.playerYellow = Player("Yellow",YELLOW_TOKEN,[],self.board.yellowTokens,[], self.board.yellowTokens)
+        self.playerYellow = Player("Yellow", YELLOW_TOKEN, [], self.board.yellowTokens, [],  self.board.yellowTokens)
         for token in self.board.yellowTokens:
             token.setPlayerOwner(self.playerYellow)
 
         self.playerYellow.myDice.setCoordinates(diceValues[2])
 
-        self.playerGreen = Player("Green",GREEN_TOKEN,[],self.board.greenTokens,[], self.board.greenTokens)
+        self.playerGreen = Player("Green", GREEN_TOKEN, [], self.board.greenTokens, [],  self.board.greenTokens)
 
         for token in self.board.greenTokens:
             token.setPlayerOwner(self.playerGreen)
 
         self.playerGreen.myDice.setCoordinates(diceValues[3])
 
-        self.players = [self.playerRed,self.playerBlue,self.playerGreen,self.playerYellow]
-
+        self.players = [self.playerRed, self.playerBlue, self.playerGreen, self.playerYellow]
 
     def produceDiceImage(self):
         self.board.regenerateBoard(self.text)
-        image = pygame.image.load(os.path.join("images","dice",self.diceDict[self.currentRoll]))
-        cropped_image = pygame.transform.scale(image,(80,80))
-        # image = pygame.image.load(os.path.join("dice",self.diceDict[self.currentRoll]))
-        self.board.gameDisplay.blit(cropped_image,(self.currentPlayer.myDice.coOrdinates[0],self.currentPlayer.myDice.coOrdinates[1]))
+        image = pygame.image.load(os.path.join("images", "dice", self.diceDict[self.currentRoll]))
+        cropped_image = pygame.transform.scale(image, (80, 80))
+        # image = pygame.image.load(os.path.join("dice", self.diceDict[self.currentRoll]))
+        self.board.gameDisplay.blit(cropped_image, (self.currentPlayer.myDice.coOrdinates[0], self.currentPlayer.myDice.coOrdinates[1]))
 
         for player in self.players:
             for token in player.allTokens:
                 token.drawToken(self.board)
         pygame.display.update()
 
-
-    def highlightPlayerTurn(self,first=None):
-        cropped_image = pygame.image.load(os.path.join("images","dice","theirTurn.jpg"))
-        cropped_image = pygame.transform.scale(cropped_image,(80,80))
-        if self.currentPlayer != None:
-            self.board.gameDisplay.blit(cropped_image,(self.currentPlayer.myDice.coOrdinates[0],self.currentPlayer.myDice.coOrdinates[1]))
+    def highlightPlayerTurn(self, first=None):
+        cropped_image = pygame.image.load(os.path.join("images", "dice", "theirTurn.jpg"))
+        cropped_image = pygame.transform.scale(cropped_image, (80, 80))
+        if self.currentPlayer is not None:
+            self.board.gameDisplay.blit(cropped_image, (self.currentPlayer.myDice.coOrdinates[0], self.currentPlayer.myDice.coOrdinates[1]))
         else:
-            self.board.gameDisplay.blit(cropped_image,(self.players[0].myDice.coOrdinates[0],self.players[0].myDice.coOrdinates[1]))
+            self.board.gameDisplay.blit(cropped_image, (self.players[0].myDice.coOrdinates[0], self.players[0].myDice.coOrdinates[1]))
         if not first:
             for player in self.players:
                 for token in player.allTokens:
@@ -122,19 +121,19 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.endGame()
                 if event.type == pygame.MOUSEBUTTONUP:
-                    x,y = pygame.mouse.get_pos()
-                    print(x,y)
+                    x, y = pygame.mouse.get_pos()
+                    print(x, y)
                     if not validDice:
-                        if x in range(self.currentPlayer.myDice.coOrdinates[0],self.currentPlayer.myDice.coOrdinates[0]+80+1) and y in range(self.currentPlayer.myDice.coOrdinates[1],self.currentPlayer.myDice.coOrdinates[1]+80+1):
+                        if x in range(self.currentPlayer.myDice.coOrdinates[0], self.currentPlayer.myDice.coOrdinates[0]+80+1) and y in range(self.currentPlayer.myDice.coOrdinates[1], self.currentPlayer.myDice.coOrdinates[1]+80+1):
                             self.currentRoll = self.currentPlayer.rollDice()
                             self.produceDiceImage()
                             validDice = True
-                            #print("success")
+                            # print("success")
                         else:
                             self.text = "Not Dice"
                             print(self.text)
-                            text = self.font.render(self.text, True, BLACK) 
-                            textRect = text.get_rect()  
+                            text = self.font.render(self.text, True, BLACK)
+                            textRect = text.get_rect()
                             textRect.center = (700, 750)
                             self.board.gameDisplay.blit(text, textRect)
                             pygame.display.update()
@@ -148,25 +147,25 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.endGame()
                 if event.type == pygame.MOUSEBUTTONUP:
-                    x,y = pygame.mouse.get_pos()
-                    #print(x,y)
-                    currentToken = self.isPlayerChoosingOwnToken(x,y)
-                    if currentToken != None:
+                    x, y = pygame.mouse.get_pos()
+                    # print(x, y)
+                    currentToken = self.isPlayerChoosingOwnToken(x, y)
+                    if currentToken is not None:
                         validToken = True
                     else:
                         self.text = "Not valid token"
-                        text = self.font.render(self.text, True, BLACK) 
-                        textRect = text.get_rect()  
+                        text = self.font.render(self.text, True, BLACK)
+                        textRect = text.get_rect()
                         textRect.center = (700, 750)
                         self.board.gameDisplay.blit(text, textRect)
                         pygame.display.update()
         return currentToken
 
     def checkIfBlocked(self, tile):
-        if tile.blockedBy != None and self.currentPlayer != tile.blockedBy:
+        if tile.blockedBy is not None and self.currentPlayer != tile.blockedBy:
             self.text = "Choose another token, this tile is blocked by: {}".format(tile.blockedBy.playerName)
-            text = self.font.render(self.text, True, BLACK) 
-            textRect = text.get_rect()  
+            text = self.font.render(self.text, True, BLACK)
+            textRect = text.get_rect()
             textRect.center = (700, 750)
             self.board.gameDisplay.blit(text, textRect)
             return True
@@ -238,17 +237,17 @@ class Game:
         self.createPlayers()
         validDice = False
         first = True
-        self.currentPlayer = self.players[counter%4]
+        self.currentPlayer = self.players[counter % 4]
         self.text = "Turn #{}: {}".format(counter, self.currentPlayer.playerName)
-        text = self.font.render(self.text, True, BLACK) 
-        textRect = text.get_rect()  
+        text = self.font.render(self.text, True, BLACK)
+        textRect = text.get_rect()
         textRect.center = (700, 700)
         self.board.gameDisplay.blit(text, textRect)
         while not self.gameExit:
-            self.currentPlayer = self.players[counter%4]
+            self.currentPlayer = self.players[counter % 4]
             self.text = "Turn #{}: {}".format(counter, self.currentPlayer.playerName)
-            text = self.font.render(self.text, True, BLACK) 
-            textRect = text.get_rect()  
+            text = self.font.render(self.text, True, BLACK)
+            textRect = text.get_rect()
             textRect.center = (700, 700)
             first = self.highlightPlayerTurn(first)
             # return here
@@ -261,8 +260,8 @@ class Game:
             elif len(self.currentPlayer.tokensOnBase) == 4 and self.currentRoll == 6:
                 self.moveTokenFromBase(self.currentPlayer.tokensOnBase[0])
                 self.text = "{} token #{} moved from base".format(self.currentPlayer.playerName, 4 - len(self.currentPlayer.tokensOnBase))
-                text = self.font.render(self.text, True, BLACK) 
-                textRect = text.get_rect()  
+                text = self.font.render(self.text, True, BLACK)
+                textRect = text.get_rect()
                 textRect.center = (700, 700)
                 self.board.gameDisplay.blit(text, textRect)
             elif 0 < len(self.currentPlayer.tokensOnPath) <= 4:
@@ -272,16 +271,16 @@ class Game:
                     if currentToken.currentTilePathPosition == 0:
                         if self.currentRoll != 6:
                             self.text = "Cannot move token from base."
-                            text = self.font.render(self.text, True, BLACK) 
-                            textRect = text.get_rect()  
+                            text = self.font.render(self.text, True, BLACK)
+                            textRect = text.get_rect()
                             textRect.center = (700, 700)
                             self.board.gameDisplay.blit(text, textRect)
                             continue
                         else:
                             self.moveTokenFromBase(currentToken)
                             self.text = "{} token #{} moved from base".format(self.currentPlayer.playerName, 4 - len(self.currentPlayer.tokensOnBase)) + " Gets another turn"
-                            text = self.font.render(self.text, True, BLACK) 
-                            textRect = text.get_rect()  
+                            text = self.font.render(self.text, True, BLACK)
+                            textRect = text.get_rect()
                             textRect.center = (700, 700)
                             self.board.gameDisplay.blit(text, textRect)
                             counter -= 1
@@ -290,7 +289,7 @@ class Game:
                     currentTilePosition = None
                     if currentToken.currentTilePathPosition > 0:
                         currentTilePosition = currentToken.tokenTilesPath[currentToken.currentTilePathPosition][0]
-                        if currentTilePosition != None and self.checkIfBlocked(currentTilePosition):
+                        if currentTilePosition is not None and self.checkIfBlocked(currentTilePosition):
                             continue
                         currentTilePosition.residents.remove(currentToken)
 
@@ -300,18 +299,18 @@ class Game:
                         newTokenTilePosition = currentToken.tokenNewTile(self.currentRoll)
                         self.updateTokenTilePos(currentToken, newTokenTilePosition)
                         self.checkIfCanFormBlock(newTokenTilePosition)
-                        if currentTilePosition != None:
+                        if currentTilePosition is not None:
                             currentTilePosition.checkIfCanDestroyBlock(self.currentPlayer)
                             self.checkIfCanEatToken(newTokenTilePosition)
-                        self.updateBoardWithMovingToken(currentToken,newTokenTilePosition)
+                        self.updateBoardWithMovingToken(currentToken, newTokenTilePosition)
                     elif currentToken.currentTilePathPosition + self.currentRoll >= 57:
                             print("teST")
                             tempPlayers = copy.copy(self.players)
                             tempPlayers.remove(self.currentPlayer)
-                            print("CURRENT:",currentToken.currentTilePathPosition)
+                            print("CURRENT:", currentToken.currentTilePathPosition)
                             self.currentRoll = 3
                             if currentToken.currentTilePathPosition + self.currentRoll == 57:
-                                currentToken.drawTokenOnHome(self.board,currentToken.currentTilePathPosition,self.currentRoll,tempPlayers)
+                                currentToken.drawTokenOnHome(self.board, currentToken.currentTilePathPosition, self.currentRoll, tempPlayers)
                                 currentToken.setTokenLocation(None)
                                 if currentToken not in self.currentPlayer.tokensOnHome:
                                     self.currentPlayer.tokensOnHome.append(currentToken)
@@ -319,18 +318,18 @@ class Game:
                                         self.currentPlayer.tokensOnPath.remove(currentToken)
                                 self.currentPlayer.setAllTokens(self.currentPlayer.tokensOnBase+self.currentPlayer.tokensOnPath+self.currentPlayer.tokensOnHome)
                             elif currentToken.currentTilePathPosition + self.currentRoll > 57:
-                                print("NEWTILE: ",self.currentRoll+currentToken.currentTilePathPosition)
-                                forwardSteps = 57- currentToken.currentTilePathPosition
-                                print("FORWARD STEPS:",forwardSteps)
-                                #TODO: forward steps +1 because home
-                                print("BACK STEPS:",self.currentRoll-forwardSteps)
+                                print("NEWTILE: ", self.currentRoll+currentToken.currentTilePathPosition)
+                                forwardSteps = 57 - currentToken.currentTilePathPosition
+                                print("FORWARD STEPS:", forwardSteps)
+                                # TODO: forward steps +1 because home
+                                print("BACK STEPS:", self.currentRoll-forwardSteps)
                                 backSteps = self.currentRoll-forwardSteps
-                                self.updateBoardWithBackwardMovingToken(currentToken,forwardSteps,backSteps)
+                                self.updateBoardWithBackwardMovingToken(currentToken, forwardSteps, backSteps)
 
                 self.text = "Next: {}".format(self.currentPlayer.playerName)
-                 
-                text = self.font.render(self.text, True, BLACK) 
-                textRect = text.get_rect()  
+
+                text = self.font.render(self.text, True, BLACK)
+                textRect = text.get_rect()
                 textRect.center = (700, 700)
                 self.board.gameDisplay.blit(text, textRect)
             counter += 1
@@ -338,20 +337,22 @@ class Game:
         pygame.quit()
         quit()
 
-    def updateBoardWithMovingToken(self,currentToken,newTokenTilePosition):
+    def updateBoardWithMovingToken(self, currentToken, newTokenTilePosition):
         tempPlayers = copy.copy(self.players)
         tempPlayers.remove(self.currentPlayer)
-        self.currentPlayer.moveChosenToken(self.board,currentToken,self.currentRoll,tempPlayers)
+        self.currentPlayer.moveChosenToken(self.board, currentToken, self.currentRoll, tempPlayers)
         currentToken.setTokenLocation(newTokenTilePosition.rangeCoordinates)
         self.currentPlayer.setAllTokens(self.currentPlayer.tokensOnBase+self.currentPlayer.tokensOnPath+self.currentPlayer.tokensOnHome)
 
-    def updateBoardWithBackwardMovingToken(self,currentToken,forwardSteps,backSteps):
+    def updateBoardWithBackwardMovingToken(self, currentToken, forwardSteps, backSteps):
         tempPlayers = copy.copy(self.players)
         tempPlayers.remove(self.currentPlayer)
-        newTile = self.currentPlayer.moveBackwardChosenToken(self.board,currentToken,forwardSteps,backSteps,tempPlayers)
+        newTile = self.currentPlayer.moveBackwardChosenToken(self.board, currentToken, forwardSteps, backSteps, tempPlayers)
         self.currentPlayer.setAllTokens(self.currentPlayer.tokensOnBase+self.currentPlayer.tokensOnPath+self.currentPlayer.tokensOnHome)
         if newTile.tileType == "path" or newTile.tileType == "safe":
             if currentToken not in self.currentPlayer.tokensOnPath:
                 self.currentPlayer.tokensOnPath.append(currentToken)
+
+
 playing = Game()
 playing.main()

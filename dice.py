@@ -1,5 +1,6 @@
 import random
 
+
 class Dice:
     def __init__(self):
         self.diceValue = self.rollDice()
@@ -7,12 +8,12 @@ class Dice:
         self.coOrdinates = None
 
     def rollDice(self):
-        value = random.randint(1,6)
+        value = random.randint(1, 6)
         # self.setdiceValue()
         return value
 
     def getdiceValue(self):
         return self.diceValue
 
-    def setCoordinates(self,coOrdinates):
+    def setCoordinates(self, coOrdinates):
         self.coOrdinates = coOrdinates
