@@ -295,11 +295,11 @@ class Game:
         self.createPlayers(playerNames)
         validDice = False
         first = True
-        self.currentPlayer = self.players[counter % 4]
+        self.currentPlayer = self.players[counter % 2]
         self.text = "Turn #{}: {}".format(counter, self.currentPlayer.playerName)
         self.showSubText()
         while not self.gameExit:
-            self.currentPlayer = self.players[counter % 4]
+            self.currentPlayer = self.players[counter % 2]
             self.text = "Turn #{}: {}".format(counter, self.currentPlayer.playerName)
             self.showSubText()
             first = self.highlightPlayerTurn(first)
@@ -336,7 +336,8 @@ class Game:
                         currentTilePosition = currentToken.tokenTilesPath[currentToken.currentTilePathPosition][0]
                         if currentTilePosition is not None and self.checkIfBlocked(currentTilePosition):
                             continue
-                        currentTilePosition.residents.remove(currentToken)
+                        if currentToken in currentTilePosition.residents:
+                            currentTilePosition.residents.remove(currentToken)
 
                     tokenChosen = True
                 if tokenChosen:
@@ -352,7 +353,6 @@ class Game:
                     elif currentToken.currentTilePathPosition + self.currentRoll >= 57:
                             tempPlayers = copy.copy(self.players)
                             tempPlayers.remove(self.currentPlayer)
-                            self.currentRoll = 3
                             if currentToken.currentTilePathPosition + self.currentRoll == 57:
                                 currentToken.drawTokenOnHome(self.board, currentToken.currentTilePathPosition, self.currentRoll, tempPlayers)
                                 currentToken.setTokenLocation(None)
