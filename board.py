@@ -45,7 +45,7 @@ token_path = [[27.5, 30.5], [27.0, 30.5], [27.0, 26.5], [23.5, 14.5], [23.5, 14.
 
 
 class Board:
-    def __init__(self):
+    def __init__(self, playerNames=["joi","joi","john","dale"]):
         self.tiles = {}
         self.size = 40
         self.display_size_x = 1400
@@ -63,6 +63,7 @@ class Board:
         self.redPath = []
         self.bluePath = []
         self.greenPath = []
+        self.playerNames = playerNames
 
     def regenerateBoard(self, text=None):
         pygame.display.set_caption("Ludo")
@@ -104,22 +105,46 @@ class Board:
         pygame.draw.polygon(self.gameDisplay, colour, translated_star_path)
 
     def generatePerson(self):
+        font = pygame.font.Font('freesansbold.ttf', 40)
         image = pygame.image.load(os.path.join("images", "redPlayer.png"))
         cropped_image = pygame.transform.scale(image, (200, 200))
+
         self.gameDisplay.blit(cropped_image, (40, 60))
-        # 140, 275
+        text = font.render(self.playerNames[0], True, WHITE)
+        textRect = text.get_rect()
+        textRect.center = (140, 295)
+        self.gameDisplay.blit(text, textRect)
+
         image = pygame.image.load(os.path.join("images", "yellowPlayer.png"))
         cropped_image = pygame.transform.scale(image, (200, 200))
         self.gameDisplay.blit(cropped_image, (40, 420))
-        # 140, 660
+
+        self.gameDisplay.blit(cropped_image, (40, 60))
+        text = font.render(self.playerNames[1], True, WHITE)
+        textRect = text.get_rect()
+        textRect.center = (140, 660)
+        self.gameDisplay.blit(text, textRect)
+
         image = pygame.image.load(os.path.join("images", "bluePlayer.png"))
         cropped_image = pygame.transform.scale(image, (200, 200))
         self.gameDisplay.blit(cropped_image, (1160, 60))
-        # 1260, 275
+
+        self.gameDisplay.blit(cropped_image, (40, 60))
+        text = font.render(self.playerNames[2], True, WHITE)
+        textRect = text.get_rect()
+        textRect.center = (1260,295)
+        self.gameDisplay.blit(text, textRect)
+
         image = pygame.image.load(os.path.join("images", "greenPlayer.png"))
         cropped_image = pygame.transform.scale(image, (200, 200))
         self.gameDisplay.blit(cropped_image, (1160, 420))
-        # 1260, 660
+        
+        self.gameDisplay.blit(cropped_image, (40, 60))
+        text = font.render(self.playerNames[3], True, WHITE)
+        textRect = text.get_rect()
+        textRect.center = (1260,660)
+        self.gameDisplay.blit(text, textRect)
+
         return [(275, 105), (1050, 105), (275, 470), (1050, 470)]
 
     def generateTiles(self):
@@ -268,9 +293,7 @@ class Board:
         R4 = TokenCreate(4, RED_TOKEN, None, (range(515, 515 + 61), range(220, + 220 + 61)), (515, 220), trueRedPath, (675, 315))
 
         self.redTokens = [R1, R2, R3, R4]
-        # print("h", trueBluePath[-1])
-        # print("h", trueBluePath[56])
-        print(len(trueBluePath))
+        
         # YELLOW
 
         translated_token_path = [[x + 510, y + 420] for [x, y] in token_path]

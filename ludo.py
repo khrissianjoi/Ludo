@@ -60,28 +60,30 @@ class Game:
         print(x, y)
         return self.currentPlayer.chooseToken(x, y)
 
-    def createPlayers(self):
+    def createPlayers(self, playerNames=["joi","alex","john","dale"]):
         diceValues = self.board.generatePerson()
 
-        self.playerRed = Player("Red", RED_TOKEN, [], self.board.redTokens, [],  self.board.redTokens)
+        self.playerRed = Player(playerNames[0], RED_TOKEN, [], self.board.redTokens, [],  self.board.redTokens)
         for token in self.board.redTokens:
             token.setPlayerOwner(self.playerRed)
 
         self.playerRed.myDice.setCoordinates(diceValues[0])
 
-        self.playerBlue = Player("Blue", BLUE_TOKEN, [], self.board.blueTokens, [],  self.board.blueTokens)
-        for token in self.board.blueTokens:
-            token.setPlayerOwner(self.playerBlue)
 
-        self.playerBlue.myDice.setCoordinates(diceValues[1])
-
-        self.playerYellow = Player("Yellow", YELLOW_TOKEN, [], self.board.yellowTokens, [],  self.board.yellowTokens)
+        self.playerYellow = Player(playerNames[1], YELLOW_TOKEN, [], self.board.yellowTokens, [],  self.board.yellowTokens)
         for token in self.board.yellowTokens:
             token.setPlayerOwner(self.playerYellow)
 
         self.playerYellow.myDice.setCoordinates(diceValues[2])
 
-        self.playerGreen = Player("Green", GREEN_TOKEN, [], self.board.greenTokens, [],  self.board.greenTokens)
+        self.playerBlue = Player(playerNames[2], BLUE_TOKEN, [], self.board.blueTokens, [],  self.board.blueTokens)
+        for token in self.board.blueTokens:
+            token.setPlayerOwner(self.playerBlue)
+
+        self.playerBlue.myDice.setCoordinates(diceValues[1])
+
+
+        self.playerGreen = Player(playerNames[3], GREEN_TOKEN, [], self.board.greenTokens, [],  self.board.greenTokens)
 
         for token in self.board.greenTokens:
             token.setPlayerOwner(self.playerGreen)
@@ -91,6 +93,17 @@ class Game:
         self.players = [self.playerRed, self.playerBlue, self.playerGreen, self.playerYellow]
 
     def produceDiceImage(self):
+        for dice in self.diceDict.values():
+            self.board.regenerateBoard(self.text)
+            image = pygame.image.load(os.path.join("images", "dice", dice))
+            cropped_image = pygame.transform.scale(image, (80, 80))
+            self.board.gameDisplay.blit(cropped_image, (self.currentPlayer.myDice.coOrdinates[0], self.currentPlayer.myDice.coOrdinates[1]))
+            for player in self.players:
+                for token in player.allTokens:
+                    token.drawToken(self.board)
+            pygame.time.delay(40)
+            pygame.display.update()
+
         self.board.regenerateBoard(self.text)
         image = pygame.image.load(os.path.join("images", "dice", self.diceDict[self.currentRoll]))
         cropped_image = pygame.transform.scale(image, (80, 80))
@@ -256,13 +269,11 @@ class Game:
         image = pygame.image.load("images/background.jpg").convert()
         screen.blit(image, [0, 0])
 
-        playername = input("Please input a name\n")
-
         heading = button.Button(screen, GREEN, 535, 225, 320, 65, "Start Game")
-        player1 = button.Button(screen, RED, 370, 370, 200, 50, playername)
-        player2 = button.Button(screen, BLUE, 710, 370, 200, 50, "player2")
-        player3 = button.Button(screen, YELLOW, 370, 510, 200, 50, "player3")
-        player4 = button.Button(screen, GREEN, 710, 510, 200, 50, "player4")
+        player1 = button.Button(screen, RED, 370, 370, 200, 50, input("Please input a name of player 1\n"))
+        player2 = button.Button(screen, BLUE, 710, 370, 200, 50, input("Please input a name of player 2\n"))
+        player3 = button.Button(screen, YELLOW, 370, 510, 200, 50, input("Please input a name of player 3\n"))
+        player4 = button.Button(screen, GREEN, 710, 510, 200, 50, input("Please input a name of player 4\n"))
 
         running = True
         while running:
@@ -280,11 +291,12 @@ class Game:
                     sys.exit()
                 if heading.click_b(event, pos):
                     running = False
+        return [player1.text,player2.text,player3.text,player4.text]
 
     def main(self):
         pygame.init()
         counter = 0
-        self.loadStart()
+        # playerNames = self.loadStart()
         self.board = Board()
         self.font = pygame.font.Font('freesansbold.ttf', 40)
         self.board.createBoard()
