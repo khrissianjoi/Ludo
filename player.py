@@ -1,6 +1,5 @@
 from dice import Dice
 from tile import Tile
-from gameColours import GameColours
 import pygame
 
 

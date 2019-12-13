@@ -1,6 +1,5 @@
 class GameColours():
     def __init__(self):
-
         self.BLACK = 0, 0, 0
         self.BLUE = (12, 63, 186)
         self.GREEN = (0, 179, 0)
@@ -22,3 +21,6 @@ class GameColours():
         self.TEAM_GREEN1 = 190, 235, 224
         self.TEAM_GREEN2 = 90, 200, 174
         self.GREEN_TOKEN = 30, 130, 76, 1
+
+        self.WHITE = 255, 255, 255
+        self.BLACK = (0,0,0)

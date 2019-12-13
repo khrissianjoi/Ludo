@@ -4,27 +4,6 @@ import os
 from tokencreate import TokenCreate
 from gameColours import GameColours
 
-WHITE = 255, 255, 255
-# interface colours
-BLUE_BACKGROUND = 209, 230, 238
-
-# self.colours.TEAM_BLUE1 = 209, 230, 238  # dark
-# self.colours.TEAM_BLUE2 = 65, 179, 226  # light
-# self.colours.BLUE_TOKEN = 77, 5, 232, 1
-
-# self.colours.TEAM_YELLOW1 = 200, 189, 161
-# self.colours.TEAM_YELLOW2 = 251, 217, 132
-# self.colours.YELLOW_TOKEN = 247, 202, 24, 1
-
-# self.colours.TEAM_RED1 = 245, 221, 219
-# self.colours.TEAM_RED2 = 241, 120, 107
-# self.colours.RED_TOKEN = 189, 9, 9
-
-# self.colours.TEAM_GREEN1 = 190, 235, 224
-# self.colours.TEAM_GREEN2 = 90, 200, 174
-# self.colours.GREEN_TOKEN = 30, 130, 76, 1
-
-
 class Board:
     def __init__(self, playerNames):
         self.tiles = {}
@@ -92,8 +71,8 @@ class Board:
         pygame.display.update()
 
     def createWhiteTile(self, xCoord, yCoord):
-        # create white path
-        pygame.draw.rect(self.gameDisplay, WHITE, [self.size*xCoord + self.boardOverall, self.size*yCoord, self.size, self.size])
+        # createself.colours.WHITE path
+        pygame.draw.rect(self.gameDisplay,self.colours.WHITE, [self.size*xCoord + self.boardOverall, self.size*yCoord, self.size, self.size])
         pygame.draw.rect(self.gameDisplay, self.colours.BLACK, [self.size*xCoord + self.boardOverall, self.size*yCoord, self.size, self.size], 1)
 
     def createSafeTile(self, x_add, y_add, colour):
@@ -107,7 +86,7 @@ class Board:
         cropped_image = pygame.transform.scale(image, (200, 200))
 
         self.gameDisplay.blit(cropped_image, (40, 60))
-        text = font.render(self.playerNames[0], True, WHITE)
+        text = font.render(self.playerNames[0], True,self.colours.WHITE)
         textRect = text.get_rect()
         textRect.center = (140, 295)
         self.gameDisplay.blit(text, textRect)
@@ -117,7 +96,7 @@ class Board:
         self.gameDisplay.blit(cropped_image, (40, 420))
 
         self.gameDisplay.blit(cropped_image, (40, 60))
-        text = font.render(self.playerNames[1], True, WHITE)
+        text = font.render(self.playerNames[1], True,self.colours.WHITE)
         textRect = text.get_rect()
         textRect.center = (140, 660)
         self.gameDisplay.blit(text, textRect)
@@ -127,7 +106,7 @@ class Board:
         self.gameDisplay.blit(cropped_image, (1160, 60))
 
         self.gameDisplay.blit(cropped_image, (40, 60))
-        text = font.render(self.playerNames[2], True, WHITE)
+        text = font.render(self.playerNames[2], True,self.colours.WHITE)
         textRect = text.get_rect()
         textRect.center = (1260, 295)
         self.gameDisplay.blit(text, textRect)
@@ -137,7 +116,7 @@ class Board:
         self.gameDisplay.blit(cropped_image, (1160, 420))
 
         self.gameDisplay.blit(cropped_image, (40, 60))
-        text = font.render(self.playerNames[3], True, WHITE)
+        text = font.render(self.playerNames[3], True,self.colours.WHITE)
         textRect = text.get_rect()
         textRect.center = (1260, 660)
         self.gameDisplay.blit(text, textRect)
@@ -165,7 +144,7 @@ class Board:
                                 self.createSafeTile(445, 281, self.colours.TEAM_RED2)
                             if redLayer == 15:
                                 tileType = "safe"
-                                self.createSafeTile(485, 360, WHITE)
+                                self.createSafeTile(485, 360,self.colours.WHITE)
                             self.addTile(self.size*xCoord + self.boardOverall, self.size*xCoord + self.boardOverall + (self.size + 1), self.size*yCoord, self.size*yCoord + (self.size + 1), tileType, self.redPath, redLayer)
 
                         else:
@@ -180,7 +159,7 @@ class Board:
                                 self.createSafeTile(925, 360, self.colours.TEAM_GREEN2)
                             if greenLayer == 4:
                                 tileType = "safe"
-                                self.createSafeTile(885, 280, WHITE)
+                                self.createSafeTile(885, 280,self.colours.WHITE)
 
                             self.addTile(self.size*xCoord + self.boardOverall, self.size*xCoord + self.boardOverall + (self.size + 1), self.size*yCoord, self.size*yCoord + (self.size + 1), tileType, self.greenPath, greenLayer)
 
@@ -202,7 +181,7 @@ class Board:
                             # green base
                             pygame.draw.rect(self.gameDisplay, self.colours.TEAM_GREEN1, [self.size*xCoord + self.boardOverall, self.size*yCoord, self.size, self.size])
                     else:
-                        # path - vertical white spaces
+                        # path - verticalself.colours.WHITE spaces
                         tileType = "path"
                         if yCoord*self.size in range(self.size, self.size*7):
                             blueLayer += 1
@@ -213,7 +192,7 @@ class Board:
                                 pygame.draw.rect(self.gameDisplay, self.colours.BLACK, [self.size*xCoord + self.boardOverall, self.size*yCoord, self.size, self.size], 1)
                             if blueLayer == 7:
                                 tileType = "safe"
-                                self.createSafeTile(650, 200, WHITE)
+                                self.createSafeTile(650, 200,self.colours.WHITE)
 
                             if blueLayer == 6:
                                 tileType = "safe"
@@ -233,7 +212,7 @@ class Board:
                                 self.createSafeTile(645, 560, self.colours.TEAM_YELLOW2)
                             if yellowLayer == 12:
                                 tileType = "safe"
-                                self.createSafeTile(725, 520, WHITE)
+                                self.createSafeTile(725, 520,self.colours.WHITE)
                             self.addTile(self.size*xCoord + self.boardOverall, self.size*xCoord + self.boardOverall + (self.size + 1), self.size*yCoord, self.size*yCoord + (self.size + 1), tileType, self.yellowPath, yellowLayer)
 
     def addTile(self, xStartCoord, xEndCoord, yStartCoord, yEndCoord, tileType, path=[], myLayer=1):
