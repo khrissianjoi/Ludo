@@ -45,7 +45,7 @@ token_path = [[27.5, 30.5], [27.0, 30.5], [27.0, 26.5], [23.5, 14.5], [23.5, 14.
 
 
 class Board:
-    def __init__(self, playerNames=["joi","joi","john","dale"]):
+    def __init__(self, playerNames):
         self.tiles = {}
         self.size = 40
         self.display_size_x = 1400
@@ -132,17 +132,17 @@ class Board:
         self.gameDisplay.blit(cropped_image, (40, 60))
         text = font.render(self.playerNames[2], True, WHITE)
         textRect = text.get_rect()
-        textRect.center = (1260,295)
+        textRect.center = (1260, 295)
         self.gameDisplay.blit(text, textRect)
 
         image = pygame.image.load(os.path.join("images", "greenPlayer.png"))
         cropped_image = pygame.transform.scale(image, (200, 200))
         self.gameDisplay.blit(cropped_image, (1160, 420))
-        
+
         self.gameDisplay.blit(cropped_image, (40, 60))
         text = font.render(self.playerNames[3], True, WHITE)
         textRect = text.get_rect()
-        textRect.center = (1260,660)
+        textRect.center = (1260, 660)
         self.gameDisplay.blit(text, textRect)
 
         return [(275, 105), (1050, 105), (275, 470), (1050, 470)]
@@ -293,7 +293,7 @@ class Board:
         R4 = TokenCreate(4, RED_TOKEN, None, (range(515, 515 + 61), range(220, + 220 + 61)), (515, 220), trueRedPath, (675, 315))
 
         self.redTokens = [R1, R2, R3, R4]
-        
+
         # YELLOW
 
         translated_token_path = [[x + 510, y + 420] for [x, y] in token_path]

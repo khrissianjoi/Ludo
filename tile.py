@@ -19,7 +19,7 @@ class Tile:
     def formBlock(self, playerOwner):
         self.isBlocked = True
         self.blockedBy = playerOwner
-        print("Tile is blocked by: {}".format(playerOwner.playerName))
+        return "Tile is blocked by: {}".format(playerOwner.playerName)
 
     def checkIfCanDestroyBlock(self, player):
         if self.checkResidents().count(player) == 1:
@@ -28,7 +28,7 @@ class Tile:
     def destroyBlock(self):
         self.isBlocked = False
         self.blockedBy = None
-        print("Tile is unblocked.")
+        return "Tile is unblocked."
 
     def __str__(self):
         return str(self.startCoordinates) + " " + self.tileType

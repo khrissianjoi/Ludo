@@ -3,8 +3,6 @@ from tile import Tile
 import pygame
 
 BLACK = 0, 0, 0
-tokenPoly = [[27.5, 30.5], [27.0, 30.5], [27.0, 26.5], [23.5, 14.5], [23.5, 14.5], [24.5, 13.5], [24.5, 13.0], [23.5, 12.0], [23.5, 12.0], [25.5, 7.0], [18.5, 0.0], [11.0, 7.0], [13.5, 12.0], [13.0, 12.0], [12.0, 13.0], [12.0, 13.5], [13.0, 14.5], [13.5, 14.5], [10.0, 26.5], [10.0, 30.5], [9.0, 30.5], [8.0, 31.5], [8.0, 34.0], [9.0, 35.0], [9.0, 35.0], [9.0, 37.0], [27.5, 37.0], [27.5, 35.0], [28.5, 34.0], [28.5, 31.5], [27.5, 30.5]]
-
 
 class Player:
     def __init__(self, playerName, colour, tokensOnHome, tokensOnBase, tokenOnTrack, allTokens=None):
@@ -15,6 +13,8 @@ class Player:
         self.tokensOnPath = tokenOnTrack
         self.allTokens = allTokens
         self.myDice = Dice()
+        self.tokenPoly = [[27.5, 30.5], [27.0, 30.5], [27.0, 26.5], [23.5, 14.5], [23.5, 14.5], [24.5, 13.5], [24.5, 13.0], [23.5, 12.0], [23.5, 12.0], [25.5, 7.0], [18.5, 0.0], [11.0, 7.0], [13.5, 12.0], [13.0, 12.0], [12.0, 13.0], [12.0, 13.5], [13.0, 14.5], [13.5, 14.5], [10.0, 26.5], [10.0, 30.5], [9.0, 30.5], [8.0, 31.5], [8.0, 34.0], [9.0, 35.0], [9.0, 35.0], [9.0, 37.0], [27.5, 37.0], [27.5, 35.0], [28.5, 34.0], [28.5, 31.5], [27.5, 30.5]]
+
 
     def setAllTokens(self, allTokens):
         self.allTokens = allTokens
@@ -56,9 +56,9 @@ class Player:
         for i in range(token.currentTilePathPosition+1, token.currentTilePathPosition+moveBy):
             tokenStepCoordinate = token.tokenTilesPath[i][0].endCoordinates
 
-            translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x, y] in tokenPoly]
+            translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x, y] in self.tokenPoly]
             token.moveOneToken(refresh, token.tokenID[1], translated_token_path)
-            token.playerOwner.drawTokens(refresh, token, tokenPoly)
+            token.playerOwner.drawTokens(refresh, token, self.tokenPoly)
             token.drawOtherPlayersTokens(otherPlayers, refresh)
             pygame.display.update()
             pygame.time.delay(10)
@@ -69,15 +69,15 @@ class Player:
         '''Moves player's chosen token, while recreating the other tokens (including oponents players)'''
         for i in range(token.currentTilePathPosition+1, 57):
             tokenStepCoordinate = token.tokenTilesPath[i][0].endCoordinates
-            translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x, y] in tokenPoly]
+            translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x, y] in self.tokenPoly]
             token.moveOneToken(refresh, token.tokenID[1], translated_token_path)
-            token.playerOwner.drawTokens(refresh, token, tokenPoly)
+            token.playerOwner.drawTokens(refresh, token, self.tokenPoly)
             token.drawOtherPlayersTokens(otherPlayers, refresh)
             pygame.display.update()
             pygame.time.delay(300)
             refresh.regenerateBoard()
 
-        translated_token_path = [[x*0.85 + token.xHomeCoord, y*0.85 + token.yHomeCoord] for [x, y] in tokenPoly]
+        translated_token_path = [[x*0.85 + token.xHomeCoord, y*0.85 + token.yHomeCoord] for [x, y] in self.tokenPoly]
         pygame.draw.polygon(refresh.gameDisplay, token.tokenID[1], translated_token_path)
         pygame.draw.polygon(refresh.gameDisplay, BLACK, translated_token_path, 1)
         token.tokenLocation = Tile((None, None), (None, None), "home", None, None)
@@ -85,9 +85,9 @@ class Player:
         reversePath = token.tokenTilesPath[::-1]
         for path in range(0, backSteps+1):
             tokenStepCoordinate = reversePath[path][0].endCoordinates
-            translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x,  y] in tokenPoly]
+            translated_token_path = [[x + tokenStepCoordinate[0], tokenStepCoordinate[1] + y] for [x,  y] in self.tokenPoly]
             token.moveOneToken(refresh, token.tokenID[1], translated_token_path)
-            token.playerOwner.drawTokens(refresh, token, tokenPoly)
+            token.playerOwner.drawTokens(refresh, token, self.tokenPoly)
             token.drawOtherPlayersTokens(otherPlayers, refresh)
             pygame.display.update()
             pygame.time.delay(300)
