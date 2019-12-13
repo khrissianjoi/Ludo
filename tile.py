@@ -12,7 +12,6 @@ class Tile:
     def checkResidents(self):
         if len(self.residents) == 0:
             return []
-
         playersOnTile = [token.playerOwner for token in self.residents]
         return playersOnTile
 

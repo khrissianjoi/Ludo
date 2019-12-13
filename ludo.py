@@ -5,34 +5,13 @@ import os
 
 from board import Board
 from player import Player
+from gameColours import GameColours
 import button
+
 
 
 class Game:
     def __init__(self):
-
-        self.BLACK = 0, 0, 0
-        self.BLUE = (12, 63, 186)
-        self.GREEN = (0, 179, 0)
-        self.YELLOW = (179, 179, 0)
-        self.RED = (242, 120, 107)
-
-        # team colours
-        self.TEAM_BLUE1 = 209, 230, 238
-        self.TEAM_BLUE2 = 65, 179, 226
-        self.BLUE_TOKEN = 77, 5, 232, 1
-
-        self.TEAM_YELLOW1 = 200, 189, 161
-        self.TEAM_YELLOW2 = 251, 217, 132
-        self.YELLOW_TOKEN = 247, 202, 24, 1
-
-        self.TEAM_RED1 = 245, 221, 219
-        self.TEAM_RED2 = 241, 120, 107
-        self.TEAM_RED2 = 189, 9, 9
-
-        self.TEAM_GREEN1 = 190, 235, 224
-        self.TEAM_GREEN2 = 90, 200, 174
-        self.GREEN_TOKEN = 30, 130, 76, 1
 
         self.startTime = datetime.datetime.now()
         self.endTime = None
@@ -52,30 +31,32 @@ class Game:
         self.text = None
         self.font = None
 
+        self.gamecolours = None
+
     def endGame(self):
         self.endTime = datetime.datetime.now()
         self.gameExit = True
 
     def showMainText(self):
-        text = self.font.render(self.text, True, self.BLACK)
+        text = self.font.render(self.text, True, self.gamecolours.BLACK)
         textRect = text.get_rect()
         textRect.center = (700, 700)
         self.board.gameDisplay.blit(text, textRect)
 
     def showInvalidClickText(self):
-        text = self.font.render(self.text, True, self.BLACK)
+        text = self.font.render(self.text, True, self.gamecolours.BLACK)
         textRect = text.get_rect()
         textRect.center = (700, 670)
         self.board.gameDisplay.blit(text, textRect)
 
     def showSubText(self):
-        text = self.font.render(self.text, True, self.BLACK)
+        text = self.font.render(self.text, True, self.gamecolours.BLACK)
         textRect = text.get_rect()
         textRect.center = (700, 730)
         self.board.gameDisplay.blit(text, textRect)
 
     def showExtraTurnText(self):
-        text = self.font.render(self.text, True, self.BLACK)
+        text = self.font.render(self.text, True, self.gamecolours.BLACK)
         textRect = text.get_rect()
         textRect.center = (700, 770)
         self.board.gameDisplay.blit(text, textRect)
@@ -86,25 +67,25 @@ class Game:
     def createPlayers(self, playerNames):
         diceValues = self.board.generatePerson()
 
-        self.playerRed = Player(playerNames[0], self.TEAM_RED2, [], self.board.redTokens, [],  self.board.redTokens)
+        self.playerRed = Player(playerNames[0], self.gamecolours.TEAM_RED2, [], self.board.redTokens, [],  self.board.redTokens)
         for token in self.board.redTokens:
             token.setPlayerOwner(self.playerRed)
 
         self.playerRed.myDice.setCoordinates(diceValues[0])
 
-        self.playerYellow = Player(playerNames[1], self.YELLOW_TOKEN, [], self.board.yellowTokens, [],  self.board.yellowTokens)
+        self.playerYellow = Player(playerNames[1], self.gamecolours.YELLOW_TOKEN, [], self.board.yellowTokens, [],  self.board.yellowTokens)
         for token in self.board.yellowTokens:
             token.setPlayerOwner(self.playerYellow)
 
         self.playerYellow.myDice.setCoordinates(diceValues[2])
 
-        self.playerBlue = Player(playerNames[2], self.BLUE_TOKEN, [], self.board.blueTokens, [],  self.board.blueTokens)
+        self.playerBlue = Player(playerNames[2], self.gamecolours.BLUE_TOKEN, [], self.board.blueTokens, [],  self.board.blueTokens)
         for token in self.board.blueTokens:
             token.setPlayerOwner(self.playerBlue)
 
         self.playerBlue.myDice.setCoordinates(diceValues[1])
 
-        self.playerGreen = Player(playerNames[3], self.GREEN_TOKEN, [], self.board.greenTokens, [],  self.board.greenTokens)
+        self.playerGreen = Player(playerNames[3], self.gamecolours.GREEN_TOKEN, [], self.board.greenTokens, [],  self.board.greenTokens)
 
         for token in self.board.greenTokens:
             token.setPlayerOwner(self.playerGreen)
@@ -182,7 +163,7 @@ class Game:
                         validToken = True
                     else:
                         self.text = "Not valid token"
-                        text = self.font.render(self.text, True, self.BLACK)
+                        text = self.font.render(self.text, True, self.gamecolours.BLACK)
                         self.showInvalidClickText()
         return currentToken
 
@@ -252,14 +233,15 @@ class Game:
             pass
 
     def loadStart(self):
+        self.gamecolours = GameColours()
         pygame.init()
         size = width, height = 1400, 800
         screen = pygame.display.set_mode(size)
         image = pygame.image.load("images/background.jpg").convert()
         screen.blit(image, [0, 0])
 
-        b1 = button.Button(screen, self.GREEN, 200, 300, 320, 65, "Create Game")
-        b2 = button.Button(screen, self.YELLOW, 200, 450, 320, 65, "Join Game")
+        b1 = button.Button(screen, self.gamecolours.GREEN, 200, 300, 320, 65, "Create Game")
+        b2 = button.Button(screen, self.gamecolours.YELLOW, 200, 450, 320, 65, "Join Game")
 
         running = True
         while running:
@@ -279,11 +261,11 @@ class Game:
         image = pygame.image.load("images/background.jpg").convert()
         screen.blit(image, [0, 0])
 
-        heading = button.Button(screen, self.GREEN, 535, 225, 320, 65, "Start Game")
-        player1 = button.Button(screen, self.RED, 370, 370, 200, 50, input("Please input a name of player 1\n"))
-        player2 = button.Button(screen, self.BLUE, 710, 370, 200, 50, input("Please input a name of player 2\n"))
-        player3 = button.Button(screen, self.YELLOW, 370, 510, 200, 50, input("Please input a name of player 3\n"))
-        player4 = button.Button(screen, self.GREEN, 710, 510, 200, 50, input("Please input a name of player 4\n"))
+        heading = button.Button(screen, self.gamecolours.GREEN, 535, 225, 320, 65, "Start Game")
+        player1 = button.Button(screen, self.gamecolours.RED, 370, 370, 200, 50, input("Please input a name of player 1\n"))
+        player2 = button.Button(screen, self.gamecolours.BLUE, 710, 370, 200, 50, input("Please input a name of player 2\n"))
+        player3 = button.Button(screen, self.gamecolours.YELLOW, 370, 510, 200, 50, input("Please input a name of player 3\n"))
+        player4 = button.Button(screen, self.gamecolours.GREEN, 710, 510, 200, 50, input("Please input a name of player 4\n"))
 
         running = True
         while running:

@@ -1,8 +1,8 @@
 from dice import Dice
 from tile import Tile
+from gameColours import GameColours
 import pygame
 
-BLACK = 0, 0, 0
 
 class Player:
     def __init__(self, playerName, colour, tokensOnHome, tokensOnBase, tokenOnTrack, allTokens=None):
@@ -14,7 +14,7 @@ class Player:
         self.allTokens = allTokens
         self.myDice = Dice()
         self.tokenPoly = [[27.5, 30.5], [27.0, 30.5], [27.0, 26.5], [23.5, 14.5], [23.5, 14.5], [24.5, 13.5], [24.5, 13.0], [23.5, 12.0], [23.5, 12.0], [25.5, 7.0], [18.5, 0.0], [11.0, 7.0], [13.5, 12.0], [13.0, 12.0], [12.0, 13.0], [12.0, 13.5], [13.0, 14.5], [13.5, 14.5], [10.0, 26.5], [10.0, 30.5], [9.0, 30.5], [8.0, 31.5], [8.0, 34.0], [9.0, 35.0], [9.0, 35.0], [9.0, 37.0], [27.5, 37.0], [27.5, 35.0], [28.5, 34.0], [28.5, 31.5], [27.5, 30.5]]
-
+        self.BLACK = 0, 0, 0
 
     def setAllTokens(self, allTokens):
         self.allTokens = allTokens
@@ -79,7 +79,7 @@ class Player:
 
         translated_token_path = [[x*0.85 + token.xHomeCoord, y*0.85 + token.yHomeCoord] for [x, y] in self.tokenPoly]
         pygame.draw.polygon(refresh.gameDisplay, token.tokenID[1], translated_token_path)
-        pygame.draw.polygon(refresh.gameDisplay, BLACK, translated_token_path, 1)
+        pygame.draw.polygon(refresh.gameDisplay, self.BLACK, translated_token_path, 1)
         token.tokenLocation = Tile((None, None), (None, None), "home", None, None)
         pygame.display.update()
         reversePath = token.tokenTilesPath[::-1]
@@ -101,7 +101,7 @@ class Player:
             if token.tokenID != otherThan.tokenID:
                 new_translated_token_path = [[x + token.xBaseCoord, token.yBaseCoord + y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay, self.colour, new_translated_token_path)
-                pygame.draw.polygon(refresh.gameDisplay, BLACK, new_translated_token_path, 1)
+                pygame.draw.polygon(refresh.gameDisplay, self.BLACK, new_translated_token_path, 1)
         for token in self.tokensOnHome:
             if token != otherThan:
                 new_translated_token_path = [[x*0.85 + token.xHomeCoord, token.yHomeCoord + y*0.85] for [x, y] in tokenPoly]
@@ -110,4 +110,4 @@ class Player:
             if token.tokenID != otherThan.tokenID:
                 new_translated_token_path = [[x + token.tokenLocation[0][0], token.tokenLocation[1][0] + y] for [x, y] in tokenPoly]
                 pygame.draw.polygon(refresh.gameDisplay, self.colour, new_translated_token_path)
-                pygame.draw.polygon(refresh.gameDisplay, BLACK, new_translated_token_path, 1)
+                pygame.draw.polygon(refresh.gameDisplay, self.BLACK, new_translated_token_path, 1)
